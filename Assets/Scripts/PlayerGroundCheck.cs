@@ -12,7 +12,7 @@ public class PlayerGroundCheck : MonoBehaviour
         playerController = GetComponentInParent<PlayerController>();
     }
 
-    void OnTriggerEnter(Collider other)
+    /*void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == playerController.gameObject) return;
         playerController.SetGroundedState(true);
@@ -41,5 +41,5 @@ public class PlayerGroundCheck : MonoBehaviour
     {
         if (collision.gameObject == playerController.gameObject) return;
         playerController.SetGroundedState(true);
-    }
+    }*/
 }

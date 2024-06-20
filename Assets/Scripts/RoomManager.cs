@@ -9,6 +9,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager instance;
 
+    //da es bereits ein Singelton gibt, benutze ich diesen, um die Information auf dem Server zu uebergeben
+    public int chairsNumber;
+    public bool chatIsOn;
+    public bool voicechatIsOn;
+
     private void Start()
     {
         //schaut, ob ein anderen RoomManger existiert

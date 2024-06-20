@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -62,22 +62,10 @@ public class PlayerController : MonoBehaviour
     }
 
     //BAUARBEITEN
-    public void SetGroundedState(bool _grounded)
-    {
-        grounded = _grounded;
-    }
     void Move()
     {
         Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : _movementSpeed), ref smoothMoveVelocity, smoothTime);
-    }
-
-    void Jump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
-        {
-            _rigidbody.AddForce(transform.up * _jumpForce);
-        }
     }
 
     //BAUARBEITEN
@@ -119,16 +107,6 @@ public class PlayerController : MonoBehaviour
             {
                 Respawn();
             }
-    }
-
-    private void PlayerMovement()
-    {
-        float h = Input.GetAxis("Horizontal"); //a, d
-        float v = Input.GetAxis("Vertical"); //w (+1), s (-1)
-
-        Vector3 movementDir = transform.forward * v + transform.right * h;
-        movementDir = Vector3.ClampMagnitude(movementDir, 1f);
-        _rigidbody.velocity = new Vector3(movementDir.x * _movementSpeed, _rigidbody.velocity.y, movementDir.z * _movementSpeed);
     }
 
     private void RotatePlayerLeftRight()

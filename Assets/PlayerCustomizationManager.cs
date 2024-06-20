@@ -61,6 +61,7 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         {
             EquipItem(hats, (int)playerProperties["HatIndex"]);
         }
+        UpdateHatColor((int)playerProperties["HatColorR"], (int)playerProperties["HatColorG"], (int)playerProperties["HatColorB"]);
 
         if (playerProperties.ContainsKey("EyeIndex") && eyes.Length > 0)
         {
@@ -76,6 +77,33 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         {
             EquipItem(clothes, (int)playerProperties["ClothesIndex"]);
         }
+    }
+
+    private void UpdateHatColor(int red, int green, int blue)
+    {
+        GameObject equipedHat = hats[0];
+        for (int i = 0; i < hats.Length; i++)
+        {
+            if (hats[i].activeSelf)
+            {
+                equipedHat = hats[i];
+            }
+        }
+        Renderer equipedHatRenderer = equipedHat.GetComponent<Renderer>();
+        if (equipedHatRenderer == null || !equipedHatRenderer.material.HasProperty("_Color"))
+        {
+            Debug.Log("Farbe kann nicht gesetzt werden, weil Renderer oder Material fehlt");
+            return;
+        }
+
+        Color newColor = new Color((red / 255f), (green / 255f), (blue / 255f));
+
+        //erstellt eine neue Material-Instanz, um das Originalmaterial nicht zu aendern
+        Material newMaterial = new Material(equipedHatRenderer.material);
+        newMaterial.color = newColor;
+
+        //setzt das neue Material auf den Renderer
+        equipedHatRenderer.material = newMaterial;
     }
 
     private void EquipItem(GameObject[] items, int index)

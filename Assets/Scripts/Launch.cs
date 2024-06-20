@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 //Benutzen MonoBehaviourPunCallbacks - damit wir sogenannte "callbacks" benutzen koennten. Also, Benachrichtigungen bekommen, 
 //wenn Player Lobby beitritt oder erstellt
@@ -47,6 +48,13 @@ public class Launch : MonoBehaviourPunCallbacks
 
 
     [SerializeField] private GameObject _startGameButton;
+    [SerializeField] private Slider _chairsSlider;
+    [SerializeField] private TMP_Text _chairsSliderText;
+    [SerializeField] private Toggle _chatToggle;
+    [SerializeField] private Toggle _voiceChatToggle;
+    [SerializeField] private TMP_Text _countdownText;
+    private bool _startCountdown;
+    private float _toWaitBeforeStart = 3.0f;
 
     private void Start()
     {
@@ -56,6 +64,20 @@ public class Launch : MonoBehaviourPunCallbacks
         //wird zu eu-Region eine Konnektion erstellen (weil so Photon-Objekt konfiguriert ist. Kann man aendern)
         PhotonNetwork.ConnectUsingSettings();
         MenuManager.current.OpenMenu("loading");
+
+        _chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
+        OnSliderValueChanged(_chairsSlider.value);
+
+        _chatToggle.onValueChanged.AddListener(OnChatToggleValueChanged);
+        _voiceChatToggle.onValueChanged.AddListener(OnVoiceChatToggleValueChanged);
+    }
+    private void Update()
+    {
+        if (_startCountdown && _toWaitBeforeStart > 0)
+        {
+            _toWaitBeforeStart -= Time.deltaTime;
+            _countdownText.text = $"we will start in {Mathf.RoundToInt(_toWaitBeforeStart)}";
+        }
     }
 
     //"OnConnectedToMaster" fuhrt Aktionen, sobald eine Konnektion erstellt wurde
@@ -77,7 +99,37 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
+        //den Code, um Anzahl an Stuhle im Room zu uebergeben
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+        props["ChairCount"] = RoomManager.instance.chairsNumber;
+        props["IsChatOn"] = RoomManager.instance.chatIsOn;
+        props["IsVoiceChatOn"] = RoomManager.instance.voicechatIsOn;
+
         //hier Starten wir Scene namens "GameScene", weil sie Index 1 in BuildSetting hat
+        //PhotonNetwork.LoadLevel(1);
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+
+        // Warten, um sicherzustellen, dass die Eigenschaft gesetzt ist
+        StartCoroutine(WaitAndStartGame());
+
+        //da man alle Einstellungen fuer Zimmer OnClick() uebernimmt, sollen wir die Moeglichkeit ausschalten,
+        //diese Einstellungen nach dem Klick zu aendern (um die Frustrationserfahrung zu vermeiden)
+        _startGameButton.gameObject.SetActive(false);
+        _chairsSlider.gameObject.SetActive(false);
+        _chairsSliderText.gameObject.SetActive(false);
+        _chatToggle.gameObject.SetActive(false);
+        _voiceChatToggle.gameObject.SetActive(false);
+
+        _countdownText.gameObject.SetActive(true);
+        _startCountdown = true;
+    }
+    //sonst koennen die Daten nicht hochgeladen werden, da die naechste schneller Scene geladen wird
+    private IEnumerator WaitAndStartGame()
+    {
+        yield return new WaitForSeconds(Mathf.RoundToInt(_toWaitBeforeStart)); // Warte 3 Sekunden
+
+        // Hier Starten wir die Szene namens "GameScene", weil sie Index 1 in BuildSettings hat
         PhotonNetwork.LoadLevel(1);
     }
 
@@ -110,14 +162,20 @@ public class Launch : MonoBehaviourPunCallbacks
             Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
 
-        //falls Speieler "host" ist, wird Knopf zum Start des SPieles visible. Wenn nicht - invisible
+        //falls Speieler "host" ist, wird Knopf zum Start des Spieles visible. Wenn nicht - invisible
         _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        _chairsSlider.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        _chairsSliderText.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        _chatToggle.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        _voiceChatToggle.gameObject.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     //wenn host das Raum verlaest, wird host aktuelisiert
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        _chairsSlider.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        _chairsSliderText.gameObject.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -174,5 +232,22 @@ public class Launch : MonoBehaviourPunCallbacks
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+
+    //Funktionalitaten, um das Raum zu gestalten.
+    private void OnSliderValueChanged(float value)
+    {
+        int chairNumber = Mathf.RoundToInt(value);
+        RoomManager.instance.chairsNumber = chairNumber;
+        _chairsSliderText.text = $"Chair Number: {chairNumber}";
+    }
+    private void OnChatToggleValueChanged(bool isOn)
+    {
+        RoomManager.instance.chatIsOn = isOn;
+    }
+    private void OnVoiceChatToggleValueChanged(bool isOn)
+    {
+        RoomManager.instance.voicechatIsOn = isOn;
     }
 }

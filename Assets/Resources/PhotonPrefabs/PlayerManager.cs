@@ -43,9 +43,9 @@ public class PlayerManager : MonoBehaviour
             int bodyIndex = (int)playerProperties["BodyIndex"];
             int clothesIndex = (int)playerProperties["ClothesIndex"];
 
-            int redColorOfHar = (int)((float)playerProperties["HatColorR"] / 255f);
-            int greenColorOfHat = (int)((float)playerProperties["HatColorG"] / 255f);
-            int blueColorOfHat = (int)((float)playerProperties["HatColorB"] / 255f);
+            int redColorOfHar = Mathf.RoundToInt((int)playerProperties["HatColorR"] / 255f);
+            int greenColorOfHat = Mathf.RoundToInt((int)playerProperties["HatColorG"] / 255f);
+            int blueColorOfHat = Mathf.RoundToInt((int)playerProperties["HatColorB"] / 255f);
 
             controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", Launch.instance.playerModel), spawnpoint.position, spawnpoint.rotation, 0, 
                 new object[] { 

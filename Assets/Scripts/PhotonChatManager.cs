@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Realtime;
 
 public class PhotonChatManager : MonoBehaviour, IChatClientListener
 {
@@ -19,7 +20,15 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
     [SerializeField] GameObject joinChatButton;
     [SerializeField] GameObject chatPanel;
     string currentChat;
-    string privateReciever = "";
+    public string privateReciever = "";
+    [SerializeField] private RoomSettingManager roomSettingManager;
+
+    //um die Liste des Spielers sehen zu koennen
+    [SerializeField] private Transform _playerList;
+    [SerializeField] private GameObject _playerNicknameButtonPrefab;
+    private Player[] oldListOfPlayers; //um zu schauen, ob die Liste sich aktualisiert hat oder nicht
+    [SerializeField] public TMP_Text sendMessageToButton_Text;
+    private bool isPlayerlistOn;
 
     public void UserNameOnValueChange(string valueIn)
     {
@@ -34,7 +43,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
     {
         isConnected = true;
         chatClient = new ChatClient(this);
-        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(_username));
+        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new Photon.Chat.AuthenticationValues(_username));
         Debug.Log("Connecting to the chat...");
     }
 
@@ -105,7 +114,21 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
 
     public void OnUserSubscribed(string channel, string user)
     {
-        throw new System.NotImplementedException();
+        UpdatePlayerList();
+        //throw new System.NotImplementedException();
+        /*Debug.Log("YES, IT MUSS BE DISPLAYED A BUTTON");
+        Player[] players = PhotonNetwork.PlayerList;
+
+        for (int i = 0; i < _playerList.childCount; i++)
+        {
+            Destroy(_playerList.GetChild(i).gameObject);
+        }
+
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            Instantiate(_playerNicknameButtonPrefab, _playerList).GetComponent<PlayerListItem>().SetUp(players[i]);
+        }*/
     }
 
     public void OnUserUnsubscribed(string channel, string user)
@@ -113,16 +136,37 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
         throw new System.NotImplementedException();
     }
 
+    public void UpdatePlayerList()
+    {
+        Player[] players = PhotonNetwork.PlayerList;
+
+        for (int i = 1; i < _playerList.childCount; i++)
+        {
+            Destroy(_playerList.GetChild(i).gameObject);
+        }
+
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].NickName.Equals(PhotonNetwork.NickName))
+            {
+                continue;
+            }
+            Instantiate(_playerNicknameButtonPrefab, _playerList).GetComponent<PlayerChatItem>().SetUp(players[i]);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        oldListOfPlayers = PhotonNetwork.PlayerList;
+        UpdatePlayerList();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !Pause.paused)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !Pause.paused && roomSettingManager.chatIsOn)
         {
             chatTrigger = !chatTrigger;
         }
@@ -130,6 +174,13 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
         {
             Cursor.visible = true;
             transform.GetChild(0).gameObject.SetActive(true);
+
+            if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
+            {
+                UpdatePlayerList();
+                oldListOfPlayers = (Player[]) PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
+            }
+            
 
             if (isConnected)
                 chatClient.Service();
@@ -174,5 +225,62 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
     public void RecieverOnValueChange(string valueIn)
     {
         privateReciever = valueIn;
+    }
+
+    //Funktionalitat, um Nichname von Spieler zu kriegen, der im Button war
+    private bool CheckPlayerListChanged(Player[] oldL, Player[] newL)
+    {
+        if (oldL == null || newL == null || oldL.Length != newL.Length)
+        {
+            return true;
+        }
+
+        //hier werden nickname gespeichert. Falls zwei Leuten haben gleichen - wird auch behandelt
+        Dictionary<string, int> lookUp = new Dictionary<string, int>();
+
+        //befuellen HashSet mit Nicknames (nicht mit "Player")
+        for (int i = 0; i < oldL.Length; i++)
+        {
+            int count = 0;
+            if (!lookUp.TryGetValue(oldL[i].NickName, out count))
+            {
+                lookUp.Add(oldL[i].NickName, 1);
+                continue;
+            }
+            lookUp[oldL[i].NickName] = count + 1;
+        }
+
+        for (int i = 0; i < newL.Length; i++)
+        {
+            int count = 0;
+            if (!lookUp.TryGetValue(newL[i].NickName, out count))
+            {
+                // early exit as the current value in newL doesn't exist in the lookUp (and not in ListA)
+                return false;
+            }
+            count--;
+            if (count <= 0)
+                lookUp.Remove(newL[i].NickName);
+            else
+                lookUp[newL[i].NickName] = count;
+        }
+
+        // if there are remaining elements in the lookUp, that means oldL contains elements that do not exist in newL
+        return lookUp.Count != 0;
+    }
+
+    public void ShowListOfRecievers()
+    {
+        isPlayerlistOn = !isPlayerlistOn;
+        _playerList.gameObject.SetActive(isPlayerlistOn);
+    }
+    public void SetRecieverToPublic()
+    {
+        sendMessageToButton_Text.text = "All";
+        privateReciever = "";
+    }
+    public void HideListOfRecievers()
+    {
+        _playerList.gameObject.SetActive(false);
     }
 }
