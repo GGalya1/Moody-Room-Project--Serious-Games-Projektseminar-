@@ -73,6 +73,9 @@ public class Launch : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
+        //Debug sagt, dass Cursor ist visible, ist aber nicht (
+        //Debug.Log("Cursor is visible: " + Cursor.visible);
+
         if (_startCountdown && _toWaitBeforeStart > 0)
         {
             _toWaitBeforeStart -= Time.deltaTime;

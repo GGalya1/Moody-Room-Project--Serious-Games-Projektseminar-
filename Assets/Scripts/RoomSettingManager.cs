@@ -4,19 +4,24 @@ using UnityEngine;
 using Photon.Pun;
 using System.IO;
 using Photon.Voice.Unity;
+using TMPro;
 
-public class RoomSettingManager : MonoBehaviour
+public class RoomSettingManager : MonoBehaviourPunCallbacks
 {
     public GameObject chairPrefab;
+    public List<GameObject> chairsList;
     public Transform[] spawnPoints;
     public bool chatIsOn;
 
     public Recorder voiceRecorder;
     public bool voiceChatIsOn;
 
+    MusikManager musikManager;
+
     public void Awake()
     {
         int _chairsCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["ChairCount"];
+        chairsList = new List<GameObject>();
         SpawnChairs(_chairsCount);
         chatIsOn = (bool)PhotonNetwork.CurrentRoom.CustomProperties["IsChatOn"];
         voiceChatIsOn = (bool)PhotonNetwork.CurrentRoom.CustomProperties["IsVoiceChatOn"];
@@ -25,10 +30,17 @@ public class RoomSettingManager : MonoBehaviour
 
     private void SpawnChairs(int chairsCount)
     {
-        for (int i = 0; i < chairsCount; i++)
+        int curr = chairsList.Count;
+        
+        for (int i = curr; i < chairsCount; i++)
         {
             int spawnIndex = i % spawnPoints.Length;
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", chairPrefab.name), spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
+            chairsList.Add(PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", chairPrefab.name), spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation));
+        }
+        for (int i = curr; i > chairsCount; i--)
+        {
+            PhotonNetwork.Destroy(chairsList[i-1]);
+            chairsList.RemoveAt(chairsList.Count-1);
         }
     }
     private void SetVoiceChat(bool isEnabled)
@@ -44,9 +56,8 @@ public class RoomSettingManager : MonoBehaviour
         }
     }
 
-
     //spaeter wird fuer Admin-Panel nuetzlich
-    /*public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
         if (propertiesThatChanged.ContainsKey("ChairCount"))
         {
@@ -59,5 +70,11 @@ public class RoomSettingManager : MonoBehaviour
             bool voiceChatEnabled = (bool)propertiesThatChanged["IsVoiceChatOn"];
             SetVoiceChat(voiceChatEnabled);
         }
-    }*/
+        if (propertiesThatChanged.ContainsKey("IsChatOn"))
+        {
+            bool chatEnabled = (bool)propertiesThatChanged["IsChatOn"];
+            RoomManager.instance.chatIsOn = chatEnabled;
+            chatIsOn = chatEnabled;
+        }
+    }
 }

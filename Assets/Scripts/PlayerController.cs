@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
         //BAUARBEITEN
 
-        if (!Pause.paused && !PhotonChatManager.chatTrigger)
+        if (!Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn)
         {
 
 

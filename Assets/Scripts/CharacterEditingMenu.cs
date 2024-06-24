@@ -197,6 +197,9 @@ public class CharacterEditingMenu : MonoBehaviour
         hash.Add("ClothesIndex", _clothesNumber);
 
         //speichere Farben von Slider
+        Debug.Log($"ich schreibe in Datenbank, dass rot ist {Mathf.RoundToInt(redSlider.value * 255)}");
+        Debug.Log($"ich schreibe in Datenbank, dass green ist {Mathf.RoundToInt(greenSlider.value * 255)}");
+        Debug.Log($"ich schreibe in Datenbank, dass blue ist {Mathf.RoundToInt(blueSlider.value * 255)}");
         hash.Add("HatColorR", Mathf.RoundToInt(redSlider.value * 255));
         hash.Add("HatColorG", Mathf.RoundToInt(greenSlider.value * 255));
         hash.Add("HatColorB", Mathf.RoundToInt(blueSlider.value * 255));
@@ -212,9 +215,9 @@ public class CharacterEditingMenu : MonoBehaviour
         _bodyNumber = (int)playerProperties["BodyIndex"];
         _clothesNumber = (int)playerProperties["ClothesIndex"];
 
-        redSlider.value = (float)playerProperties["HatColorR"] / 255f;
-        greenSlider.value = (float)playerProperties["HatColorG"] / 255f;
-        blueSlider.value = (float)playerProperties["HatColorB"] / 255f;
+        redSlider.value = (int)playerProperties["HatColorR"] / 255f;
+        greenSlider.value = (int)playerProperties["HatColorG"] / 255f;
+        blueSlider.value = (int)playerProperties["HatColorB"] / 255f;
         UpdateText();
     }
 }

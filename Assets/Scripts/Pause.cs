@@ -36,9 +36,10 @@ public class Pause : MonoBehaviour
         disconnecting = true;
         Destroy(RoomManager.instance.gameObject);
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect(); //???? habe das zufaellig hinzugefuegt wegen eine Fehlermeldung (schauen wie es normalerweise passieren muss)
         paused = false;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.None;
         PhotonNetwork.LoadLevel(0);
     }
 
@@ -51,30 +52,14 @@ public class Pause : MonoBehaviour
         if (paused)
         {
             Cursor.visible = true;
-            //Debug.Log("Cursor must be visible, but: " + Cursor.visible);
             Cursor.lockState = CursorLockMode.None;
             transform.GetChild(0).gameObject.SetActive(true);
         }
         else
         {
             Cursor.visible = false;
-            //Debug.Log("Cursor must not be visible, but: " + Cursor.visible);
             Cursor.lockState = CursorLockMode.Confined;
             transform.GetChild(0).gameObject.SetActive(false);
         }
-        
-
-        /*
-        if (paused)
-        {
-            canvasGroup.alpha = 1;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            canvasGroup.alpha = 0;
-            Cursor.lockState = CursorLockMode.Confined;
-        }
-        */
     }
 }
