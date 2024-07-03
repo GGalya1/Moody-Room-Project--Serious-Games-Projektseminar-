@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
         //BAUARBEITEN
 
-        if (!Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn)
+        if (ControlIsNotFrozen())
         {
 
 
@@ -107,6 +107,10 @@ public class PlayerController : MonoBehaviour
             {
                 Respawn();
             }
+    }
+    private bool ControlIsNotFrozen()
+    {
+        return !Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn && !DrawingUIManager.whiteboardOn;
     }
 
     private void RotatePlayerLeftRight()

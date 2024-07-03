@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class MusikManager : MonoBehaviour
 {
@@ -30,8 +32,13 @@ public class MusikManager : MonoBehaviour
 
     [SerializeField] public Slider trackTimeSlider;
 
+    //um das ganze zu synchronisieren
+    private PhotonView photonView;
+
     private void Start()
     {
+        photonView = GetComponent<PhotonView>();
+
         musikName.text = "music was not selected";
         musikAudioSource.loop = loopTrackToggle.isOn;
         loopTrackToggle.onValueChanged.AddListener(OnLoopToggleValueChanged);
@@ -45,14 +52,17 @@ public class MusikManager : MonoBehaviour
     }
     private void Update()
     {
-        if (musikAudioSource.isPlaying)
+        if (PhotonNetwork.IsMasterClient)
         {
-            UpdateTrackTime();
-            UpdateTrackSlider();
-        }
-        else if (iWillThatMusicPlay && currentPlaylist != null && currentPlaylist.Count > 0 && !musikAudioSource.isPlaying && musikAudioSource.time == 0)
-        {
-            PlayNextTrackInPlaylist();
+            if (musikAudioSource.isPlaying)
+            {
+                UpdateTrackTime();
+                UpdateTrackSlider();
+            }
+            else if (iWillThatMusicPlay && currentPlaylist != null && currentPlaylist.Count > 0 && !musikAudioSource.isPlaying && musikAudioSource.time == 0)
+            {
+                PlayNextTrackInPlaylist();
+            }
         }
     }
     public void PlayMusik()
@@ -60,27 +70,55 @@ public class MusikManager : MonoBehaviour
         iWillThatMusicPlay = true;
         musikName.text = musikAudioSource.clip.name;
         musikAudioSource.Play();
+        photonView.RPC("RPC_PlayMusik", RpcTarget.Others);
     }
+    [PunRPC]
+    public void RPC_PlayMusik()
+    {
+        iWillThatMusicPlay = true;
+        //AudioClip clip = currentPlaylist.Find(c => c.name.Equals(clipName));
+        //musikAudioSource.clip = clip;
+        musikAudioSource.Play();
+        //musikName.text = clip.name;
+    }
+    [PunRPC]
+    public void RPC_SetClip(string nameOfClip)
+    {
+        AudioClip clip = allTracks.Find(c => c.name.Equals(nameOfClip));
+        musikAudioSource.clip = clip;
+    }
+
     public void StopMusik()
     {
         iWillThatMusicPlay = false;
         musikAudioSource.Pause();
+        photonView.RPC("RPC_StopMusik", RpcTarget.Others);
     }
+    [PunRPC]
+    public void RPC_StopMusik()
+    {
+        iWillThatMusicPlay = false;
+        musikAudioSource.Pause();
+    }
+
     public void PlayNextTrackInPlaylist()
     {
         if (currentTrackIndex + 1 < currentPlaylist.Count)
         {
             musikAudioSource.clip = currentPlaylist[currentTrackIndex + 1];
             currentTrackIndex++;
+            RPC_SetClip(musikAudioSource.clip.name);
         }
         else
         {
             currentTrackIndex = 0;
             musikAudioSource.clip = currentPlaylist[currentTrackIndex];
+            photonView.RPC("RPC_SetClip", RpcTarget.Others, musikAudioSource.clip.name);
         }
         trackTimeSlider.value = 0;
         PlayMusik();
     }
+
     public void UpdateTrackTime()
     {
         if (musikAudioSource.clip != null)
@@ -153,16 +191,38 @@ public class MusikManager : MonoBehaviour
     private void OnLoopToggleValueChanged(bool isOn)
     {
         musikAudioSource.loop = isOn;
+        photonView.RPC("RPC_OnLoopToggleValueChanged", RpcTarget.Others, isOn);
     }
+    [PunRPC]
+    public void RPC_OnLoopToggleValueChanged(bool isOn)
+    {
+        musikAudioSource.loop = isOn;
+    }
+
     private void OnVolumeValueChanged(float volume)
     {
         musikAudioSource.volume = volume;
         volumeText.text = $"Volume: {Mathf.RoundToInt(volume * 100)}%";
+
+        photonView.RPC("RPC_OnVolumeValueChanged", RpcTarget.Others, volume);
     }
+    [PunRPC]
+    public void RPC_OnVolumeValueChanged(float volume)
+    {
+        musikAudioSource.volume = volume;
+    }
+
     private void OnTrackTimeValueChanged(float value)
     {
         musikAudioSource.time = value;
         UpdateTrackTime();
+
+        photonView.RPC("RPC_OnTrackTimeValueChanged", RpcTarget.Others, value);
+    }
+    [PunRPC]
+    public void RPC_OnTrackTimeValueChanged(float value)
+    {
+        musikAudioSource.time = value;
     }
 
     //andaern die Reihenfolge von Track

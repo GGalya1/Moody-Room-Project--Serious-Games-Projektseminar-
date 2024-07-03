@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Realtime;
+using Photon.Pun;
 
 public class SongButtonScript : MonoBehaviour
 {
@@ -25,6 +27,8 @@ public class SongButtonScript : MonoBehaviour
     public void PlaySong()
     {
         audioSource.clip = audioClip;
+        PhotonView photonView = musikManager.GetComponent<PhotonView>();
+        photonView.RPC("RPC_SetClip", RpcTarget.Others, audioClip.name);
         songNameAsText.text = songNameOnButton.text;
 
         //leeren unseren Playlist und fuegen alle in der Liste (transform) gefundene Lieder in CurrentPlaylist
@@ -41,7 +45,11 @@ public class SongButtonScript : MonoBehaviour
         musikManager.trackTimeSlider.value = 0;
         audioSource.Play();
         //GetComponentInParent<Image>().color = Color.yellow;
+
+        photonView.RPC("RPC_PlayMusik", RpcTarget.Others);
+        //musikManager.RPC_PlayMusik();
     }
+    
 
     public void PushSongUp()
     {

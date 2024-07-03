@@ -166,7 +166,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !Pause.paused && !AdminPanelScript.adminPanelIsOn && roomSettingManager.chatIsOn)
+        if (ChatCanBeOpened())
         {
             chatTrigger = !chatTrigger;
         }
@@ -191,7 +191,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
                 SubmitPrivateChatOnClick();
             }
         }
-        else if(Pause.paused || AdminPanelScript.adminPanelIsOn)
+        else if(Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -203,6 +203,13 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
             transform.GetChild(0).gameObject.SetActive(false);
         }
         
+    }
+    public bool ChatCanBeOpened()
+    {
+        return Input.GetKeyDown(KeyCode.LeftControl) && //wenn wir versuchen, Chat zu oeffnen
+            !Pause.paused &&
+            !AdminPanelScript.adminPanelIsOn && 
+            roomSettingManager.chatIsOn;
     }
 
     public void TypeChatOnValueChange(string valueIn)
