@@ -10,6 +10,7 @@ public class AdminPanelScript : MonoBehaviour
     [SerializeField] private GameObject panel; //Panel hat keine eigene Klasse, darum GameObjekt
     [SerializeField] private GameObject roomSettingPanel; //Sammlung von allen Objekten, die zu diesem Thema gehoeren
     [SerializeField] private GameObject musikAndSoundPanel;
+    [SerializeField] private GameObject diceRollerPanel;
     [SerializeField] private Slider chairsSlider;
     [SerializeField] private TMP_Text chairsText;
     [SerializeField] private Toggle chatToggle;
@@ -81,6 +82,7 @@ public class AdminPanelScript : MonoBehaviour
         if (panel.activeSelf)
         {
             roomSettingPanel.SetActive(false);
+            diceRollerPanel.SetActive(false);
             musikAndSoundPanel.SetActive(true);
         }
     }
@@ -89,7 +91,17 @@ public class AdminPanelScript : MonoBehaviour
         if (panel.activeSelf)
         {
             musikAndSoundPanel.SetActive(false);
+            diceRollerPanel.SetActive(false);
             roomSettingPanel.SetActive(true);
+        }
+    }
+    public void OpenDiceRoller()
+    {
+        if (panel.activeSelf)
+        {
+            roomSettingPanel.SetActive(false);
+            musikAndSoundPanel.SetActive(false);
+            diceRollerPanel.SetActive(true);
         }
     }
 }
