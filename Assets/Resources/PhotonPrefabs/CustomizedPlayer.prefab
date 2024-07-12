@@ -1053,6 +1053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintSpeed: 6
   smoothTime: 0.15
+  distanceToTheGround: 1
   _camera: {fileID: 8421979582710103124}
   _cameraSensivity: 2
   _movementSpeed: 3

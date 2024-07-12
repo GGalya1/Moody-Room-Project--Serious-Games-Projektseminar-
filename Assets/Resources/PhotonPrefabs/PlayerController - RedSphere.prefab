@@ -863,6 +863,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprintSpeed: 6
   smoothTime: 0.15
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
   _camera: {fileID: 8421979582710103124}
   _cameraSensivity: 2
   _movementSpeed: 3
