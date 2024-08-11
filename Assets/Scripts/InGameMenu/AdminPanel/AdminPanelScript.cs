@@ -10,11 +10,15 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
     [SerializeField] private GameObject panel; //Panel hat keine eigene Klasse, darum GameObjekt
     [SerializeField] private GameObject roomSettingPanel; //Sammlung von allen Objekten, die zu diesem Thema gehoeren
     [SerializeField] private GameObject musikAndSoundPanel;
-    [SerializeField] private GameObject diceRollerPanel;
     [SerializeField] private Slider chairsSlider;
     [SerializeField] private TMP_Text chairsText;
     [SerializeField] private Toggle chatToggle;
     [SerializeField] private Toggle voiceChatToggle;
+    [SerializeField] private Dropdown skyboxDropdown;
+
+    [SerializeField] private Material[] skyboxMaterials;
+    PhotonView photonView;
+    private int selectedSkyboxIndex = 0;
     public static bool adminPanelIsOn;
 
     #region UpdateManager connection
@@ -43,11 +47,22 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         voiceChatToggle.isOn = RoomManager.instance.voicechatIsOn;
         chairsSlider.value = RoomManager.instance.chairsNumber;
 
+        photonView = GetComponent<PhotonView>();
+
         chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
         OnSliderValueChanged(chairsSlider.value);
 
         chatToggle.onValueChanged.AddListener(OnChatToggleValueChanged);
         voiceChatToggle.onValueChanged.AddListener(OnVoiceChatToggleValueChanged);
+
+        //Fuellen Drowdown mit den Werten aus dem Array
+        skyboxDropdown.options.Clear();
+        for (int i = 0; i < skyboxMaterials.Length; i++)
+        {
+            skyboxDropdown.options.Add(new Dropdown.OptionData(skyboxMaterials[i].name));
+        }
+
+        skyboxDropdown.onValueChanged.AddListener(delegate { OnDropdownValueChanged(); });
     }
     public void ObservedUpdate()
     {
@@ -66,7 +81,6 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
             }
             
         }
-
     }
 
     public void OnSliderValueChanged(float value)
@@ -101,7 +115,6 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         if (panel.activeSelf)
         {
             roomSettingPanel.SetActive(false);
-            diceRollerPanel.SetActive(false);
             musikAndSoundPanel.SetActive(true);
         }
     }
@@ -110,17 +123,19 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         if (panel.activeSelf)
         {
             musikAndSoundPanel.SetActive(false);
-            diceRollerPanel.SetActive(false);
             roomSettingPanel.SetActive(true);
         }
     }
-    public void OpenDiceRoller()
+
+    public void OnDropdownValueChanged()
     {
-        if (panel.activeSelf)
-        {
-            roomSettingPanel.SetActive(false);
-            musikAndSoundPanel.SetActive(false);
-            diceRollerPanel.SetActive(true);
-        }
+        selectedSkyboxIndex = skyboxDropdown.value;
+        photonView.RPC("ChangeSkyboxForAll", RpcTarget.AllBuffered, selectedSkyboxIndex);
+    }
+    [PunRPC]
+    void ChangeSkyboxForAll(int index)
+    {
+        RenderSettings.skybox = skyboxMaterials[index];
+        DynamicGI.UpdateEnvironment(); //Update von globalen Beleuchtung
     }
 }

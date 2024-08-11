@@ -27,6 +27,10 @@ public class Launch : MonoBehaviourPunCallbacks
     //fuer korrekte Wiedergabe von bereits in einem Room beigetretenen Leuten
     [SerializeField] private Transform _playerList;
     [SerializeField] private GameObject _playerNamePrefab;
+    [SerializeField] private GameObject _playerNameForAdminPrefab;
+
+    [SerializeField] private Dropdown _sceneSelector;
+    private int indexOfScene = 1;
 
 
     //BAUARBEITEN !!!!!!!!!!!!!!!!!
@@ -86,11 +90,15 @@ public class Launch : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         MenuManager.current.OpenMenu("loading");
 
+        PhotonNetwork.EnableCloseConnection = true;
+
         _chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
         OnSliderValueChanged(_chairsSlider.value);
 
         _chatToggle.onValueChanged.AddListener(OnChatToggleValueChanged);
         _voiceChatToggle.onValueChanged.AddListener(OnVoiceChatToggleValueChanged);
+
+        _sceneSelector.onValueChanged.AddListener(delegate { DropdownItemSelected(_sceneSelector); });
     }
     public void Update()
     {
@@ -154,7 +162,7 @@ public class Launch : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(Mathf.RoundToInt(_toWaitBeforeStart)); // Warte 3 Sekunden
 
         // Hier Starten wir die Szene namens "GameScene", weil sie Index 1 in BuildSettings hat
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(indexOfScene);
     }
 
     public void CreateRoom()
@@ -180,26 +188,36 @@ public class Launch : MonoBehaviourPunCallbacks
             Destroy(_playerList.GetChild(i).gameObject);
         }
 
-
-        for (int i = 0; i < players.Length; i++)
+        //hier muessen wir die Fallunterscheidung treffen. Wenn IsMasterClient - muss Prefab mit dem Knopf zum kicken erstellt werden.
+        if (PhotonNetwork.IsMasterClient)
         {
-            Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(players[i]);
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].IsLocal)
+                {
+                    Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(players[i]);
+                    continue;
+                }
+                Instantiate(_playerNameForAdminPrefab, _playerList).GetComponent<PlayerListItemForAdmin>().SetUp(players[i]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(players[i]);
+            }
         }
 
+
         //falls Speieler "host" ist, wird Knopf zum Start des Spieles visible. Wenn nicht - invisible
-        _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        _chairsSlider.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        _chairsSliderText.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        _chatToggle.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        _voiceChatToggle.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        SetVisibilityOfRoomSettings(PhotonNetwork.IsMasterClient);
     }
 
     //wenn host das Raum verlaest, wird host aktuelisiert
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        _chairsSlider.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        _chairsSliderText.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        SetVisibilityOfRoomSettings(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -250,8 +268,16 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player player)
     {
-        Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(player);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Instantiate(_playerNameForAdminPrefab, _playerList).GetComponent<PlayerListItemForAdmin>().SetUp(player);
+        }
+        else
+        {
+            Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(player);
+        }
     }
+        
 
     public void ExitGame()
     {
@@ -273,5 +299,20 @@ public class Launch : MonoBehaviourPunCallbacks
     private void OnVoiceChatToggleValueChanged(bool isOn)
     {
         RoomManager.instance.voicechatIsOn = isOn;
+    }
+
+    private void DropdownItemSelected(Dropdown dropdown)
+    {
+        indexOfScene = dropdown.value + 1;
+    }
+
+    private void SetVisibilityOfRoomSettings(bool val)
+    {
+        _startGameButton.SetActive(val);
+        _chairsSlider.gameObject.SetActive(val);
+        _chairsSliderText.gameObject.SetActive(val);
+        _chatToggle.gameObject.SetActive(val);
+        _voiceChatToggle.gameObject.SetActive(val);
+        _sceneSelector.gameObject.SetActive(val);
     }
 }

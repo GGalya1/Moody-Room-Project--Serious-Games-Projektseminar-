@@ -207,7 +207,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
                 SubmitPrivateChatOnClick();
             }
         }
-        else if(Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn)
+        else if(Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn || RoleplayPanelScript.roleplayPanelIsOn)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

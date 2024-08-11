@@ -13,7 +13,7 @@ public class RollDice : MonoBehaviour
 
     [SerializeField] TMP_InputField modificatorInputField;
 
-    List<GameObject> dices = new List<GameObject>();
+    public List<GameObject> dices = new List<GameObject>();
     public int sum;
     public int modificator;
     //public int oldModificator;

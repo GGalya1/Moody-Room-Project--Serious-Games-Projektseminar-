@@ -34,7 +34,7 @@ public class UpdateManager : MonoBehaviour
         {
             observer.ObservedUpdate();
         }
-        Debug.Log("Anzahl an Subscribers: " + _observers.Count);
+        //Debug.Log("Anzahl an Subscribers: " + _observers.Count);
     }
 
     public void RegisterObserver(IUpdateObserver observer)

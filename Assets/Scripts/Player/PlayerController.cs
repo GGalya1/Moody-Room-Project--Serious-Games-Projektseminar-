@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     [SerializeField] private Transform _camera;
     [SerializeField] private float _cameraSensivity = 2f;
     [SerializeField] private float _movementSpeed = 4f;
-    [SerializeField] private float _checkJumpRadius = 0.2f;
     [SerializeField] private float _jumpForce = 3f;
     private float _rotationX;
 
@@ -67,29 +66,18 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     }
 
     //Update laeuft jeden Frame und FixedUpdate nur nach bestimmten Zeit
+    //PhysicLoop vs GameLoop googeln
     private void FixedUpdate()
     {
-        //BAUARBEITEN
         if(_photonView.IsMine)
             _rigidbody.MovePosition(_rigidbody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime * ( (Pause.paused || PhotonChatManager.chatTrigger) ? 0 : 1));
-        //BAUARBEITEN
-
-        /*
-        if (_photonView.IsMine)
-        {
-            PlayerMovement();
-        }
-        */
     }
 
-    //BAUARBEITEN
     void Move()
     {
         Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : _movementSpeed), ref smoothMoveVelocity, smoothTime);
     }
-
-    //BAUARBEITEN
 
     public void ObservedUpdate()
     {
@@ -98,29 +86,14 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
                 return;
             }
 
-        /*if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Destroy(RoomManager.instance.gameObject);
-            PhotonNetwork.LeaveRoom();
-            PhotonNetwork.LoadLevel(0);
-        }*/
-
-        //BAUARBEITEN
-
         if (ControlIsNotFrozen())
         {
 
 
             Move();
-            //Jump();
-            //BAUARBEITEN
             RotatePlayerLeftRight();
             RotateCameraUpDown();
 
-            /*if (Input.GetButtonDown("Jump"))
-            {
-                TryJump();
-            }*/
             grounded = Physics.Raycast(transform.position, Vector3.down, distanceToTheGround + 0.1f);
             if(Input.GetButtonDown("Jump") && grounded)
             {
@@ -136,7 +109,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     }
     private bool ControlIsNotFrozen()
     {
-        return !Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn && !DrawingUIManager.whiteboardOn;
+        return !Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn && !DrawingUIManager.whiteboardOn && !RoleplayPanelScript.roleplayPanelIsOn;
     }
 
     private void RotatePlayerLeftRight()

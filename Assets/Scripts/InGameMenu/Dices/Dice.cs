@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Dice : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Dice : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     [SerializeField] private TMP_Text dicedNumber;
     [SerializeField] private TMP_Text typeOfDice;
@@ -35,6 +35,7 @@ public class Dice : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         Reroll();
         RecolorDice(sides);
     }
+
 
     public void Reroll()
     {
@@ -94,5 +95,18 @@ public class Dice : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+            Reroll();
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            rollDice.sum -= number;
+            rollDice.sumOfDices.text = $"Sum: {rollDice.sum}";
+            rollDice.dices.Remove(gameObject);
+            Destroy(gameObject);
+        }
     }
 }

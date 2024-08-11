@@ -783,7 +783,6 @@ MonoBehaviour:
   _camera: {fileID: 8421979582710103124}
   _cameraSensivity: 2
   _movementSpeed: 3
-  _checkJumpRadius: 0.2
   _jumpForce: 7
 --- !u!54 &1223574260208342682
 Rigidbody:
