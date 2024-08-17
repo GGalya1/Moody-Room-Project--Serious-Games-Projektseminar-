@@ -4,8 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
     private PhotonView _photonView;
 
@@ -78,5 +80,18 @@ public class PlayerManager : MonoBehaviour
     {
         PhotonNetwork.Destroy(controller);
         CreateController();
+    }
+
+    // Diese Methode wird aufgerufen, wenn ein anderer Spieler den Raum verlässt
+    //bsp wenn er "kicked" wird und es "CloseConnection" aufgerufen wird
+    /*public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        SceneManager.LoadScene(0);
+    }*/
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        base.OnDisconnected(cause);
+        SceneManager.LoadScene(0);
     }
 }

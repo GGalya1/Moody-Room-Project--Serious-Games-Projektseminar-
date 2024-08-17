@@ -29,21 +29,25 @@ public class RoleplayPanelScript : MonoBehaviour, IUpdateObserver
 
     public void ObservedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt) && !Pause.paused)
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.RoleplayMenu);
+        }
+        /*if (Input.GetKeyDown(KeyCode.LeftAlt) && !Pause.paused)
         {
             roleplayPanelIsOn = !roleplayPanelIsOn;
             panel.gameObject.SetActive(roleplayPanelIsOn);
-            Cursor.visible = roleplayPanelIsOn;
+            //Cursor.visible = roleplayPanelIsOn;
             if (roleplayPanelIsOn)
             {
-                Cursor.lockState = CursorLockMode.None;
+                //Cursor.lockState = CursorLockMode.None;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Confined;
+                //Cursor.lockState = CursorLockMode.Confined;
             }
 
-        }
+        }*/
     }
 
     public void OpenDiceRoller()

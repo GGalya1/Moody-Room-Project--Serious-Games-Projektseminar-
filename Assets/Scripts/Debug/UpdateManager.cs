@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UpdateManager : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class UpdateManager : MonoBehaviour
         {
             observer.ObservedUpdate();
         }
-        //Debug.Log("Anzahl an Subscribers: " + _observers.Count);
+        //CursorManager.OnCursorVisibilityChange?.Invoke(CheckConditionsForCursor());
     }
 
     public void RegisterObserver(IUpdateObserver observer)
@@ -52,5 +53,11 @@ public class UpdateManager : MonoBehaviour
     public void OnDestroy()
     {
         _observers.Clear();
+    }
+
+    private bool CheckConditionsForCursor()
+    {
+        return Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn || RoleplayPanelScript.roleplayPanelIsOn || PhotonChatManager.chatTrigger ||
+            SceneManager.GetActiveScene().buildIndex == 0;
     }
 }

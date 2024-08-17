@@ -86,7 +86,8 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
                 return;
             }
 
-        if (ControlIsNotFrozen())
+        //if (ControlIsNotFrozen())
+        if(IngameMenuManager.GetCurrentMenu() == MenuType.None)
         {
 
 

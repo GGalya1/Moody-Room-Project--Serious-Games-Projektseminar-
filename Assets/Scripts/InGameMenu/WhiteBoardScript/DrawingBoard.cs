@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Photon.Pun;
 
 public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
@@ -13,8 +14,11 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     Vector2 previousPosition;
 
+    PhotonView _photonView;
+
     void Start()
     {
+        _photonView = GetComponent<PhotonView>();
         rectTransform = GetComponent<RectTransform>();
         texture = new Texture2D((int)rectTransform.rect.width, (int)rectTransform.rect.height, TextureFormat.RGBA32, false);
         texture.filterMode = FilterMode.Point;
@@ -25,11 +29,7 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void ClearTexture()
     {
-        Color32[] colors = new Color32[texture.width * texture.height];
-        for (int i = 0; i < colors.Length; i++)
-            colors[i] = Color.white;
-        texture.SetPixels32(colors);
-        texture.Apply();
+        _photonView.RPC("ClearTextureForAll", RpcTarget.All);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -57,16 +57,9 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         int x = (int)(localPosition.x + rectTransform.rect.width / 2);
         int y = (int)(localPosition.y + rectTransform.rect.height / 2);
 
-        for (int i = -Mathf.CeilToInt(brushSize / 2); i < Mathf.CeilToInt(brushSize / 2); i++)
-        {
-            for (int j = -Mathf.CeilToInt(brushSize / 2); j < Mathf.CeilToInt(brushSize / 2); j++)
-            {
-                texture.SetPixel(x + i, y + j, brushColor);
-            }
-        }
-
-        texture.Apply();
+        _photonView.RPC("DrawForEveryone", RpcTarget.All, x, y, brushSize);
     }
+
     /*void Draw(Vector2 screenPosition)
     {
         Vector2 localPosition;
@@ -113,12 +106,50 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void SetBrushColor(Color color)
     {
-        brushColor = color;
+        // Zerlege die Farbe in RGB-Komponenten, damit die Farbe durch RPC uebertragen werden koennte
+        int r = Mathf.FloorToInt(color.r * 255);
+        int g = Mathf.FloorToInt(color.g * 255);
+        int b = Mathf.FloorToInt(color.b * 255);
+
+        _photonView.RPC("SetBrushColorForAll", RpcTarget.All, r, g, b);
     }
 
     public void Erase()
     {
         SetBrushColor(Color.white);
+        _photonView.RPC("SetBrushColorForAll", RpcTarget.All, 255, 255, 255);
     }
+    #region PunRPC section
+
+    [PunRPC]
+    void DrawForEveryone(int x, int y, float brushSize)
+    {
+
+        for (int i = -Mathf.CeilToInt(brushSize / 2); i < Mathf.CeilToInt(brushSize / 2); i++)
+        {
+            for (int j = -Mathf.CeilToInt(brushSize / 2); j < Mathf.CeilToInt(brushSize / 2); j++)
+            {
+                texture.SetPixel(x + i, y + j, brushColor);
+            }
+        }
+        texture.Apply();
+    }
+
+    [PunRPC]
+    public void SetBrushColorForAll(int r, int g, int b)
+    {
+        brushColor = new Color(r / 255f, g / 255f, b / 255f);
+    }
+
+    [PunRPC]
+    public void ClearTextureForAll()
+    {
+        Color32[] colors = new Color32[texture.width * texture.height];
+        for (int i = 0; i < colors.Length; i++)
+            colors[i] = Color.white;
+        texture.SetPixels32(colors);
+        texture.Apply();
+    }
+    #endregion
 }
 

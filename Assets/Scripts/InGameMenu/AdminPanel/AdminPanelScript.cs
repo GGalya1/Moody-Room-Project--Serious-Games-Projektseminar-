@@ -10,6 +10,7 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
     [SerializeField] private GameObject panel; //Panel hat keine eigene Klasse, darum GameObjekt
     [SerializeField] private GameObject roomSettingPanel; //Sammlung von allen Objekten, die zu diesem Thema gehoeren
     [SerializeField] private GameObject musikAndSoundPanel;
+    [SerializeField] private GameObject playerListPanel;
     [SerializeField] private Slider chairsSlider;
     [SerializeField] private TMP_Text chairsText;
     [SerializeField] private Toggle chatToggle;
@@ -22,10 +23,7 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
     public static bool adminPanelIsOn;
 
     #region UpdateManager connection
-    private void Awake()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
+
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
@@ -66,21 +64,25 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
     }
     public void ObservedUpdate()
     {
-        if(PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.RightControl) && !Pause.paused)
+        if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.RightControl))
+        {
+            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.AdminMenu);
+        }
+        /*if(PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.RightControl) && !Pause.paused)
         {
             adminPanelIsOn = !adminPanelIsOn;
             panel.gameObject.SetActive(adminPanelIsOn);
-            Cursor.visible = adminPanelIsOn;
+            //Cursor.visible = adminPanelIsOn;
             if (adminPanelIsOn)
             {
-                Cursor.lockState = CursorLockMode.None;
+                //Cursor.lockState = CursorLockMode.None;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Confined;
+                //Cursor.lockState = CursorLockMode.Confined;
             }
             
-        }
+        }*/
     }
 
     public void OnSliderValueChanged(float value)
@@ -115,6 +117,7 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         if (panel.activeSelf)
         {
             roomSettingPanel.SetActive(false);
+            playerListPanel.SetActive(false);
             musikAndSoundPanel.SetActive(true);
         }
     }
@@ -123,7 +126,17 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         if (panel.activeSelf)
         {
             musikAndSoundPanel.SetActive(false);
+            playerListPanel.SetActive(false);
             roomSettingPanel.SetActive(true);
+        }
+    }
+    public void OpenPlayerList()
+    {
+        if (panel.activeSelf)
+        {
+            musikAndSoundPanel.SetActive(false);
+            roomSettingPanel.SetActive(false);
+            playerListPanel.SetActive(true);
         }
     }
 

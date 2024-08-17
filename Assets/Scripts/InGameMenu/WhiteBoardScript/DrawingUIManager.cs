@@ -76,7 +76,11 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
 
     public void ObservedUpdate()
     {
-        if (whiteboardCanBeOpened())
+        if (Input.GetKeyDown(KeyCode.RightAlt))
+        {
+            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.WhiteBoardMenu);
+        }
+        /*if (whiteboardCanBeOpened())
         {
             whiteboardOn = !whiteboardOn;
         }
@@ -84,10 +88,9 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
         {
             container.SetActive(true);
         }
-        else
-        {
+        else { 
             container.SetActive(false);
-        }
+        }*/
         //hier gibt es kein "else"-Block, weil das ganze Umgehen mit Cursor und "visible"/ "not visible" 
         //in PhotonChatManager realisiert ist
     }

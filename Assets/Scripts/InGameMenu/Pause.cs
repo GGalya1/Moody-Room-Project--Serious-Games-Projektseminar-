@@ -12,10 +12,6 @@ public class Pause : MonoBehaviour, IUpdateObserver
     private bool disconnecting = false;
 
     #region UpdateManager connection
-    private void Awake()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
@@ -41,12 +37,15 @@ public class Pause : MonoBehaviour, IUpdateObserver
 
     public void Resume()
     {
-        paused = !paused;
+        IngameMenuManager.OnMenuRequest?.Invoke(MenuType.PauseMenu);
+        /*paused = !paused;
+        
         //canvasGroup.alpha = 0;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+        CursorManager.OnCursorVisibilityChange?.Invoke(false);
         
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(0).gameObject.SetActive(false);*/
     }
 
     public void Quit()
@@ -75,20 +74,28 @@ public class Pause : MonoBehaviour, IUpdateObserver
     public void ObservedUpdate()
     {
         if (disconnecting) return;
-        if (Input.GetKeyDown(KeyCode.Escape) && !PhotonChatManager.chatTrigger && !PlayerBoard.playerBoardIsOn)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.PauseMenu);
+        }
+        /*if (Input.GetKeyDown(KeyCode.Escape) && !PhotonChatManager.chatTrigger && !PlayerBoard.playerBoardIsOn)
             paused = !paused;
 
         if (paused)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+
+            
+            
             transform.GetChild(0).gameObject.SetActive(true);
         }
         else
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
+            
             transform.GetChild(0).gameObject.SetActive(false);
-        }
+        }*/
     }
 }

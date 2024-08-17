@@ -84,13 +84,12 @@ public class Launch : MonoBehaviourPunCallbacks
     private void Start()
     {
         instance = this;
-
+        //damit man Spielern aus dem Server "kicken" kann
+        PhotonNetwork.EnableCloseConnection = true;
         Debug.Log("Connected to the server");
         //wird zu eu-Region eine Konnektion erstellen (weil so Photon-Objekt konfiguriert ist. Kann man aendern)
         PhotonNetwork.ConnectUsingSettings();
         MenuManager.current.OpenMenu("loading");
-
-        PhotonNetwork.EnableCloseConnection = true;
 
         _chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
         OnSliderValueChanged(_chairsSlider.value);

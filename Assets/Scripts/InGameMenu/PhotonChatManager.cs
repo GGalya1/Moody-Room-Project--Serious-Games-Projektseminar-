@@ -182,13 +182,33 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     // Update is called once per frame
     public void ObservedUpdate()
     {
-        if (ChatCanBeOpened())
+        if (Input.GetKeyDown(KeyCode.LeftControl) && roomSettingManager.chatIsOn)
+        {
+            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.ChatMenu);
+
+            if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
+            {
+                UpdatePlayerList();
+                oldListOfPlayers = (Player[])PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
+            }
+
+
+            if (isConnected)
+                chatClient.Service();
+
+            if (chatField.text != "" && Input.GetKey(KeyCode.Return))
+            {
+                SubmitPublicChatOnClick();
+                SubmitPrivateChatOnClick();
+            }
+        }
+        /*if (ChatCanBeOpened())
         {
             chatTrigger = !chatTrigger;
         }
         if (chatTrigger)
         {
-            Cursor.visible = true;
+            //Cursor.visible = true;
             transform.GetChild(0).gameObject.SetActive(true);
 
             if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
@@ -207,17 +227,19 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
                 SubmitPrivateChatOnClick();
             }
         }
-        else if(Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn || RoleplayPanelScript.roleplayPanelIsOn)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
         else
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
-            transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(0).gameObject.SetActive(false);
         }
+        */
+        /*else if(Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn || RoleplayPanelScript.roleplayPanelIsOn)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }*/
+        
         
     }
     public bool ChatCanBeOpened()
