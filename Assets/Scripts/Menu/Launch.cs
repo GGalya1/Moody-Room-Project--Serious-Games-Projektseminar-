@@ -11,7 +11,8 @@ using UnityEngine.UI;
 public class Launch : MonoBehaviourPunCallbacks
 {
     //wieder singelton, damit die Funktion "JoinRoom" von aussen erreichbar ist
-    public static Launch instance;
+    public static Launch instance;    
+
 
     //hier speichern wir Name von Room, das in InputField eingegeben war
     [SerializeField] private TMP_InputField _roomInputField;
@@ -32,10 +33,13 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private Dropdown _sceneSelector;
     private int indexOfScene = 1;
 
+    [SerializeField] private GameObject defaultAvatar;
+    [SerializeField] private GameObject smallAvatar;
+    [SerializeField] private GameObject customizedAvatar;
 
-    //BAUARBEITEN !!!!!!!!!!!!!!!!!
+
     //PROBE: Wahlen von Player Model
-    public string playerModel = "PlayerController";
+    /*public string playerModel = "PlayerController";
     public void selectRedSphereAvatar()
     {
         playerModel = "PlayerController - RedSphere";
@@ -47,8 +51,28 @@ public class Launch : MonoBehaviourPunCallbacks
     public void selectCustomizedAvatar()
     {
         playerModel = "CustomizedPlayer";
+    }*/
+    //In Start wird default Wert gesetzt
+    public string playerModel;
+    public void SelectAvatar(int avatarTypeIndex)
+    {
+        AvatarType avatarType = (AvatarType)avatarTypeIndex;
+        switch (avatarType)
+        {
+            case AvatarType.Default:
+                playerModel = defaultAvatar.name;
+                break;
+            case AvatarType.Small:
+                playerModel = smallAvatar.name;
+                break;
+            case AvatarType.Customizable:
+                playerModel = customizedAvatar.name;
+                break;
+            default:
+                Debug.LogError("Unknown avatar type selected");
+                break;
+        }
     }
-    //BAUARBEITEN !!!!!!!!!!!!!!!!!
 
 
     [SerializeField] private GameObject _startGameButton;
@@ -90,6 +114,8 @@ public class Launch : MonoBehaviourPunCallbacks
         //wird zu eu-Region eine Konnektion erstellen (weil so Photon-Objekt konfiguriert ist. Kann man aendern)
         PhotonNetwork.ConnectUsingSettings();
         MenuManager.current.OpenMenu("loading");
+
+        playerModel = defaultAvatar.name;
 
         _chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
         OnSliderValueChanged(_chairsSlider.value);
@@ -314,4 +340,13 @@ public class Launch : MonoBehaviourPunCallbacks
         _voiceChatToggle.gameObject.SetActive(val);
         _sceneSelector.gameObject.SetActive(val);
     }
+
+
+}
+
+public enum AvatarType
+{
+    Default,
+    Small,
+    Customizable
 }

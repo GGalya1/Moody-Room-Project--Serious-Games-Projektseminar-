@@ -1,43 +1,4 @@
-﻿/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class SelectHatColor : MonoBehaviour
-{
-    public float redAmount;
-    public float greenAmount;
-    public float blueAmount;
-
-    private Color currentHatColor;
-
-    public Slider redSlider;
-    public Slider greenSlider;
-    public Slider blueSlider;
-
-    //bekommen Zugrif zu Material von Hat und danach wechseln die Farbe
-    public List<SkinnedMeshRenderer> renderList = new List<SkinnedMeshRenderer>();
-
-    public void UpdateSlieders()
-    {
-        redAmount = redSlider.value;
-        greenAmount = greenSlider.value;
-        blueAmount = blueSlider.value;
-        SetHairColor();
-    }
-
-    public void SetHairColor()
-    {
-        currentHatColor = new Color(redAmount, greenAmount, blueAmount);
-
-        for (int i = 0; i < renderList.Count; i++) {
-            renderList[i].material.SetColor("_Color", currentHatColor);
-        }
-    }
-}*/
-
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectHatColor : MonoBehaviour

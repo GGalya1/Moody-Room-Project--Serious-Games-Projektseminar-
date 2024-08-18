@@ -37,7 +37,6 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
     public float brushMaxSize = 40.0f;
     public float brushMinSize = 5.0f;
 
-    public static bool whiteboardOn = false;
     [SerializeField] private GameObject container;
 
     #region UpdateManager connection
@@ -80,25 +79,6 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
         {
             IngameMenuManager.OnMenuRequest?.Invoke(MenuType.WhiteBoardMenu);
         }
-        /*if (whiteboardCanBeOpened())
-        {
-            whiteboardOn = !whiteboardOn;
-        }
-        if (whiteboardOn)
-        {
-            container.SetActive(true);
-        }
-        else { 
-            container.SetActive(false);
-        }*/
-        //hier gibt es kein "else"-Block, weil das ganze Umgehen mit Cursor und "visible"/ "not visible" 
-        //in PhotonChatManager realisiert ist
-    }
-    private bool whiteboardCanBeOpened()
-    {
-        return !Pause.paused &&
-            !AdminPanelScript.adminPanelIsOn &&
-            Input.GetKeyDown(KeyCode.RightAlt);
     }
 
     void ChangeBrushSize(float newSize)

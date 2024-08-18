@@ -12,6 +12,7 @@ public class IngameMenuManager : MonoBehaviour
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _roleplayMenu;
     [SerializeField] private GameObject _chatMenu;
+    [SerializeField] private GameObject _playerlistMenu;
 
     private void OnEnable()
     {
@@ -65,6 +66,10 @@ public class IngameMenuManager : MonoBehaviour
         {
             _whiteboardMenu.SetActive(true);
         }
+        else if (requestedMenu == MenuType.PlayerlistMenu)
+        {
+            _playerlistMenu.SetActive(true);
+        }
     }
 
     //schliest Menu
@@ -91,6 +96,10 @@ public class IngameMenuManager : MonoBehaviour
         {
             _whiteboardMenu.SetActive(false);
         }
+        else if (requestedMenu == MenuType.PlayerlistMenu)
+        {
+            _playerlistMenu.SetActive(false);
+        }
     }
 
     public static MenuType GetCurrentMenu()
@@ -107,5 +116,6 @@ public enum MenuType
     WhiteBoardMenu,
     PauseMenu,
     RoleplayMenu,
-    ChatMenu
+    ChatMenu,
+    PlayerlistMenu
 }

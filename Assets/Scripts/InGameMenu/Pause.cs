@@ -1,14 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour, IUpdateObserver
 {
-    //[SerializeField] CanvasGroup canvasGroup;
-
-    public static bool paused = false;
     private bool disconnecting = false;
 
     #region UpdateManager connection
@@ -26,26 +22,9 @@ public class Pause : MonoBehaviour, IUpdateObserver
     }
     #endregion
 
-    /*public void TogglePause()
-    {
-        if (disconnecting) return;
-        paused = !paused;
-
-        //transform.GetChild(0).gameObject.SetActive(paused);
-        Cursor.lockState = (paused) ? CursorLockMode.None : CursorLockMode.Confined;
-    }*/
-
     public void Resume()
     {
         IngameMenuManager.OnMenuRequest?.Invoke(MenuType.PauseMenu);
-        /*paused = !paused;
-        
-        //canvasGroup.alpha = 0;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
-        CursorManager.OnCursorVisibilityChange?.Invoke(false);
-        
-        transform.GetChild(0).gameObject.SetActive(false);*/
     }
 
     public void Quit()
@@ -56,7 +35,6 @@ public class Pause : MonoBehaviour, IUpdateObserver
         Destroy(GameObject.Find("VoiceManager"));
         //PhotonNetwork.LeaveRoom();
         
-        paused = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         
@@ -78,24 +56,5 @@ public class Pause : MonoBehaviour, IUpdateObserver
         {
             IngameMenuManager.OnMenuRequest?.Invoke(MenuType.PauseMenu);
         }
-        /*if (Input.GetKeyDown(KeyCode.Escape) && !PhotonChatManager.chatTrigger && !PlayerBoard.playerBoardIsOn)
-            paused = !paused;
-
-        if (paused)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-
-            
-            
-            transform.GetChild(0).gameObject.SetActive(true);
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
-            
-            transform.GetChild(0).gameObject.SetActive(false);
-        }*/
     }
 }

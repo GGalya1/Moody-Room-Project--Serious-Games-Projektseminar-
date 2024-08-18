@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -20,7 +18,6 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
     [SerializeField] private Material[] skyboxMaterials;
     PhotonView photonView;
     private int selectedSkyboxIndex = 0;
-    public static bool adminPanelIsOn;
 
     #region UpdateManager connection
 
@@ -68,21 +65,6 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         {
             IngameMenuManager.OnMenuRequest?.Invoke(MenuType.AdminMenu);
         }
-        /*if(PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.RightControl) && !Pause.paused)
-        {
-            adminPanelIsOn = !adminPanelIsOn;
-            panel.gameObject.SetActive(adminPanelIsOn);
-            //Cursor.visible = adminPanelIsOn;
-            if (adminPanelIsOn)
-            {
-                //Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                //Cursor.lockState = CursorLockMode.Confined;
-            }
-            
-        }*/
     }
 
     public void OnSliderValueChanged(float value)

@@ -42,12 +42,10 @@ public class CursorManager : MonoBehaviour
         if (isVisible)
         {
             Cursor.lockState = CursorLockMode.None; // Entsperrt den Cursor
-            Debug.Log("Cursor visibility: " + Cursor.visible + "  Cursor lock: " + Cursor.lockState);
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked; // Sperrt den Cursor
-            Debug.Log("Cursor visibility: " + Cursor.visible + "  Cursor lock: " + Cursor.lockState);
         }
     }
 }

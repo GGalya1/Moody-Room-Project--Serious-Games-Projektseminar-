@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CharacterMainMenuPreviewSelection : MonoBehaviour
 {
     public GameObject[] characters;
+    public GameObject[] charactersInEditingMenu;
     public Slider angleSlider;
     private int currCharIndex = 0;
 
@@ -15,6 +16,7 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
         for (int i = 0; i < characters.Length; i++)
         {
             characters[i].SetActive(i == currCharIndex);
+            charactersInEditingMenu[i].SetActive(i == currCharIndex);
         }
 
         //Ab dem Punkt werden alle Veraenderungen von Slider ubernohmen
@@ -44,10 +46,13 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
         //alten Character verbergen
         angleSlider.value = 190;
         characters[currCharIndex].SetActive(false);
+        charactersInEditingMenu[currCharIndex].SetActive(false);
 
         //neu gewaehlten zeigen
         currCharIndex = index;
         characters[currCharIndex].SetActive(true);
+        charactersInEditingMenu[currCharIndex].SetActive(true);
+
 
         //set Angle von Slider to default (bei uns ist das 190)
         angleSlider.value = 190;

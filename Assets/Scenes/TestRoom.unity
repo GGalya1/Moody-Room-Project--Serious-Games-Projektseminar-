@@ -16587,6 +16587,7 @@ MonoBehaviour:
   _pauseMenu: {fileID: 1512098630}
   _roleplayMenu: {fileID: 124567309}
   _chatMenu: {fileID: 1761726230}
+  _playerlistMenu: {fileID: 0}
 --- !u!1 &1630776148
 GameObject:
   m_ObjectHideFlags: 0

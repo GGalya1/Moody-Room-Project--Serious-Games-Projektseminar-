@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -17,11 +16,6 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
     private int _eyeNumber = 0;
     private int _bodyNumber = 0;
     private int _clothesNumber = 0;
-
-    private Color _hatColor;
-    private Color _eyesColor;
-    private Color _bodyColor;
-    private Color _clothesColor;
 
     private float _redHatColor = 100;
     private float _greenHatColor = 37;
@@ -46,9 +40,9 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         redSlider.onValueChanged.AddListener(UpdateColor);
         greenSlider.onValueChanged.AddListener(UpdateColor);
         blueSlider.onValueChanged.AddListener(UpdateColor);
-        redSlider.value = _redHatColor;
-        greenSlider.value = _greenHatColor;
-        blueSlider.value = _blueHatColor;
+        redSlider.value = _redHatColor / 255f;
+        greenSlider.value = _greenHatColor / 255f;
+        blueSlider.value = _blueHatColor / 255f;
     }
 
     #region UpdateManager connection
@@ -78,6 +72,8 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         float red = redSlider.value;
         float green = greenSlider.value;
         float blue = blueSlider.value;
+
+        SaveHatSelection();
 
         //erstellt eine neue Farbe basierend auf diesen (da diese Methode aufgerufen wird jedes Mal, wenn wir Slider aendern)
         Color newColor = new Color(red, green, blue);

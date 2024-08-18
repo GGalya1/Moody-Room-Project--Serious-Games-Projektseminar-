@@ -75,12 +75,12 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IUpdateObserver
 
     public void ObservedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && !Pause.paused)
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             playerBoardIsOn = true;
             canvasGroup.alpha = 1;
         }
-        else if (Input.GetKeyUp(KeyCode.Tab) && !Pause.paused)
+        else if (Input.GetKeyUp(KeyCode.Tab))
         {
             playerBoardIsOn = false;
             canvasGroup.alpha = 0;

@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     private void FixedUpdate()
     {
         if(_photonView.IsMine)
-            _rigidbody.MovePosition(_rigidbody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime * ( (Pause.paused || PhotonChatManager.chatTrigger) ? 0 : 1));
+            _rigidbody.MovePosition(_rigidbody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
     void Move()
@@ -86,7 +86,6 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
                 return;
             }
 
-        //if (ControlIsNotFrozen())
         if(IngameMenuManager.GetCurrentMenu() == MenuType.None)
         {
 
@@ -107,10 +106,6 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             {
                 Respawn();
             }
-    }
-    private bool ControlIsNotFrozen()
-    {
-        return !Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn && !DrawingUIManager.whiteboardOn && !RoleplayPanelScript.roleplayPanelIsOn;
     }
 
     private void RotatePlayerLeftRight()
