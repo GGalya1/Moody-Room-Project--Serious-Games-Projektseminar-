@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Transform spawnpoint = SpawnManagerScript.instance.GetSpawnpoint();
 
         string whichPlayer = Launch.instance.playerModel;
+        //Debug.LogError(whichPlayer);
         if (whichPlayer == "PlayerController - RedSphere" || whichPlayer == "PlayerController")
         {
             controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", Launch.instance.playerModel), spawnpoint.position, spawnpoint.rotation, 0, new object[] { _photonView.ViewID });

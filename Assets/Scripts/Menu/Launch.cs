@@ -33,9 +33,9 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private Dropdown _sceneSelector;
     private int indexOfScene = 1;
 
-    [SerializeField] private GameObject defaultAvatar;
-    [SerializeField] private GameObject smallAvatar;
-    [SerializeField] private GameObject customizedAvatar;
+    [SerializeField] public GameObject defaultAvatar;
+    [SerializeField] public GameObject smallAvatar;
+    [SerializeField] public GameObject customizedAvatar;
 
 
     //PROBE: Wahlen von Player Model
@@ -83,6 +83,7 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text _countdownText;
     private bool _startCountdown;
     private float _toWaitBeforeStart = 3.0f;
+    [SerializeField] private Button _leaveRoomButton;
 
 
     /*#region UpdateManager connection
@@ -172,11 +173,7 @@ public class Launch : MonoBehaviourPunCallbacks
 
         //da man alle Einstellungen fuer Zimmer OnClick() uebernimmt, sollen wir die Moeglichkeit ausschalten,
         //diese Einstellungen nach dem Klick zu aendern (um die Frustrationserfahrung zu vermeiden)
-        _startGameButton.gameObject.SetActive(false);
-        _chairsSlider.gameObject.SetActive(false);
-        _chairsSliderText.gameObject.SetActive(false);
-        _chatToggle.gameObject.SetActive(false);
-        _voiceChatToggle.gameObject.SetActive(false);
+        DisableAllInteractableObjects();
 
         _countdownText.gameObject.SetActive(true);
         _startCountdown = true;
@@ -188,6 +185,24 @@ public class Launch : MonoBehaviourPunCallbacks
 
         // Hier Starten wir die Szene namens "GameScene", weil sie Index 1 in BuildSettings hat
         PhotonNetwork.LoadLevel(indexOfScene);
+    }
+    private void DisableAllInteractableObjects()
+    {
+        _startGameButton.gameObject.SetActive(false);
+        _chairsSlider.gameObject.SetActive(false);
+        _chairsSliderText.gameObject.SetActive(false);
+        _chatToggle.gameObject.SetActive(false);
+        _voiceChatToggle.gameObject.SetActive(false);
+        _sceneSelector.gameObject.SetActive(false);
+        _leaveRoomButton.gameObject.SetActive(false);
+        foreach (Transform item in _playerList)
+        {
+            Button temp = item.gameObject.GetComponentInChildren<Button>();
+            if (temp != null)
+            {
+                temp.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void CreateRoom()
