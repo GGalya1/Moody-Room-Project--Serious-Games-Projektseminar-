@@ -23,18 +23,22 @@ public class FpsCounter : MonoBehaviour, IUpdateObserver
     private void Awake()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("FPSCounter");
     }
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("FPSCounter");
     }
     private void OnDisable()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("FPSCounter");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("FPSCounter");
     }
     #endregion
 

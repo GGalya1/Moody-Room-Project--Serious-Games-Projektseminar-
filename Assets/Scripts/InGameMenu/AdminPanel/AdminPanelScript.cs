@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 
-public class AdminPanelScript : MonoBehaviour, IUpdateObserver
+public class AdminPanelScript : MonoBehaviour
 {
     [SerializeField] private GameObject panel; //Panel hat keine eigene Klasse, darum GameObjekt
     [SerializeField] private GameObject roomSettingPanel; //Sammlung von allen Objekten, die zu diesem Thema gehoeren
@@ -18,22 +18,6 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
     [SerializeField] private Material[] skyboxMaterials;
     PhotonView photonView;
     private int selectedSkyboxIndex = 0;
-
-    #region UpdateManager connection
-
-    private void OnEnable()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    private void OnDisable()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion
 
     public void Start()
     {
@@ -58,13 +42,6 @@ public class AdminPanelScript : MonoBehaviour, IUpdateObserver
         }
 
         skyboxDropdown.onValueChanged.AddListener(delegate { OnDropdownValueChanged(); });
-    }
-    public void ObservedUpdate()
-    {
-        if (PhotonNetwork.IsMasterClient && Input.GetKeyDown(KeyCode.RightControl))
-        {
-            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.AdminMenu);
-        }
     }
 
     public void OnSliderValueChanged(float value)

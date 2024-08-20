@@ -23,6 +23,26 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         if (_photonView.IsMine)
         {
             CreateController();
+
+            if (controller != null)
+            {
+                //damit man eigenes Model nicht sieht (hier bekommt man eine Liste von allen Objekten + PlayerAvatar selbst)
+                MeshRenderer[] renderers = controller.GetComponentsInChildren<MeshRenderer>(true);
+
+                //Deaktivieren MeshRenderer von Aktiven Objekten (weil nur aktive Objekten unserer Avatar reprasentieren)
+                foreach (MeshRenderer renderer in renderers)
+                {
+                    if (renderer.gameObject.activeInHierarchy)
+                    {
+                        renderer.enabled = false;
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Kein Kontroller gefunden! MeshRender wird nicht deaktiviert");
+            }
+            
         }
     }
 

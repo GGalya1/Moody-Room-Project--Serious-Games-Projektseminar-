@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Billboard : MonoBehaviour, IUpdateObserver
@@ -11,18 +9,22 @@ public class Billboard : MonoBehaviour, IUpdateObserver
     private void Awake()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("Billboard");
     }
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("Billboard");
     }
     private void OnDisable()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("Billboard");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("Billboard");
     }
     #endregion
 

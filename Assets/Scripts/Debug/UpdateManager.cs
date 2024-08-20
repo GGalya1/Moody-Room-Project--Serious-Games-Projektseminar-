@@ -26,6 +26,16 @@ public class UpdateManager : MonoBehaviour
 
 
     private static List<IUpdateObserver> _observers = new List<IUpdateObserver>();
+    private static List<string> _observersNames = new List<string>();
+    public void RegisterObserverName(string name)
+    {
+        _observersNames.Add(name);
+    }
+    public void UnregisterOberverName(string name)
+    {
+        _observersNames.Remove(name);
+    }
+
 
     private void Update()
     {
@@ -33,6 +43,12 @@ public class UpdateManager : MonoBehaviour
         {
             observer.ObservedUpdate();
         }
+        string res = "Observers(" + _observers.Count + "): ";
+        foreach (string oberver in _observersNames)
+        {
+            res += oberver + " ";
+        }
+        //Debug.Log(res);
     }
 
     public void RegisterObserver(IUpdateObserver observer)

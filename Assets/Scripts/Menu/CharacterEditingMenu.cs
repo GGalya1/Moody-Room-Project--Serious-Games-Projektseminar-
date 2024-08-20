@@ -5,7 +5,7 @@ using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
 
-public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
+public class CharacterEditingMenu : MonoBehaviour
 {
     [SerializeField] TMP_Text hatNumberTxt;
     [SerializeField] TMP_Text eyeNumberTxt;
@@ -41,8 +41,6 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
 
     private void Awake()
     {
-        UpdateManager.Instance.RegisterObserver(this);
-
         UpdateText();
         redSlider.onValueChanged.AddListener(UpdateColor);
         greenSlider.onValueChanged.AddListener(UpdateColor);
@@ -81,11 +79,8 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
 
     }
 
-    #region UpdateManager connection
     private void OnEnable()
     {
-        UpdateManager.Instance.RegisterObserver(this);
-
         //loeschen von alten Werten (zur Sichercheit) und schreiben von aktuellen Werten aus PlayerPropertiess
         //und alle nicht gespeicherte Veraenderungen in diesem Menu werden hier gespeichert
         currentCustomize = new Hashtable();
@@ -118,16 +113,9 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
     }
     private void OnDisable()
     {
-        UpdateManager.Instance.UnregisterObserver(this);
-
         //loeschen von allen gespeicherten Veraenderungen
         currentCustomize = new Hashtable();
     }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion
 
     private void UpdateColor(float value)
     {
@@ -189,14 +177,7 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         {
             list[i].SetActive(i == selectedIndex);
         }
-    }
-
-    public void ObservedUpdate()
-    {
-        UpdateSelection(_hatsList, _hatNumber);
-        UpdateSelection(_eyesList, _eyeNumber);
-        UpdateSelection(_clothesList, _clothesNumber);
-        UpdateSelection(_bodiesList, _bodyNumber);
+        UpdateText();
     }
 
     public void nextHat()
@@ -205,8 +186,8 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         _hatNumber = (_hatNumber + 1) % _hatsList.Count;
         currentHatRenderer = _hatsList[_hatNumber].GetComponent<Renderer>();
         SaveLocalHatSelection();
-        UpdateText();
         UpdateSlidersWithHatsValue(_hatNumber);
+        UpdateSelection(_hatsList, _hatNumber);
     }
     public void prevHat()
     {
@@ -221,8 +202,8 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         }
         currentHatRenderer = _hatsList[_hatNumber].GetComponent<Renderer>();
         SaveLocalHatSelection();
-        UpdateText();
         UpdateSlidersWithHatsValue(_hatNumber);
+        UpdateSelection(_hatsList, _hatNumber);
     }
 
     public void nextEye()
@@ -230,7 +211,7 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         if (_eyesList.Count == 0) return;
         _eyeNumber = (_eyeNumber + 1) % _eyesList.Count;
         SaveLocalHatSelection();
-        UpdateText();
+        UpdateSelection(_eyesList, _eyeNumber);
     }
     public void prevEye()
     {
@@ -244,14 +225,14 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
             _eyeNumber--;
         }
         SaveLocalHatSelection();
-        UpdateText();
+        UpdateSelection(_eyesList, _eyeNumber);
     }
     public void nextClothes()
     {
         if (_clothesList.Count == 0) return;
         _clothesNumber = (_clothesNumber + 1) % _clothesList.Count;
         SaveLocalHatSelection();
-        UpdateText();
+        UpdateSelection(_clothesList, _clothesNumber);
     }
     public void prevClothes()
     {
@@ -265,7 +246,7 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
             _clothesNumber--;
         }
         SaveLocalHatSelection();
-        UpdateText();
+        UpdateSelection(_clothesList, _clothesNumber);
     }
 
 

@@ -5,13 +5,12 @@ using Photon.Realtime;
 using Photon.Pun;
 using TMPro;
 
-public class PlayerBoard : MonoBehaviourPunCallbacks, IUpdateObserver
+public class PlayerBoard : MonoBehaviourPunCallbacks
 {
     [SerializeField] Transform container;
     [SerializeField] GameObject playerboardItemPrefab;
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] TMP_Text roomName;
-    public static bool playerBoardIsOn = false;
 
     Dictionary<Player, PlayerBoardItem> boardItems = new Dictionary<Player, PlayerBoardItem>();
 
@@ -23,25 +22,6 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IUpdateObserver
             AddBoardItem(player);
         }
     }
-
-    #region UpdateManager connection
-    private void Awake()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    public override void OnEnable()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    public override void OnDisable()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion
 
     void AddBoardItem(Player player)
     {
@@ -71,19 +51,5 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IUpdateObserver
     {
         Destroy(boardItems[player].gameObject);
         boardItems.Remove(player);
-    }
-
-    public void ObservedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            playerBoardIsOn = true;
-            canvasGroup.alpha = 1;
-        }
-        else if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            playerBoardIsOn = false;
-            canvasGroup.alpha = 0;
-        }
     }
 }

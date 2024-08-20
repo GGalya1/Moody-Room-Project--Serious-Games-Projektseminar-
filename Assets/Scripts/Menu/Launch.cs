@@ -37,22 +37,6 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] public GameObject smallAvatar;
     [SerializeField] public GameObject customizedAvatar;
 
-
-    //PROBE: Wahlen von Player Model
-    /*public string playerModel = "PlayerController";
-    public void selectRedSphereAvatar()
-    {
-        playerModel = "PlayerController - RedSphere";
-    }
-    public void selectDefaultAvatar()
-    {
-        playerModel = "PlayerController";
-    }
-    public void selectCustomizedAvatar()
-    {
-        playerModel = "CustomizedPlayer";
-    }*/
-    //In Start wird default Wert gesetzt
     public string playerModel;
     public void SelectAvatar(int avatarTypeIndex)
     {
@@ -81,29 +65,8 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private Toggle _chatToggle;
     [SerializeField] private Toggle _voiceChatToggle;
     [SerializeField] private TMP_Text _countdownText;
-    private bool _startCountdown;
     private float _toWaitBeforeStart = 3.0f;
     [SerializeField] private Button _leaveRoomButton;
-
-
-    /*#region UpdateManager connection
-    private void Awake()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    public override void OnEnable()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    public override void OnDisable()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion*/
 
 
     private void Start()
@@ -125,17 +88,6 @@ public class Launch : MonoBehaviourPunCallbacks
         _voiceChatToggle.onValueChanged.AddListener(OnVoiceChatToggleValueChanged);
 
         _sceneSelector.onValueChanged.AddListener(delegate { DropdownItemSelected(_sceneSelector); });
-    }
-    public void Update()
-    {
-        //Debug sagt, dass Cursor ist visible, ist aber nicht (
-        //Debug.Log("Cursor is visible: " + Cursor.visible);
-
-        if (_startCountdown && _toWaitBeforeStart > 0)
-        {
-            _toWaitBeforeStart -= Time.deltaTime;
-            _countdownText.text = $"we will start in {Mathf.RoundToInt(_toWaitBeforeStart)}";
-        }
     }
 
     //"OnConnectedToMaster" fuhrt Aktionen, sobald eine Konnektion erstellt wurde
@@ -176,13 +128,18 @@ public class Launch : MonoBehaviourPunCallbacks
         DisableAllInteractableObjects();
 
         _countdownText.gameObject.SetActive(true);
-        _startCountdown = true;
     }
     //sonst koennen die Daten nicht hochgeladen werden, da die naechste schneller Scene geladen wird
     private IEnumerator WaitAndStartGame()
     {
-        yield return new WaitForSeconds(Mathf.RoundToInt(_toWaitBeforeStart)); // Warte 3 Sekunden
-
+        //yield return new WaitForSeconds(Mathf.RoundToInt(_toWaitBeforeStart)); // Warte 3 Sekunden
+        float countdown = _toWaitBeforeStart;
+        while (countdown >= 0)
+        {
+            _countdownText.text = $"we will start in {Mathf.RoundToInt(countdown)}";
+            yield return new WaitForSeconds(1f);
+            countdown--;
+        }
         // Hier Starten wir die Szene namens "GameScene", weil sie Index 1 in BuildSettings hat
         PhotonNetwork.LoadLevel(indexOfScene);
     }

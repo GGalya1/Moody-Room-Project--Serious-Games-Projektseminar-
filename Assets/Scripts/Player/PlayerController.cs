@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 
 public class PlayerController : MonoBehaviour, IUpdateObserver
@@ -43,14 +41,17 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("PlayerController");
     }
     private void OnDisable()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("PlayerController");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("PlayerController");
     }
     #endregion
 
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
                 return;
             }
 
-        if(IngameMenuManager.GetCurrentMenu() == MenuType.None)
+        if(IngameMenuManager.GetCurrentMenu() == MenuType.None || IngameMenuManager.GetCurrentMenu() == MenuType.PlayerlistMenu)
         {
 
 
@@ -99,6 +100,12 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             {
                 _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             }
+            _rigidbody.drag = 0f;
+        }
+        else
+        {
+            _rigidbody.drag = 3f;
+            moveAmount = Vector3.Lerp(moveAmount, Vector3.zero, Time.deltaTime * 3f);
         }
 
         

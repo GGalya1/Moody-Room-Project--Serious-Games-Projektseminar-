@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class DrawingUIManager : MonoBehaviour, IUpdateObserver
+public class DrawingUIManager : MonoBehaviour
 {
     public DrawingBoard drawingBoard;
     public Slider brushSizeSlider;
@@ -39,25 +39,6 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
 
     [SerializeField] private GameObject container;
 
-    #region UpdateManager connection
-    private void Awake()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    private void OnEnable()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    private void OnDisable()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion
-
     void Start()
     {
         brushSizeSlider.minValue = brushMinSize;
@@ -71,14 +52,6 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
         eraseButton.onClick.AddListener(drawingBoard.Erase);
         clearButton.onClick.AddListener(drawingBoard.ClearTexture);
         loadImageButton.onClick.AddListener(ShareImage);
-    }
-
-    public void ObservedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.RightAlt))
-        {
-            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.WhiteBoardMenu);
-        }
     }
 
     void ChangeBrushSize(float newSize)

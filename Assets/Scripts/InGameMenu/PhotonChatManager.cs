@@ -6,7 +6,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Realtime;
 
-public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObserver
+public class PhotonChatManager : MonoBehaviour, IChatClientListener
 {
     ChatClient chatClient;
     [SerializeField] string _username = PhotonNetwork.NickName;
@@ -30,15 +30,24 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     #region UpdateManager connection
     private void OnEnable()
     {
-        UpdateManager.Instance.RegisterObserver(this);
+        //UpdateManager.Instance.RegisterObserver(this);
+        //UpdateManager.Instance.RegisterObserverName("ChatManager");
+        InputManager.OnChatKeyPressed += HandleChatKeyPressed;
+        InputManager.MessageSendPressed += HandleSendMessageKeyPressed;
     }
     private void OnDisable()
     {
-        UpdateManager.Instance.UnregisterObserver(this);
+        //UpdateManager.Instance.UnregisterObserver(this);
+        //UpdateManager.Instance.UnregisterOberverName("ChatManager");
+        InputManager.OnChatKeyPressed -= HandleChatKeyPressed;
+        InputManager.MessageSendPressed -= HandleSendMessageKeyPressed;
     }
     private void OnDestroy()
     {
-        UpdateManager.Instance.UnregisterObserver(this);
+        //UpdateManager.Instance.UnregisterObserver(this);
+        //UpdateManager.Instance.UnregisterOberverName("ChatManager");
+        InputManager.OnChatKeyPressed -= HandleChatKeyPressed;
+        InputManager.MessageSendPressed -= HandleSendMessageKeyPressed;
     }
     #endregion
 
@@ -48,7 +57,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     }
     public void Awake()
     {
-        UpdateManager.Instance.RegisterObserver(this);
+        //UpdateManager.Instance.RegisterObserver(this);
         _username = PhotonNetwork.NickName;
         ChatConnect();
     }
@@ -177,11 +186,10 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     }
 
     // Update is called once per frame
-    public void ObservedUpdate()
+    /*public void ObservedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.LeftControl) && roomSettingManager.chatIsOn)
         {
-            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.ChatMenu);
 
             if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
             {
@@ -198,6 +206,32 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
                 SubmitPublicChatOnClick();
                 SubmitPrivateChatOnClick();
             }
+        }
+    }*/
+    private void HandleChatKeyPressed()
+    {
+        if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
+        {
+            UpdatePlayerList();
+            oldListOfPlayers = (Player[])PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
+        }
+
+
+        if (isConnected)
+            chatClient.Service();
+
+        if (chatField.text != "" && Input.GetKey(KeyCode.Return))
+        {
+            SubmitPublicChatOnClick();
+            SubmitPrivateChatOnClick();
+        }
+    }
+    private void HandleSendMessageKeyPressed()
+    {
+        if (chatField.text != "")
+        {
+            SubmitPublicChatOnClick();
+            SubmitPrivateChatOnClick();
         }
     }
 

@@ -34,6 +34,18 @@ public class IngameMenuManager : MonoBehaviour
             currentOpenedMenu = requestedMenu;
             OpenMenu(currentOpenedMenu);
         }
+        //Oeffnen von Overlay
+        else if (requestedMenu == MenuType.PlayerlistMenu)
+        {
+            //wenn wir Tab nicht mehr drucken
+            if (currentOpenedMenu == MenuType.PlayerlistMenu && Input.GetKeyUp(KeyCode.Tab))
+            {
+                CloseMenu(currentOpenedMenu);
+                currentOpenedMenu = MenuType.None;
+            }
+            //sonst es wird weiter aktiv
+            
+        }
         //schliessen von bereits geoffneten Menus
         else if (currentOpenedMenu == requestedMenu)
         {
@@ -45,6 +57,14 @@ public class IngameMenuManager : MonoBehaviour
     //oefnet angefragtes Menu
     private void OpenMenu(MenuType requestedMenu)
     {
+        //da diese Menu von Art "Overlay" ist
+        if (requestedMenu == MenuType.PlayerlistMenu)
+        {
+            _playerlistMenu.SetActive(true);
+            return;
+        }
+
+        //alle anderen Menus muessen Cursor zeigen
         CursorManager.OnCursorVisibilityChange?.Invoke(true);
         if (requestedMenu == MenuType.AdminMenu)
         {
@@ -66,10 +86,7 @@ public class IngameMenuManager : MonoBehaviour
         {
             _whiteboardMenu.SetActive(true);
         }
-        else if (requestedMenu == MenuType.PlayerlistMenu)
-        {
-            _playerlistMenu.SetActive(true);
-        }
+        
     }
 
     //schliest Menu

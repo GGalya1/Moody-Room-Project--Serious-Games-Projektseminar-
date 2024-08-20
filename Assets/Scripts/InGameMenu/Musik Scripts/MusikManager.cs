@@ -37,10 +37,12 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     private void Awake()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("MusikManager");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("MusikManager");
     }
     #endregion
 
