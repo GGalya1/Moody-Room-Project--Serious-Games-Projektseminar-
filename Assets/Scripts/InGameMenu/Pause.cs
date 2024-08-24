@@ -12,6 +12,7 @@ public class Pause : MonoBehaviour
 
     public void Quit()
     {
+        IngameMenuManager.OnMenuRequest?.Invoke(MenuType.PauseMenu);
         StartCoroutine(DisconnectPlayer());
         Destroy(RoomManager.instance.gameObject);
         Destroy(GameObject.Find("VoiceManager"));

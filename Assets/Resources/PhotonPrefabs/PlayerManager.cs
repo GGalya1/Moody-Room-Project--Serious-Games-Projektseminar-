@@ -4,6 +4,7 @@ using System.IO;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
+using System.Collections;
 
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
@@ -22,6 +23,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //spawn von Spieler (Player Controller), falls view zu diesem Spieler gehört
         if (_photonView.IsMine)
         {
+            //StartCoroutine(WaitForConnectionAndInstantiatePlayer());
             CreateController();
 
             if (controller != null)
@@ -45,6 +47,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             
         }
     }
+    /*private IEnumerator WaitForConnectionAndInstantiatePlayer()
+    {
+        // Warte, bis der Spieler vollständig mit dem Raum verbunden ist. Sonst wird PlayerAvatar gespawnet, der genuaso wie deinen aussieht (obwohl bei anderen es anders sein konnte)
+        while (!PhotonNetwork.InRoom)
+        {
+            yield return null; // wartet einen Frame und überprüft dann erneut
+        }
+
+    }*/
 
     private void CreateController()
     {
@@ -81,7 +92,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.Log("Player type not selected !");
+            Debug.LogError("Player type not selected !");
             return;
         }
 

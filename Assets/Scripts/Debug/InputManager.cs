@@ -4,9 +4,6 @@ using System;
 
 public class InputManager : MonoBehaviour, IUpdateObserver
 {
-    //um Chat zu steuern, da er zusatzliche Funktionalitaeten enthaelt
-    public static event Action OnChatKeyPressed;
-    public static event Action MessageSendPressed;
     [SerializeField] private RoomSettingManager roomSettingManager;
 
     #region UpdateManager connection
@@ -62,12 +59,6 @@ public class InputManager : MonoBehaviour, IUpdateObserver
         if (Input.GetKeyDown(KeyCode.LeftControl) && roomSettingManager.chatIsOn)
         {
             IngameMenuManager.OnMenuRequest?.Invoke(MenuType.ChatMenu);
-            OnChatKeyPressed?.Invoke();
-        }
-        //falls Menu geoffnet ist und man eine Nachricht durch "Return"-Button (aka Enter) sendet 
-        if (IngameMenuManager.GetCurrentMenu() == MenuType.ChatMenu && Input.GetKey(KeyCode.Return))
-        {
-            MessageSendPressed?.Invoke();
         }
     }
 }

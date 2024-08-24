@@ -1012,11 +1012,11 @@ Transform:
   - {fileID: 1240607685}
   - {fileID: 596896456}
   - {fileID: 1847874928}
-  - {fileID: 815892159}
   - {fileID: 1821336802}
   - {fileID: 1541288470}
+  - {fileID: 815892159}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &124567309
 GameObject:
@@ -1205,13 +1205,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139172272}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 434.59998, y: 223.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &164301681
 GameObject:
@@ -1677,7 +1677,7 @@ Transform:
   - {fileID: 1404039915}
   - {fileID: 541361707}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &227222763
 GameObject:
@@ -6503,8 +6503,6 @@ GameObject:
   - component: {fileID: 618437770}
   - component: {fileID: 618437773}
   - component: {fileID: 618437772}
-  - component: {fileID: 618437771}
-  - component: {fileID: 618437774}
   m_Layer: 5
   m_Name: DrawingBoard
   m_TagString: Untagged
@@ -6532,20 +6530,6 @@ RectTransform:
   m_AnchoredPosition: {x: -76.748634, y: -2.6706638}
   m_SizeDelta: {x: 607.8211, y: 389.4115}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &618437771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618437769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f34846bbf4d2e4a90a4341fc82d8ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  brushColor: {r: 0, g: 0, b: 0, a: 1}
-  brushSize: 5
 --- !u!114 &618437772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6581,28 +6565,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618437769}
   m_CullTransparentMesh: 1
---- !u!114 &618437774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618437769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 919
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &624039198
 GameObject:
   m_ObjectHideFlags: 0
@@ -8860,7 +8822,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 111571470}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &824607311
 GameObject:
@@ -11433,6 +11395,7 @@ GameObject:
   - component: {fileID: 1093424405}
   - component: {fileID: 1093424404}
   - component: {fileID: 1093424408}
+  - component: {fileID: 1093424409}
   m_Layer: 5
   m_Name: WhiteBoardCanvas
   m_TagString: Untagged
@@ -11534,7 +11497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217992b8aadfcff4b9c317e79bd7c241, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawingBoard: {fileID: 618437771}
+  drawingBoard: {fileID: 1093424409}
   brushSizeSlider: {fileID: 1291880536}
   redColorButton: {fileID: 2009614245}
   blueColorButton: {fileID: 1966800127}
@@ -11570,6 +11533,22 @@ MonoBehaviour:
   sceneViewId: 888
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1093424409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093424402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f34846bbf4d2e4a90a4341fc82d8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brushColor: {r: 0, g: 0, b: 0, a: 1}
+  brushSize: 5
+  rectTransform: {fileID: 618437770}
+  rawImage: {fileID: 618437772}
 --- !u!1 &1121082358
 GameObject:
   m_ObjectHideFlags: 0
@@ -15487,7 +15466,7 @@ Transform:
   - {fileID: 687883589}
   - {fileID: 591851156}
   m_Father: {fileID: 111571470}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1541288471
 MonoBehaviour:
@@ -15658,7 +15637,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1558864193
 GameObject:
@@ -18567,7 +18546,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 111571470}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -19328,7 +19307,7 @@ Transform:
   - {fileID: 1937607615}
   - {fileID: 1719917047}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1902179421
 GameObject:

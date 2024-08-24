@@ -86,10 +86,8 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             {
                 return;
             }
-
         if(IngameMenuManager.GetCurrentMenu() == MenuType.None || IngameMenuManager.GetCurrentMenu() == MenuType.PlayerlistMenu)
         {
-
 
             Move();
             RotatePlayerLeftRight();

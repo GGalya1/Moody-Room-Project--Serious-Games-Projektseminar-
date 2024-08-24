@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +23,15 @@ public class MenuManager : MonoBehaviour
                 menu.Close();
             }
         }
+    }
+    public Menu GetActiveMenu()
+    {
+        foreach (Menu menu in _menus)
+        {
+            if (menu.gameObject.activeSelf) return menu;
+        }
+        //wenn keine Menu aktiv ist
+        return null;
     }
 
 

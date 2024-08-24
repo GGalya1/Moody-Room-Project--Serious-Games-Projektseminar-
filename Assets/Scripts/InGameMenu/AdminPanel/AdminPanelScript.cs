@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using System.Collections;
 
 public class AdminPanelScript : MonoBehaviour
 {
@@ -27,6 +28,19 @@ public class AdminPanelScript : MonoBehaviour
         chairsSlider.value = RoomManager.instance.chairsNumber;
 
         photonView = GetComponent<PhotonView>();
+
+        //UpdateRoomHash() benutzt PhotonNetwork. Den Code greift die Methode schneller als die Verbindung zum Server hergestellt wird.
+        //darum muessen wir erst abwarten und nur danach AddListener anschliessen
+        StartCoroutine(WaitForConnection());
+
+    }
+    private IEnumerator WaitForConnection()
+    {
+        // Warte, bis der Spieler vollständig mit dem Raum verbunden ist. Sonst kann PhotonNetwork nicht ordnungsgemaess funktionieren
+        while (!PhotonNetwork.InRoom)
+        {
+            yield return null; // wartet einen Frame und überprüft dann erneut
+        }
 
         chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
         OnSliderValueChanged(chairsSlider.value);

@@ -6,7 +6,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Realtime;
 
-public class PhotonChatManager : MonoBehaviour, IChatClientListener
+public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObserver
 {
     ChatClient chatClient;
     [SerializeField] string _username = PhotonNetwork.NickName;
@@ -30,24 +30,18 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
     #region UpdateManager connection
     private void OnEnable()
     {
-        //UpdateManager.Instance.RegisterObserver(this);
-        //UpdateManager.Instance.RegisterObserverName("ChatManager");
-        InputManager.OnChatKeyPressed += HandleChatKeyPressed;
-        InputManager.MessageSendPressed += HandleSendMessageKeyPressed;
+        UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("ChatManager");
     }
     private void OnDisable()
     {
-        //UpdateManager.Instance.UnregisterObserver(this);
-        //UpdateManager.Instance.UnregisterOberverName("ChatManager");
-        InputManager.OnChatKeyPressed -= HandleChatKeyPressed;
-        InputManager.MessageSendPressed -= HandleSendMessageKeyPressed;
+        UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("ChatManager");
     }
     private void OnDestroy()
     {
-        //UpdateManager.Instance.UnregisterObserver(this);
-        //UpdateManager.Instance.UnregisterOberverName("ChatManager");
-        InputManager.OnChatKeyPressed -= HandleChatKeyPressed;
-        InputManager.MessageSendPressed -= HandleSendMessageKeyPressed;
+        UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("ChatManager");
     }
     #endregion
 
@@ -186,52 +180,24 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener
     }
 
     // Update is called once per frame
-    /*public void ObservedUpdate()
+    public void ObservedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && roomSettingManager.chatIsOn)
-        {
-
             if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
             {
                 UpdatePlayerList();
                 oldListOfPlayers = (Player[])PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
             }
-
-
             if (isConnected)
                 chatClient.Service();
 
+        //nur wenn Menu geoffnet ist, checken wir, ob die Nachricht versendet werden kann
+        if (IngameMenuManager.GetCurrentMenu() == MenuType.ChatMenu)
+        {
             if (chatField.text != "" && Input.GetKey(KeyCode.Return))
             {
                 SubmitPublicChatOnClick();
                 SubmitPrivateChatOnClick();
             }
-        }
-    }*/
-    private void HandleChatKeyPressed()
-    {
-        if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
-        {
-            UpdatePlayerList();
-            oldListOfPlayers = (Player[])PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
-        }
-
-
-        if (isConnected)
-            chatClient.Service();
-
-        if (chatField.text != "" && Input.GetKey(KeyCode.Return))
-        {
-            SubmitPublicChatOnClick();
-            SubmitPrivateChatOnClick();
-        }
-    }
-    private void HandleSendMessageKeyPressed()
-    {
-        if (chatField.text != "")
-        {
-            SubmitPublicChatOnClick();
-            SubmitPrivateChatOnClick();
         }
     }
 

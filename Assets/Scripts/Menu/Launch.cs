@@ -58,6 +58,12 @@ public class Launch : MonoBehaviourPunCallbacks
         }
     }
 
+    //Es gibt ein Bug: wenn man das Raum selbst erstellt und danach verlaesst. Kann man bereits existierte Raume nicht meehr sehen. Das losen wir durch "refresh"
+    public void RefreshRoomlist()
+    {
+        PhotonNetwork.JoinLobby();
+    }
+
 
     [SerializeField] private GameObject _startGameButton;
     [SerializeField] private Slider _chairsSlider;
@@ -102,7 +108,14 @@ public class Launch : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Connected to Lobby");
-        MenuManager.current.OpenMenu("title");
+
+        Menu currMenu = MenuManager.current.GetActiveMenu();
+        Debug.Log("CurrentMenuName: " + currMenu.menuName);
+        if (currMenu != null && currMenu.menuName == "findRoom")
+        {
+            Debug.Log("Refresh of Roomlist");
+        }
+        else MenuManager.current.OpenMenu("title");
         //spaeter ersetzen
         //PhotonNetwork.NickName = "Player " + Random.Range(0, 2000).ToString("0000");
     }

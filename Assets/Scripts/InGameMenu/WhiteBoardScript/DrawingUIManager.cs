@@ -49,7 +49,7 @@ public class DrawingUIManager : MonoBehaviour
         redColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.red));
         blueColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.blue));
         blackColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.black));
-        eraseButton.onClick.AddListener(drawingBoard.Erase);
+        eraseButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.white));
         clearButton.onClick.AddListener(drawingBoard.ClearTexture);
         loadImageButton.onClick.AddListener(ShareImage);
     }

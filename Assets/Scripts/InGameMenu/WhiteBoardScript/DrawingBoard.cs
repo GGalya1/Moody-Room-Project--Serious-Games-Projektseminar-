@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Photon.Pun;
+using System.Collections;
+using Photon.Realtime;
 
 public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
@@ -9,22 +11,48 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public float brushSize = 5.0f;
 
     private Texture2D texture;
-    private RectTransform rectTransform;
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private RawImage rawImage;
     private bool isDrawing = false;
-
-    Vector2 previousPosition;
 
     PhotonView _photonView;
 
     void Start()
     {
         _photonView = GetComponent<PhotonView>();
-        rectTransform = GetComponent<RectTransform>();
         texture = new Texture2D((int)rectTransform.rect.width, (int)rectTransform.rect.height, TextureFormat.RGBA32, false);
         texture.filterMode = FilterMode.Point;
 
-        ClearTexture();
-        GetComponent<RawImage>().texture = texture;
+        rawImage.texture = texture;
+
+        // Starte Coroutine, um auf die vollstaendige Verbindung zu warten und dann die RPC-Anfrage zu senden
+        //diese Anfrage verlangt von MasterClient den aktuellen Stand von Whiteboard
+        StartCoroutine(WaitForConnectionAndRequestData());
+    }
+    IEnumerator WaitForConnectionAndRequestData()
+    {
+        // Warte, bis der Spieler mit dem Raum verbunden ist
+
+        while (!PhotonNetwork.InRoom || !PhotonNetwork.IsConnectedAndReady)
+        {
+            yield return null;  // Wartet einen Frame
+        }
+        //zur Sichercheit. Spaeter kann geloescht werden
+        while (PhotonNetwork.NetworkClientState != ClientState.Joined)
+        {
+            yield return null;
+        }
+
+        // Sobald der Spieler verbunden ist und nicht der MasterClient, fordere die aktuelle Textur vom MasterClient an
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            _photonView.RPC("RequestTextureData", RpcTarget.MasterClient);
+        }
+        //jetzt ursprunglich ist leider Texture nicht weiss. Mit dieser Zeile faerben wir das
+        else
+        {
+            _photonView.RPC("ClearTextureForAll", RpcTarget.All);
+        }
     }
 
     public void ClearTexture()
@@ -57,88 +85,30 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         int x = (int)(localPosition.x + rectTransform.rect.width / 2);
         int y = (int)(localPosition.y + rectTransform.rect.height / 2);
 
-        _photonView.RPC("DrawForEveryone", RpcTarget.All, x, y, brushSize);
+        _photonView.RPC("DrawForEveryone", RpcTarget.All, x, y, brushSize, brushColor.r, brushColor.g, brushColor.b);
     }
-
-    /*void Draw(Vector2 screenPosition)
-    {
-        Vector2 localPosition;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPosition, null, out localPosition);
-
-        int x = (int)(localPosition.x + rectTransform.rect.width / 2);
-        int y = (int)(localPosition.y + rectTransform.rect.height / 2);
-
-        DrawBrush(x, y);
-
-        if (previousPosition != null)
-        {
-            Interpolate(previousPosition, new Vector2(x, y));
-        }
-
-        previousPosition = new Vector2(x, y);
-    }
-
-    void Interpolate(Vector2 start, Vector2 end)
-    {
-        float distance = Vector2.Distance(start, end);
-        Vector2 direction = (end - start).normalized;
-
-        for (float i = 0; i < distance; i += 0.5f)
-        {
-            Vector2 interpolatedPosition = start + direction * i;
-            DrawBrush((int)interpolatedPosition.x, (int)interpolatedPosition.y);
-        }
-    }
-
-    void DrawBrush(int x, int y)
-    {
-        for (int i = -Mathf.CeilToInt(brushSize / 2); i < Mathf.CeilToInt(brushSize / 2); i++)
-        {
-            for (int j = -Mathf.CeilToInt(brushSize / 2); j < Mathf.CeilToInt(brushSize / 2); j++)
-            {
-                texture.SetPixel(x + i, y + j, brushColor);
-            }
-        }
-
-        texture.Apply();
-    }*/
-
 
     public void SetBrushColor(Color color)
     {
-        // Zerlege die Farbe in RGB-Komponenten, damit die Farbe durch RPC uebertragen werden koennte
-        int r = Mathf.FloorToInt(color.r * 255);
-        int g = Mathf.FloorToInt(color.g * 255);
-        int b = Mathf.FloorToInt(color.b * 255);
+        //"Erase" wird realisiert, indem Color.white gesetzt wird
+        brushColor = color;
 
-        _photonView.RPC("SetBrushColorForAll", RpcTarget.All, r, g, b);
     }
 
-    public void Erase()
-    {
-        SetBrushColor(Color.white);
-        _photonView.RPC("SetBrushColorForAll", RpcTarget.All, 255, 255, 255);
-    }
     #region PunRPC section
 
     [PunRPC]
-    void DrawForEveryone(int x, int y, float brushSize)
+    void DrawForEveryone(int x, int y, float brushSize, float r, float g, float b)
     {
-
+        Color _brushColor = new Color(r, g, b);
         for (int i = -Mathf.CeilToInt(brushSize / 2); i < Mathf.CeilToInt(brushSize / 2); i++)
         {
             for (int j = -Mathf.CeilToInt(brushSize / 2); j < Mathf.CeilToInt(brushSize / 2); j++)
             {
-                texture.SetPixel(x + i, y + j, brushColor);
+                texture.SetPixel(x + i, y + j, _brushColor);
             }
         }
         texture.Apply();
-    }
-
-    [PunRPC]
-    public void SetBrushColorForAll(int r, int g, int b)
-    {
-        brushColor = new Color(r / 255f, g / 255f, b / 255f);
     }
 
     [PunRPC]
@@ -149,6 +119,23 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             colors[i] = Color.white;
         texture.SetPixels32(colors);
         texture.Apply();
+    }
+
+    [PunRPC]
+    void RequestTextureData()
+    {
+        byte[] textureData = texture.EncodeToPNG();
+        _photonView.RPC("ReceiveTextureData", RpcTarget.Others, textureData);
+    }
+
+    [PunRPC]
+    void ReceiveTextureData(byte[] data)
+    {
+        Texture2D receivedTexture = new Texture2D((int)rectTransform.rect.width, (int)rectTransform.rect.height, TextureFormat.RGBA32, false);
+        receivedTexture.LoadImage(data);
+        receivedTexture.filterMode = FilterMode.Point;
+        rawImage.texture = receivedTexture;
+        texture = receivedTexture;
     }
     #endregion
 }
