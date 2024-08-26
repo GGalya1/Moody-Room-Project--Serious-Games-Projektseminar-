@@ -43,12 +43,12 @@ public class UpdateManager : MonoBehaviour
         {
             observer.ObservedUpdate();
         }
-        string res = "Observers(" + _observers.Count + "): ";
+        /*string res = "Observers(" + _observers.Count + "): ";
         foreach (string oberver in _observersNames)
         {
             res += oberver + " ";
         }
-        //Debug.Log(res);
+        Debug.Log(res);*/
     }
 
     public void RegisterObserver(IUpdateObserver observer)

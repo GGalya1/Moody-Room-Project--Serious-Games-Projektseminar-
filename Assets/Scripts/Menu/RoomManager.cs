@@ -12,6 +12,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public int chairsNumber;
     public bool chatIsOn;
     public bool voicechatIsOn;
+    public string roomCode;
 
     private void Start()
     {

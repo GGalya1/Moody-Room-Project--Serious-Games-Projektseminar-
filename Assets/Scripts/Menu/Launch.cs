@@ -37,6 +37,17 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] public GameObject smallAvatar;
     [SerializeField] public GameObject customizedAvatar;
 
+    //Funktionalitaten fuer private-Room Funktionalitaeten
+    [SerializeField] public Toggle _privateRoomToggle;
+    [SerializeField] private TMP_Text _roomCodeText;
+    private string _roomCode;
+    [SerializeField] private GameObject _privateRoomPanel;
+    [SerializeField] private TMP_InputField _roomCodeInputField;
+    [SerializeField] private Button _roomCodeSubmitButton;
+    private RoomInfo _selectedRoomInfo;
+    [SerializeField] private TMP_Text _localErrorMessage;
+    [SerializeField] private GameObject _privateRoomContainer;
+
     public string playerModel;
     public void SelectAvatar(int avatarTypeIndex)
     {
@@ -127,6 +138,7 @@ public class Launch : MonoBehaviourPunCallbacks
         props["ChairCount"] = RoomManager.instance.chairsNumber;
         props["IsChatOn"] = RoomManager.instance.chatIsOn;
         props["IsVoiceChatOn"] = RoomManager.instance.voicechatIsOn;
+        props["RoomCode"] = _roomCode;
 
         //hier Starten wir Scene namens "GameScene", weil sie Index 1 in BuildSetting hat
         //PhotonNetwork.LoadLevel(1);
@@ -179,7 +191,24 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         if (!string.IsNullOrEmpty(_roomInputField.text))
         {
-            PhotonNetwork.CreateRoom(_roomInputField.text);
+            RoomOptions options = new RoomOptions();
+
+            //falls das eingeschaltet ist, dann erzeuge ich einen Code, damit Leute das Raum beitreten koennten
+            if (_privateRoomToggle.isOn)
+            {
+                _roomCode = Random.Range(1000, 15000).ToString();
+                options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "RoomCode", _roomCode } };
+                options.CustomRoomPropertiesForLobby = new string[] { "RoomCode" };
+
+                // Zeige den Code für den Admin an
+                _roomCodeText.text = $"Room Code:\n{_roomCode}";
+                RoomManager.instance.roomCode = _roomCode;
+            }
+            else
+            {
+                RoomManager.instance.roomCode = "public";
+            }
+            PhotonNetwork.CreateRoom(_roomInputField.text, options);
             MenuManager.current.OpenMenu("loading");
         }
     }
@@ -250,8 +279,50 @@ public class Launch : MonoBehaviourPunCallbacks
     //fuehrt Information uber den gewuenschten Room fuer Photon
     public void JoinRoom(RoomInfo info)
     {
-        PhotonNetwork.JoinRoom(info.Name);
-        MenuManager.current.OpenMenu("loading");
+        //beitreten von private-Raumen
+        if (info.CustomProperties.ContainsKey("RoomCode"))
+        {
+            _privateRoomPanel.SetActive(true);
+            _selectedRoomInfo = info;
+            //ab hier erwarten wir die Funktionalitaeten von InputField und Submit Button
+        }
+        //beitreten von public-Raumen
+        else
+        {
+            PhotonNetwork.JoinRoom(info.Name);
+            MenuManager.current.OpenMenu("loading");
+        }
+    }
+    // Methode, die aufgerufen wird, wenn der Spieler den Code eingibt und bestätigen möchte
+    public void OnSubmitRoomCode()
+    {
+        if (_roomCodeInputField.text == _selectedRoomInfo.CustomProperties["RoomCode"].ToString())
+        {
+            PhotonNetwork.JoinRoom(_selectedRoomInfo.Name);
+            MenuManager.current.OpenMenu("loading");
+        }
+        else
+        {
+            //falls mit dem Code nicht geklappt ist, geben wir die Rueckmeldung
+            StartCoroutine(ShowErrorAndHidePanel());
+        }
+    }
+    //um die Reuckmeldung zu geben
+    private IEnumerator ShowErrorAndHidePanel()
+    {
+        // Blende die Fehlermeldung ein und andren Komponenten aus
+        _localErrorMessage.gameObject.SetActive(true);
+        _privateRoomContainer.SetActive(false);
+
+        // Warte 1 Sekunde
+        yield return new WaitForSeconds(1f);
+
+        // Blende die Fehlermeldung aus
+        _localErrorMessage.gameObject.SetActive(false);
+        _privateRoomContainer.SetActive(true);
+
+        // Schließe das Panel
+        _privateRoomPanel.SetActive(false);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -324,6 +395,7 @@ public class Launch : MonoBehaviourPunCallbacks
         _chatToggle.gameObject.SetActive(val);
         _voiceChatToggle.gameObject.SetActive(val);
         _sceneSelector.gameObject.SetActive(val);
+        _roomCodeText.gameObject.SetActive(val);
     }
 
 

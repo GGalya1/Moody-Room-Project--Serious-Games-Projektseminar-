@@ -14,7 +14,9 @@ public class AdminPanelScript : MonoBehaviour
     [SerializeField] private TMP_Text chairsText;
     [SerializeField] private Toggle chatToggle;
     [SerializeField] private Toggle voiceChatToggle;
+    [SerializeField] private Toggle roomIsPublicToggle;
     [SerializeField] private Dropdown skyboxDropdown;
+    [SerializeField] private TMP_Text roomCode;
 
     [SerializeField] private Material[] skyboxMaterials;
     PhotonView photonView;
@@ -26,6 +28,15 @@ public class AdminPanelScript : MonoBehaviour
         chatToggle.isOn = RoomManager.instance.chatIsOn;
         voiceChatToggle.isOn = RoomManager.instance.voicechatIsOn;
         chairsSlider.value = RoomManager.instance.chairsNumber;
+        if (RoomManager.instance.roomCode != "public")
+        {
+            roomCode.text = $"Room Code: {RoomManager.instance.roomCode}";
+        }
+        else
+        {
+            roomCode.text = "Player can join without code";
+        }
+        
 
         photonView = GetComponent<PhotonView>();
 
@@ -47,6 +58,7 @@ public class AdminPanelScript : MonoBehaviour
 
         chatToggle.onValueChanged.AddListener(OnChatToggleValueChanged);
         voiceChatToggle.onValueChanged.AddListener(OnVoiceChatToggleValueChanged);
+        roomIsPublicToggle.onValueChanged.AddListener(OnRoomAccesToggleValueChanged);
 
         //Fuellen Drowdown mit den Werten aus dem Array
         skyboxDropdown.options.Clear();
@@ -75,6 +87,10 @@ public class AdminPanelScript : MonoBehaviour
     {
         RoomManager.instance.voicechatIsOn = isOn;
         UpdateRoomHash();
+    }
+    public void OnRoomAccesToggleValueChanged(bool isOn)
+    {
+        PhotonNetwork.CurrentRoom.IsVisible = isOn;
     }
 
     public void UpdateRoomHash() {
