@@ -86,7 +86,11 @@ public class IngameMenuManager : MonoBehaviour
         {
             _whiteboardMenu.SetActive(true);
         }
-        
+        else if (requestedMenu == MenuType.ChairMenu)
+        {
+            Interactor.OnInteractionRequest?.Invoke();
+        }
+
     }
 
     //schliest Menu
@@ -117,6 +121,7 @@ public class IngameMenuManager : MonoBehaviour
         {
             _playerlistMenu.SetActive(false);
         }
+        
     }
 
     public static MenuType GetCurrentMenu()
@@ -134,5 +139,6 @@ public enum MenuType
     PauseMenu,
     RoleplayMenu,
     ChatMenu,
-    PlayerlistMenu
+    PlayerlistMenu,
+    ChairMenu
 }

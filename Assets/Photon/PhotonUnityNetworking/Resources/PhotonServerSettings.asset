@@ -60,6 +60,7 @@ MonoBehaviour:
   - ShareCustomization
   - FindAndSubscribeBillboard
   - UnsubscribeBillboard
+  - RPC_SetWhiteboardAcces
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

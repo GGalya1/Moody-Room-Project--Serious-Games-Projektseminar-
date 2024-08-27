@@ -13,6 +13,7 @@ public class RoomSettingManager : MonoBehaviourPunCallbacks
 
     public Recorder voiceRecorder;
     public bool voiceChatIsOn;
+    public bool whiteboardIsOn;
 
     MusikManager musikManager;
 

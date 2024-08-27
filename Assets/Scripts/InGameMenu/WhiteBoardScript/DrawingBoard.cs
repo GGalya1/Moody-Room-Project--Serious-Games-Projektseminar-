@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Photon.Pun;
@@ -14,6 +14,9 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private RawImage rawImage;
     private bool isDrawing = false;
+
+    //fuer Wiedergabe von Info an groessen Whiteboard
+    [SerializeField] private RenderTexture largeWhitebaord;
 
     PhotonView _photonView;
 
@@ -109,6 +112,36 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             }
         }
         texture.Apply();
+
+        // Synchronisiere die Zeichnung mit der großen RenderTexture
+        SyncWithLargeBoard(x, y, brushSize, _brushColor);
+    }
+    // Methode zur Synchronisierung der Zeichnung mit der RenderTexture
+    void SyncWithLargeBoard(int x, int y, float brushSize, Color brushColor)
+    {
+        // Aktiviere die RenderTexture
+        RenderTexture.active = largeWhitebaord;
+
+        // Bereite eine temporäre Texture2D vor, um auf die RenderTexture zu zeichnen
+        Texture2D tempTexture = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+        tempTexture.SetPixels(texture.GetPixels());
+        tempTexture.Apply();
+
+        // Zeichne die Pixel in die RenderTexture
+        for (int i = -Mathf.CeilToInt(brushSize / 2); i < Mathf.CeilToInt(brushSize / 2); i++)
+        {
+            for (int j = -Mathf.CeilToInt(brushSize / 2); j < Mathf.CeilToInt(brushSize / 2); j++)
+            {
+                tempTexture.SetPixel(x + i, y + j, brushColor);
+            }
+        }
+        tempTexture.Apply();
+
+        // Übertrage die gezeichneten Pixel in die RenderTexture
+        Graphics.Blit(tempTexture, largeWhitebaord);
+
+        // Deaktiviere die RenderTexture
+        RenderTexture.active = null;
     }
 
     [PunRPC]
@@ -119,6 +152,33 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             colors[i] = Color.white;
         texture.SetPixels32(colors);
         texture.Apply();
+
+        // Leere die RenderTexture
+        ClearRenderTexture(largeWhitebaord);
+    }
+    private void ClearRenderTexture(RenderTexture renderTexture)
+    {
+        // Erstelle eine temporäre Texture2D mit der gleichen Größe wie die RenderTexture
+        Texture2D tempTexture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGBA32, false);
+
+        // Fülle die temporäre Texture2D mit Weiß
+        Color32[] clearColors = new Color32[renderTexture.width * renderTexture.height];
+        for (int i = 0; i < clearColors.Length; i++)
+            clearColors[i] = Color.white;
+        tempTexture.SetPixels32(clearColors);
+        tempTexture.Apply();
+
+        // Setze die RenderTexture als aktiv
+        RenderTexture.active = renderTexture;
+
+        // Übertrage die leere weiße Texture2D auf die RenderTexture
+        Graphics.Blit(tempTexture, renderTexture);
+
+        // Deaktiviere die RenderTexture
+        RenderTexture.active = null;
+
+        // Lösche die temporäre Texture2D, um Speicher freizugeben
+        Destroy(tempTexture);
     }
 
     [PunRPC]

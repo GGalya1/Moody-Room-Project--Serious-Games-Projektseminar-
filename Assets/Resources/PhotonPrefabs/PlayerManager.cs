@@ -179,4 +179,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         base.OnDisconnected(cause);
         SceneManager.LoadScene(0);
     }
+
+    [PunRPC]
+    private void RPC_SetWhiteboardAcces(bool isOn)
+    {
+        InputManager.whiteboardIsOn = isOn;
+    }
 }
