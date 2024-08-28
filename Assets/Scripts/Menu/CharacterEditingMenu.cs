@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,7 +5,7 @@ using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
 
-public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
+public class CharacterEditingMenu : MonoBehaviour
 {
     [SerializeField] TMP_Text hatNumberTxt;
     [SerializeField] TMP_Text eyeNumberTxt;
@@ -17,11 +16,6 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
     private int _eyeNumber = 0;
     private int _bodyNumber = 0;
     private int _clothesNumber = 0;
-
-    private Color _hatColor;
-    private Color _eyesColor;
-    private Color _bodyColor;
-    private Color _clothesColor;
 
     private float _redHatColor = 100;
     private float _greenHatColor = 37;
@@ -38,33 +32,90 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
 
     private Renderer currentHatRenderer;
 
+    private Hashtable currentCustomize;
+    //fraglich, ob ich diese zwei Variablen ueberhaupt brauche
+    [SerializeField] private PlayerCustomizationManager customizationManager;
+    [SerializeField] private PlayerCustomizationManager localCustomizationManager;
+
+    [SerializeField] private CharacterMainMenuPreviewSelection _previewSelection;
+
     private void Awake()
     {
-        UpdateManager.Instance.RegisterObserver(this);
-
         UpdateText();
         redSlider.onValueChanged.AddListener(UpdateColor);
         greenSlider.onValueChanged.AddListener(UpdateColor);
         blueSlider.onValueChanged.AddListener(UpdateColor);
-        redSlider.value = _redHatColor;
-        greenSlider.value = _greenHatColor;
-        blueSlider.value = _blueHatColor;
+        redSlider.value = _redHatColor / 255f;
+        greenSlider.value = _greenHatColor / 255f;
+        blueSlider.value = _blueHatColor / 255f;
+
+        //erstellen Default-Werte fuer Customization Menu
+        currentCustomize = new Hashtable();
+        currentCustomize.Add("HatIndex", 0);
+        currentCustomize.Add("EyeIndex", 0);
+        currentCustomize.Add("BodyIndex", 0);
+        currentCustomize.Add("ClothesIndex", 0);
+
+        currentCustomize.Add("HatColorR", 100);
+        currentCustomize.Add("HatColorG", 37);
+        currentCustomize.Add("HatColorB", 30);
+
+        SaveHatSelection();
     }
 
-    #region UpdateManager connection
+    private void SaveLocalHatSelection()
+    {
+        currentCustomize["HatIndex"] = _hatNumber;
+        currentCustomize["EyeIndex"] = _eyeNumber;
+        currentCustomize["BodyIndex"] = _bodyNumber;
+        currentCustomize["ClothesIndex"] = _clothesNumber;
+
+        //speichere Farben von Slider
+        currentCustomize["HatColorR"] = Mathf.RoundToInt(redSlider.value * 255);
+        currentCustomize["HatColorG"] = Mathf.RoundToInt(greenSlider.value * 255);
+        currentCustomize["HatColorB"] = Mathf.RoundToInt(blueSlider.value * 255);
+
+        //default Werte fuer Customization Menu
+
+    }
+
     private void OnEnable()
     {
-        UpdateManager.Instance.RegisterObserver(this);
+        //loeschen von alten Werten (zur Sichercheit) und schreiben von aktuellen Werten aus PlayerPropertiess
+        //und alle nicht gespeicherte Veraenderungen in diesem Menu werden hier gespeichert
+        currentCustomize = new Hashtable();
+        Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+
+        currentCustomize["HatIndex"] = (int)playerProperties["HatIndex"];
+        currentCustomize["EyeIndex"] = (int)playerProperties["EyeIndex"];
+        currentCustomize["BodyIndex"] = (int)playerProperties["BodyIndex"];
+        currentCustomize["ClothesIndex"] = (int)playerProperties["ClothesIndex"];
+
+        //speichere Farben von Slider
+        currentCustomize["HatColorR"] = playerProperties["HatColorR"];
+        currentCustomize["HatColorG"] = playerProperties["HatColorG"];
+        currentCustomize["HatColorB"] = playerProperties["HatColorB"];
+
+        customizationManager.ApplyCustomization(); //???
+        //Speichern den alten Wert. Falls kein Save gedruckt wird, werden wir diesen Wert zurucksetzen
+
+        //anpassen zu Customization aus dem MainMenu
+        _hatNumber = (int)currentCustomize["HatIndex"];
+        _eyeNumber = (int)currentCustomize["EyeIndex"];
+        _bodyNumber = (int)currentCustomize["BodyIndex"];
+        _clothesNumber = (int)currentCustomize["ClothesIndex"];
+        currentHatRenderer = _hatsList[_hatNumber].GetComponent<Renderer>();
+
+        //damit wir in MainMenu und in diesem Menu gleiche Avatars beim Beitreten haben
+        _previewSelection.SelectinEditMenu(_previewSelection.currCharIndex);
+        UpdateSlidersWithHatsValue(_hatNumber);
+        UpdateText();
     }
     private void OnDisable()
     {
-        UpdateManager.Instance.UnregisterObserver(this);
+        //loeschen von allen gespeicherten Veraenderungen
+        currentCustomize = new Hashtable();
     }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion
 
     private void UpdateColor(float value)
     {
@@ -78,6 +129,8 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         float red = redSlider.value;
         float green = greenSlider.value;
         float blue = blueSlider.value;
+
+        SaveLocalHatSelection();
 
         //erstellt eine neue Farbe basierend auf diesen (da diese Methode aufgerufen wird jedes Mal, wenn wir Slider aendern)
         Color newColor = new Color(red, green, blue);
@@ -124,14 +177,7 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         {
             list[i].SetActive(i == selectedIndex);
         }
-    }
-
-    public void ObservedUpdate()
-    {
-        UpdateSelection(_hatsList, _hatNumber);
-        UpdateSelection(_eyesList, _eyeNumber);
-        UpdateSelection(_clothesList, _clothesNumber);
-        UpdateSelection(_bodiesList, _bodyNumber);
+        UpdateText();
     }
 
     public void nextHat()
@@ -139,9 +185,9 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         if (_hatsList.Count == 0) return;
         _hatNumber = (_hatNumber + 1) % _hatsList.Count;
         currentHatRenderer = _hatsList[_hatNumber].GetComponent<Renderer>();
-        SaveHatSelection();
-        UpdateText();
+        SaveLocalHatSelection();
         UpdateSlidersWithHatsValue(_hatNumber);
+        UpdateSelection(_hatsList, _hatNumber);
     }
     public void prevHat()
     {
@@ -155,17 +201,17 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
             _hatNumber--;
         }
         currentHatRenderer = _hatsList[_hatNumber].GetComponent<Renderer>();
-        SaveHatSelection();
-        UpdateText();
+        SaveLocalHatSelection();
         UpdateSlidersWithHatsValue(_hatNumber);
+        UpdateSelection(_hatsList, _hatNumber);
     }
 
     public void nextEye()
     {
         if (_eyesList.Count == 0) return;
         _eyeNumber = (_eyeNumber + 1) % _eyesList.Count;
-        SaveHatSelection();
-        UpdateText();
+        SaveLocalHatSelection();
+        UpdateSelection(_eyesList, _eyeNumber);
     }
     public void prevEye()
     {
@@ -178,15 +224,15 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         {
             _eyeNumber--;
         }
-        SaveHatSelection();
-        UpdateText();
+        SaveLocalHatSelection();
+        UpdateSelection(_eyesList, _eyeNumber);
     }
     public void nextClothes()
     {
         if (_clothesList.Count == 0) return;
         _clothesNumber = (_clothesNumber + 1) % _clothesList.Count;
-        SaveHatSelection();
-        UpdateText();
+        SaveLocalHatSelection();
+        UpdateSelection(_clothesList, _clothesNumber);
     }
     public void prevClothes()
     {
@@ -199,29 +245,19 @@ public class CharacterEditingMenu : MonoBehaviour, IUpdateObserver
         {
             _clothesNumber--;
         }
-        SaveHatSelection();
-        UpdateText();
+        SaveLocalHatSelection();
+        UpdateSelection(_clothesList, _clothesNumber);
     }
 
 
     //tf2 reference
-    private void SaveHatSelection()
+    public void SaveHatSelection()
     {
-        Hashtable hash = new Hashtable();
-        hash.Add("HatIndex", _hatNumber);
-        hash.Add("EyeIndex", _eyeNumber);
-        hash.Add("BodyIndex", _bodyNumber);
-        hash.Add("ClothesIndex", _clothesNumber);
-
-        //speichere Farben von Slider
-        Debug.Log($"ich schreibe in Datenbank, dass rot ist {Mathf.RoundToInt(redSlider.value * 255)}");
-        Debug.Log($"ich schreibe in Datenbank, dass green ist {Mathf.RoundToInt(greenSlider.value * 255)}");
-        Debug.Log($"ich schreibe in Datenbank, dass blue ist {Mathf.RoundToInt(blueSlider.value * 255)}");
-        hash.Add("HatColorR", Mathf.RoundToInt(redSlider.value * 255));
-        hash.Add("HatColorG", Mathf.RoundToInt(greenSlider.value * 255));
-        hash.Add("HatColorB", Mathf.RoundToInt(blueSlider.value * 255));
-
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(currentCustomize);
+        _previewSelection.SelectCharacter(_previewSelection.tempCharIndex);
+        _previewSelection.currCharIndex = _previewSelection.tempCharIndex;
+        Launch.instance.SelectAvatar(_previewSelection.tempCharIndex);
+        
     }
 
     //damit nachdem wir "nicht speichern und in Main Menu" Button drucken, unsere Variablen aktualisiert werden

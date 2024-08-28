@@ -1,10 +1,8 @@
 using ExitGames.Client.Photon;
 using Photon.Chat;
 using Photon.Pun;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Photon.Realtime;
 
@@ -13,8 +11,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     ChatClient chatClient;
     [SerializeField] string _username = PhotonNetwork.NickName;
     bool isConnected;
-    //bool chatRegistered = false;
-    public static bool chatTrigger = false;
+
     [SerializeField] TMP_InputField chatField;
     [SerializeField] TMP_Text chatDisplay;
     [SerializeField] GameObject joinChatButton;
@@ -34,14 +31,17 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("ChatManager");
     }
     private void OnDisable()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("ChatManager");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("ChatManager");
     }
     #endregion
 
@@ -51,7 +51,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     }
     public void Awake()
     {
-        UpdateManager.Instance.RegisterObserver(this);
+        //UpdateManager.Instance.RegisterObserver(this);
         _username = PhotonNetwork.NickName;
         ChatConnect();
     }
@@ -182,50 +182,23 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     // Update is called once per frame
     public void ObservedUpdate()
     {
-        if (ChatCanBeOpened())
-        {
-            chatTrigger = !chatTrigger;
-        }
-        if (chatTrigger)
-        {
-            Cursor.visible = true;
-            transform.GetChild(0).gameObject.SetActive(true);
-
             if (CheckPlayerListChanged(oldListOfPlayers, PhotonNetwork.PlayerList))
             {
                 UpdatePlayerList();
-                oldListOfPlayers = (Player[]) PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
+                oldListOfPlayers = (Player[])PhotonNetwork.PlayerList.Clone(); //magic aus dem Internet
             }
-            
-
             if (isConnected)
                 chatClient.Service();
 
+        //nur wenn Menu geoffnet ist, checken wir, ob die Nachricht versendet werden kann
+        if (IngameMenuManager.GetCurrentMenu() == MenuType.ChatMenu)
+        {
             if (chatField.text != "" && Input.GetKey(KeyCode.Return))
             {
                 SubmitPublicChatOnClick();
                 SubmitPrivateChatOnClick();
             }
         }
-        else if(Pause.paused || AdminPanelScript.adminPanelIsOn || DrawingUIManager.whiteboardOn || RoleplayPanelScript.roleplayPanelIsOn)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
-            transform.GetChild(0).gameObject.SetActive(false);
-        }
-        
-    }
-    public bool ChatCanBeOpened()
-    {
-        return Input.GetKeyDown(KeyCode.LeftControl) && //wenn wir versuchen, Chat zu oeffnen
-            !Pause.paused &&
-            !AdminPanelScript.adminPanelIsOn && 
-            roomSettingManager.chatIsOn;
     }
 
     public void TypeChatOnValueChange(string valueIn)

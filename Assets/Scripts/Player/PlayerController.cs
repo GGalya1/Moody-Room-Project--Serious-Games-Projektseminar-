@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 
 public class PlayerController : MonoBehaviour, IUpdateObserver
@@ -43,14 +41,17 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     private void OnEnable()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("PlayerController");
     }
     private void OnDisable()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("PlayerController");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("PlayerController");
     }
     #endregion
 
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     private void FixedUpdate()
     {
         if(_photonView.IsMine)
-            _rigidbody.MovePosition(_rigidbody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime * ( (Pause.paused || PhotonChatManager.chatTrigger) ? 0 : 1));
+            _rigidbody.MovePosition(_rigidbody.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
     void Move()
@@ -85,10 +86,8 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             {
                 return;
             }
-
-        if (ControlIsNotFrozen())
+        if(IngameMenuManager.GetCurrentMenu() == MenuType.None || IngameMenuManager.GetCurrentMenu() == MenuType.PlayerlistMenu)
         {
-
 
             Move();
             RotatePlayerLeftRight();
@@ -99,6 +98,12 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             {
                 _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             }
+            _rigidbody.drag = 0f;
+        }
+        else
+        {
+            _rigidbody.drag = 3f;
+            moveAmount = Vector3.Lerp(moveAmount, Vector3.zero, Time.deltaTime * 3f);
         }
 
         
@@ -106,10 +111,6 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             {
                 Respawn();
             }
-    }
-    private bool ControlIsNotFrozen()
-    {
-        return !Pause.paused && !PhotonChatManager.chatTrigger && !AdminPanelScript.adminPanelIsOn && !DrawingUIManager.whiteboardOn && !RoleplayPanelScript.roleplayPanelIsOn;
     }
 
     private void RotatePlayerLeftRight()

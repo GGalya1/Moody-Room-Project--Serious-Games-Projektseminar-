@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scenes/Forest.unity.meta
 guid: e220aa4a874555b46a23ce2b966a21ca
+=======
+guid: 5ffce7e552fec594e9089f8b913d7b45
+folderAsset: yes
+>>>>>>> main:Assets/Materials/Materials.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class MusikManager : MonoBehaviour, IUpdateObserver
 {
@@ -39,10 +37,12 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     private void Awake()
     {
         UpdateManager.Instance.RegisterObserver(this);
+        UpdateManager.Instance.RegisterObserverName("MusikManager");
     }
     private void OnDestroy()
     {
         UpdateManager.Instance.UnregisterObserver(this);
+        UpdateManager.Instance.UnregisterOberverName("MusikManager");
     }
     #endregion
 
