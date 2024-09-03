@@ -1,37 +1,30 @@
+Unity Editor version:    2022.3.34f1 (4886f5360533)
+Branch:                  2022.3/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 14.5 (Build 23F79)
+Darwin version:          23.5.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        8192 MB
 Using pre-set license
-Built from '2021.3/staging' branch; Version is '2021.3.1f1 (3b70a0754835) revision 3895456'; Using compiler version '192829333'; Build Type 'Release'
-<<<<<<< HEAD
-OS: 'Windows 11  (10.0.22631) 64bit Core' Language: 'en' Physical Memory: 32038 MB
-=======
-OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'de' Physical Memory: 7969 MB
->>>>>>> main
-BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+Pro License: YES
 
 COMMAND LINE ARGUMENTS:
-C:\Program Files\Unity\Hub\Editor\2021.3.1f1\Editor\Unity.exe
+/Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/MacOS/Unity
 -adb2
 -batchMode
 -noUpm
 -name
 AssetImportWorker0
 -projectPath
-<<<<<<< HEAD
-C:/Users/sardo/Documents/GitHub/Moody-Room-Project--Serious-Games-Projektseminar-
+/Users/tatiana28/Downloads/Moody-Room-Project--Serious-Games-Projektseminar-
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-51486
-Successfully changed project path to: C:/Users/sardo/Documents/GitHub/Moody-Room-Project--Serious-Games-Projektseminar-
-C:/Users/sardo/Documents/GitHub/Moody-Room-Project--Serious-Games-Projektseminar-
-=======
-D:/Файлы/Поездка Германия (Артурик)/Hobby/Code/Unity/Tutorial/Sebastian Lague 2D Tutorial/Serious Games P18
--logFile
-Logs/AssetImportWorker0.log
--srvPort
-49443
-Successfully changed project path to: D:/Файлы/Поездка Германия (Артурик)/Hobby/Code/Unity/Tutorial/Sebastian Lague 2D Tutorial/Serious Games P18
-D:/Файлы/Поездка Германия (Артурик)/Hobby/Code/Unity/Tutorial/Sebastian Lague 2D Tutorial/Serious Games P18
->>>>>>> main
+60873
+Successfully changed project path to: /Users/tatiana28/Downloads/Moody-Room-Project--Serious-Games-Projektseminar-
+/Users/tatiana28/Downloads/Moody-Room-Project--Serious-Games-Projektseminar-
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -53,6 +46,8 @@ D:/Файлы/Поездка Германия (Артурик)/Hobby/Code/Unity/
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
     "memorysetup-temp-allocator-size-background-worker=32768"
     "memorysetup-temp-allocator-size-job-worker=262144"
     "memorysetup-temp-allocator-size-preload-manager=33554432"
@@ -61,187 +56,448 @@ D:/Файлы/Поездка Германия (Артурик)/Hobby/Code/Unity/
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-<<<<<<< HEAD
-Refreshing native plugins compatible for Editor in 60.72 ms, found 6 plugins.
+Player connection [8681901056] Host "[IP] 172.18.33.96 [Port] 0 [Flags] 2 [Guid] 2812364787 [EditorId] 2812364787 [Version] 1048832 [Id] OSXEditor(0,MacBook-Air-Tatiana.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [8681901056] Host "[IP] 172.18.33.96 [Port] 0 [Flags] 2 [Guid] 2812364787 [EditorId] 2812364787 [Version] 1048832 [Id] OSXEditor(0,MacBook-Air-Tatiana.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+Multiple plugins with the same name 'opus_egpv' (found at 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/opus_egpv.bundle' and 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/opus_egpv.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Multiple plugins with the same name 'audioin' (found at 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/AudioIn.bundle' and 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/AudioIn.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Multiple plugins with the same name 'webrtc-audio' (found at 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/webrtc-audio.bundle' and 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/webrtc-audio.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Refreshing native plugins compatible for Editor in 31.26 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Initialize engine version: 2021.3.1f1 (3b70a0754835)
-[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path C:/Users/sardo/Documents/GitHub/Moody-Room-Project--Serious-Games-Projektseminar-/Assets
+Initialize engine version: 2022.3.34f1 (4886f5360533)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/tatiana28/Downloads/Moody-Room-Project--Serious-Games-Projektseminar-/Assets
 GfxDevice: creating device client; threaded=0; jobified=0
-Direct3D:
-    Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce RTX 4070 Laptop GPU (ID=0x2820)
-    Vendor:   NVIDIA
-    VRAM:     7948 MB
-    Driver:   32.0.15.5594
-=======
-Refreshing native plugins compatible for Editor in 120.02 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Initialize engine version: 2021.3.1f1 (3b70a0754835)
-[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path D:/Файлы/Поездка Германия (Артурик)/Hobby/Code/Unity/Tutorial/Sebastian Lague 2D Tutorial/Serious Games P18/Assets
-GfxDevice: creating device client; threaded=0; jobified=0
-Direct3D:
-    Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce MX330 (ID=0x1d16)
-    Vendor:   NVIDIA
-    VRAM:     1983 MB
-    Driver:   31.0.15.1640
->>>>>>> main
+ preferred device: Apple M1 (high power)
+Metal devices available: 1
+0: Apple M1 (high power)
+Using device Apple M1 (high power)
+Initializing Metal device caps: Apple M1
 Initialize mono
-Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Managed'
-Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
-Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/etc'
-<<<<<<< HEAD
+Mono path[0] = '/Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/MonoBleedingEdge/etc'
 Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56616
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003207 seconds.
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 54.92 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
+Register platform support module: /Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/2022.3.34f1-arm64/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Registered in 0.001020 seconds.
+- Loaded All Assemblies, in  0.273 seconds
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+[usbmuxd] Send listen message
+Native extension for iOS target not found
+Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Completed reload, in  0.443 seconds
-Domain Reload Profiling:
-	ReloadAssembly (444ms)
-		BeginReloadAssembly (47ms)
-=======
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56836
-Begin MonoManager ReloadAssembly
-Registering precompiled unity dll's ...
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.009869 seconds.
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 97.38 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.747 seconds
-Domain Reload Profiling:
-	ReloadAssembly (748ms)
-		BeginReloadAssembly (89ms)
->>>>>>> main
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (0ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (1ms)
-<<<<<<< HEAD
-		EndReloadAssembly (320ms)
-			LoadAssemblies (45ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (72ms)
-			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (19ms)
-			SetupLoadedEditorAssemblies (193ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (55ms)
-				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (97ms)
-				ProcessInitializeOnLoadMethodAttributes (34ms)
-=======
-		EndReloadAssembly (511ms)
-			LoadAssemblies (87ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (114ms)
-			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (31ms)
-			SetupLoadedEditorAssemblies (307ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (10ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (97ms)
-				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (149ms)
-				ProcessInitializeOnLoadMethodAttributes (48ms)
->>>>>>> main
-				AfterProcessingInitializeOnLoad (0ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (0ms)
-Platform modules already initialized, skipping
-Registering precompiled user dll's ...
-<<<<<<< HEAD
-Registered in 0.005544 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\sardo\Documents\GitHub\Moody-Room-Project--Serious-Games-Projektseminar-\Library\PackageCache\com.unity.visualscripting@1.7.6\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\sardo\Documents\GitHub\Moody-Room-Project--Serious-Games-Projektseminar-\Library\PackageCache\com.unity.visualscripting@1.7.6\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory is not a mono symbol file
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.82 ms, found 6 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.726 seconds
-Domain Reload Profiling:
-	ReloadAssembly (727ms)
-		BeginReloadAssembly (81ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (18ms)
-		EndReloadAssembly (566ms)
-			LoadAssemblies (59ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (174ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (40ms)
-			SetupLoadedEditorAssemblies (254ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (4ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (60ms)
-				ProcessInitializeOnLoadAttributes (165ms)
-				ProcessInitializeOnLoadMethodAttributes (19ms)
-				AfterProcessingInitializeOnLoad (5ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (6ms)
-Platform modules already initialized, skipping
+- Finished resetting the current domain, in  0.242 seconds
+Domain Reload Profiling: 516ms
+	BeginReloadAssembly (89ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (37ms)
+	LoadAllAssembliesAndSetupDomain (111ms)
+		LoadAssemblies (89ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (108ms)
+			TypeCache.Refresh (107ms)
+				TypeCache.ScanAssembly (93ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (243ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (204ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (72ms)
+			SetLoadedEditorAssemblies (5ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (10ms)
+			ProcessInitializeOnLoadAttributes (89ms)
+			ProcessInitializeOnLoadMethodAttributes (27ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+Assembly with name 'PhotonVoice.PUN' already exists (Assets/Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef)
+Assembly with name 'PhotonVoice.PUN' already exists (Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef)
+Assembly with name 'PhotonVoice' already exists (Assets/Assets/Photon/PhotonVoice/Code/PhotonVoice.asmdef)
+Assembly with name 'PhotonVoice' already exists (Assets/Photon/PhotonVoice/Code/PhotonVoice.asmdef)
+Assembly with name 'MicAmplifierEditor.Editor' already exists (Assets/Photon/PhotonVoice/Code/UtilityScripts/MicAmplifier/Editor/MicAmplifier.Editor.asmdef)
+Assembly with name 'MicAmplifierEditor.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/UtilityScripts/MicAmplifier/Editor/MicAmplifier.Editor.asmdef)
+Assembly with name 'PhotonVoice.API' already exists (Assets/Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonVoice.API.asmdef)
+Assembly with name 'PhotonVoice.API' already exists (Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonVoice.API.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.PhotonPlayer.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonPlayer/Editor/PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.PhotonPlayer.Editor' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonPlayer/Editor/PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.asmdef)
+Assembly with name 'PhotonVoice.Utilities.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/UtilityScripts/Editor/PhotonVoice.Utilities.Editor.asmdef)
+Assembly with name 'PhotonVoice.Utilities.Editor' already exists (Assets/Photon/PhotonVoice/Code/UtilityScripts/Editor/PhotonVoice.Utilities.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking' already exists (Assets/Photon/PhotonUnityNetworking/Code/PhotonUnityNetworking.asmdef)
+Assembly with name 'PhotonUnityNetworking' already exists (Assets/Assets/Photon/PhotonUnityNetworking/Code/PhotonUnityNetworking.asmdef)
+Assembly with name 'PhotonUnityNetworking.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/Code/Editor/PhotonUnityNetworking.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Editor' already exists (Assets/Photon/PhotonUnityNetworking/Code/Editor/PhotonUnityNetworking.Editor.asmdef)
+Assembly with name 'PhotonVoice.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef)
+Assembly with name 'PhotonVoice.Editor' already exists (Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef)
+Assembly with name 'PhotonVoiceApi.FMOD' already exists (Assets/Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/FMOD/PhotonVoice.API.FMOD.asmdef)
+Assembly with name 'PhotonVoiceApi.FMOD' already exists (Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/FMOD/PhotonVoice.API.FMOD.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.Culling.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/Culling/Editor/PhotonUnityNetworking.Utilities.Culling.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.Culling.Editor' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/Culling/Editor/PhotonUnityNetworking.Utilities.Culling.Editor.asmdef)
+Assembly with name 'PhotonVoice.PUN.Editor' already exists (Assets/Photon/PhotonVoice/Code/PUN/Editor/PhotonVoice.PUN.Editor.asmdef)
+Assembly with name 'PhotonVoice.PUN.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/PUN/Editor/PhotonVoice.PUN.Editor.asmdef)
+Assembly with name 'PhotonVoice.FMOD' already exists (Assets/Photon/PhotonVoice/Code/FMOD/PhotonVoice.FMOD.asmdef)
+Assembly with name 'PhotonVoice.FMOD' already exists (Assets/Assets/Photon/PhotonVoice/Code/FMOD/PhotonVoice.FMOD.asmdef)
+Assembly with name 'Voice.FMOD.Editor' already exists (Assets/Photon/PhotonVoice/Code/FMOD/Editor/PhotonVoice.FMOD.Editor.asmdef)
+Assembly with name 'Voice.FMOD.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/FMOD/Editor/PhotonVoice.FMOD.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonUnityNetworking.Utilities.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonUnityNetworking.Utilities.asmdef)
+Assembly with name 'PhotonChat' already exists (Assets/Assets/Photon/PhotonChat/Code/PhotonChat.asmdef)
+Assembly with name 'PhotonChat' already exists (Assets/Photon/PhotonChat/Code/PhotonChat.asmdef)
+Assembly with name 'PhotonRealtime' already exists (Assets/Assets/Photon/PhotonRealtime/Code/PhotonRealtime.asmdef)
+Assembly with name 'PhotonRealtime' already exists (Assets/Photon/PhotonRealtime/Code/PhotonRealtime.asmdef)
+Assembly with name 'SimpleFileBrowser.Runtime' already exists (Assets/Assets/Plugins/SimpleFileBrowser/SimpleFileBrowser.Runtime.asmdef)
+Assembly with name 'SimpleFileBrowser.Runtime' already exists (Assets/Plugins/SimpleFileBrowser/SimpleFileBrowser.Runtime.asmdef)
+Assembly with name 'PhotonVoice.Fusion.Editor' already exists (Assets/Photon/PhotonVoice/Code/Fusion/Editor/PhotonVoice.Fusion.Editor.asmdef)
+Assembly with name 'PhotonVoice.Fusion.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/Fusion/Editor/PhotonVoice.Fusion.Editor.asmdef)
+Assembly with name 'PhotonVoice.Fusion' already exists (Assets/Assets/Photon/PhotonVoice/Code/Fusion/PhotonVoice.Fusion.asmdef)
+Assembly with name 'PhotonVoice.Fusion' already exists (Assets/Photon/PhotonVoice/Code/Fusion/PhotonVoice.Fusion.asmdef)
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 1.09 ms, found 6 plugins.
+Assembly with name 'PhotonVoice.PUN' already exists (Assets/Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef)
+Assembly with name 'PhotonVoice.PUN' already exists (Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef)
+Assembly with name 'PhotonVoice' already exists (Assets/Assets/Photon/PhotonVoice/Code/PhotonVoice.asmdef)
+Assembly with name 'PhotonVoice' already exists (Assets/Photon/PhotonVoice/Code/PhotonVoice.asmdef)
+Assembly with name 'MicAmplifierEditor.Editor' already exists (Assets/Photon/PhotonVoice/Code/UtilityScripts/MicAmplifier/Editor/MicAmplifier.Editor.asmdef)
+Assembly with name 'MicAmplifierEditor.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/UtilityScripts/MicAmplifier/Editor/MicAmplifier.Editor.asmdef)
+Assembly with name 'PhotonVoice.API' already exists (Assets/Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonVoice.API.asmdef)
+Assembly with name 'PhotonVoice.API' already exists (Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonVoice.API.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.PhotonPlayer.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonPlayer/Editor/PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.PhotonPlayer.Editor' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonPlayer/Editor/PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.asmdef)
+Assembly with name 'PhotonVoice.Utilities.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/UtilityScripts/Editor/PhotonVoice.Utilities.Editor.asmdef)
+Assembly with name 'PhotonVoice.Utilities.Editor' already exists (Assets/Photon/PhotonVoice/Code/UtilityScripts/Editor/PhotonVoice.Utilities.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking' already exists (Assets/Photon/PhotonUnityNetworking/Code/PhotonUnityNetworking.asmdef)
+Assembly with name 'PhotonUnityNetworking' already exists (Assets/Assets/Photon/PhotonUnityNetworking/Code/PhotonUnityNetworking.asmdef)
+Assembly with name 'PhotonUnityNetworking.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/Code/Editor/PhotonUnityNetworking.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Editor' already exists (Assets/Photon/PhotonUnityNetworking/Code/Editor/PhotonUnityNetworking.Editor.asmdef)
+Assembly with name 'PhotonVoice.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef)
+Assembly with name 'PhotonVoice.Editor' already exists (Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef)
+Assembly with name 'PhotonVoiceApi.FMOD' already exists (Assets/Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/FMOD/PhotonVoice.API.FMOD.asmdef)
+Assembly with name 'PhotonVoiceApi.FMOD' already exists (Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/FMOD/PhotonVoice.API.FMOD.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.Culling.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/Culling/Editor/PhotonUnityNetworking.Utilities.Culling.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.Culling.Editor' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/Culling/Editor/PhotonUnityNetworking.Utilities.Culling.Editor.asmdef)
+Assembly with name 'PhotonVoice.PUN.Editor' already exists (Assets/Photon/PhotonVoice/Code/PUN/Editor/PhotonVoice.PUN.Editor.asmdef)
+Assembly with name 'PhotonVoice.PUN.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/PUN/Editor/PhotonVoice.PUN.Editor.asmdef)
+Assembly with name 'PhotonVoice.FMOD' already exists (Assets/Photon/PhotonVoice/Code/FMOD/PhotonVoice.FMOD.asmdef)
+Assembly with name 'PhotonVoice.FMOD' already exists (Assets/Assets/Photon/PhotonVoice/Code/FMOD/PhotonVoice.FMOD.asmdef)
+Assembly with name 'Voice.FMOD.Editor' already exists (Assets/Photon/PhotonVoice/Code/FMOD/Editor/PhotonVoice.FMOD.Editor.asmdef)
+Assembly with name 'Voice.FMOD.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/FMOD/Editor/PhotonVoice.FMOD.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonUnityNetworking.Utilities.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonUnityNetworking.Utilities.asmdef)
+Assembly with name 'PhotonChat' already exists (Assets/Assets/Photon/PhotonChat/Code/PhotonChat.asmdef)
+Assembly with name 'PhotonChat' already exists (Assets/Photon/PhotonChat/Code/PhotonChat.asmdef)
+Assembly with name 'PhotonRealtime' already exists (Assets/Assets/Photon/PhotonRealtime/Code/PhotonRealtime.asmdef)
+Assembly with name 'PhotonRealtime' already exists (Assets/Photon/PhotonRealtime/Code/PhotonRealtime.asmdef)
+Assembly with name 'SimpleFileBrowser.Runtime' already exists (Assets/Assets/Plugins/SimpleFileBrowser/SimpleFileBrowser.Runtime.asmdef)
+Assembly with name 'SimpleFileBrowser.Runtime' already exists (Assets/Plugins/SimpleFileBrowser/SimpleFileBrowser.Runtime.asmdef)
+Assembly with name 'PhotonVoice.Fusion.Editor' already exists (Assets/Photon/PhotonVoice/Code/Fusion/Editor/PhotonVoice.Fusion.Editor.asmdef)
+Assembly with name 'PhotonVoice.Fusion.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/Fusion/Editor/PhotonVoice.Fusion.Editor.asmdef)
+Assembly with name 'PhotonVoice.Fusion' already exists (Assets/Assets/Photon/PhotonVoice/Code/Fusion/PhotonVoice.Fusion.asmdef)
+Assembly with name 'PhotonVoice.Fusion' already exists (Assets/Photon/PhotonVoice/Code/Fusion/PhotonVoice.Fusion.asmdef)
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.358 seconds
+Multiple plugins with the same name 'opus_egpv' (found at 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/opus_egpv.bundle' and 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/opus_egpv.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Multiple plugins with the same name 'audioin' (found at 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/AudioIn.bundle' and 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/AudioIn.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Multiple plugins with the same name 'webrtc-audio' (found at 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/webrtc-audio.bundle' and 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/webrtc-audio.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Refreshing native plugins compatible for Editor in 6.30 ms, found 5 plugins.
+Native extension for iOS target not found
+Native extension for OSXStandalone target not found
+Assembly with name 'PhotonVoice.PUN' already exists (Assets/Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef)
+Assembly with name 'PhotonVoice.PUN' already exists (Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef)
+Assembly with name 'PhotonVoice' already exists (Assets/Assets/Photon/PhotonVoice/Code/PhotonVoice.asmdef)
+Assembly with name 'PhotonVoice' already exists (Assets/Photon/PhotonVoice/Code/PhotonVoice.asmdef)
+Assembly with name 'MicAmplifierEditor.Editor' already exists (Assets/Photon/PhotonVoice/Code/UtilityScripts/MicAmplifier/Editor/MicAmplifier.Editor.asmdef)
+Assembly with name 'MicAmplifierEditor.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/UtilityScripts/MicAmplifier/Editor/MicAmplifier.Editor.asmdef)
+Assembly with name 'PhotonVoice.API' already exists (Assets/Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonVoice.API.asmdef)
+Assembly with name 'PhotonVoice.API' already exists (Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonVoice.API.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.PhotonPlayer.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonPlayer/Editor/PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.PhotonPlayer.Editor' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonPlayer/Editor/PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.asmdef)
+Assembly with name 'PhotonVoice.Utilities.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/UtilityScripts/Editor/PhotonVoice.Utilities.Editor.asmdef)
+Assembly with name 'PhotonVoice.Utilities.Editor' already exists (Assets/Photon/PhotonVoice/Code/UtilityScripts/Editor/PhotonVoice.Utilities.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking' already exists (Assets/Photon/PhotonUnityNetworking/Code/PhotonUnityNetworking.asmdef)
+Assembly with name 'PhotonUnityNetworking' already exists (Assets/Assets/Photon/PhotonUnityNetworking/Code/PhotonUnityNetworking.asmdef)
+Assembly with name 'PhotonUnityNetworking.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/Code/Editor/PhotonUnityNetworking.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Editor' already exists (Assets/Photon/PhotonUnityNetworking/Code/Editor/PhotonUnityNetworking.Editor.asmdef)
+Assembly with name 'PhotonVoice.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef)
+Assembly with name 'PhotonVoice.Editor' already exists (Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef)
+Assembly with name 'PhotonVoiceApi.FMOD' already exists (Assets/Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/FMOD/PhotonVoice.API.FMOD.asmdef)
+Assembly with name 'PhotonVoiceApi.FMOD' already exists (Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/FMOD/PhotonVoice.API.FMOD.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.Culling.Editor' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/Culling/Editor/PhotonUnityNetworking.Utilities.Culling.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities.Culling.Editor' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/Culling/Editor/PhotonUnityNetworking.Utilities.Culling.Editor.asmdef)
+Assembly with name 'PhotonVoice.PUN.Editor' already exists (Assets/Photon/PhotonVoice/Code/PUN/Editor/PhotonVoice.PUN.Editor.asmdef)
+Assembly with name 'PhotonVoice.PUN.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/PUN/Editor/PhotonVoice.PUN.Editor.asmdef)
+Assembly with name 'PhotonVoice.FMOD' already exists (Assets/Photon/PhotonVoice/Code/FMOD/PhotonVoice.FMOD.asmdef)
+Assembly with name 'PhotonVoice.FMOD' already exists (Assets/Assets/Photon/PhotonVoice/Code/FMOD/PhotonVoice.FMOD.asmdef)
+Assembly with name 'Voice.FMOD.Editor' already exists (Assets/Photon/PhotonVoice/Code/FMOD/Editor/PhotonVoice.FMOD.Editor.asmdef)
+Assembly with name 'Voice.FMOD.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/FMOD/Editor/PhotonVoice.FMOD.Editor.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities' already exists (Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonUnityNetworking.Utilities.asmdef)
+Assembly with name 'PhotonUnityNetworking.Utilities' already exists (Assets/Assets/Photon/PhotonUnityNetworking/UtilityScripts/PhotonUnityNetworking.Utilities.asmdef)
+Assembly with name 'PhotonChat' already exists (Assets/Assets/Photon/PhotonChat/Code/PhotonChat.asmdef)
+Assembly with name 'PhotonChat' already exists (Assets/Photon/PhotonChat/Code/PhotonChat.asmdef)
+Assembly with name 'PhotonRealtime' already exists (Assets/Assets/Photon/PhotonRealtime/Code/PhotonRealtime.asmdef)
+Assembly with name 'PhotonRealtime' already exists (Assets/Photon/PhotonRealtime/Code/PhotonRealtime.asmdef)
+Assembly with name 'SimpleFileBrowser.Runtime' already exists (Assets/Assets/Plugins/SimpleFileBrowser/SimpleFileBrowser.Runtime.asmdef)
+Assembly with name 'SimpleFileBrowser.Runtime' already exists (Assets/Plugins/SimpleFileBrowser/SimpleFileBrowser.Runtime.asmdef)
+Assembly with name 'PhotonVoice.Fusion.Editor' already exists (Assets/Photon/PhotonVoice/Code/Fusion/Editor/PhotonVoice.Fusion.Editor.asmdef)
+Assembly with name 'PhotonVoice.Fusion.Editor' already exists (Assets/Assets/Photon/PhotonVoice/Code/Fusion/Editor/PhotonVoice.Fusion.Editor.asmdef)
+Assembly with name 'PhotonVoice.Fusion' already exists (Assets/Assets/Photon/PhotonVoice/Code/Fusion/PhotonVoice.Fusion.asmdef)
+Assembly with name 'PhotonVoice.Fusion' already exists (Assets/Photon/PhotonVoice/Code/Fusion/PhotonVoice.Fusion.asmdef)
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.231 seconds
+Domain Reload Profiling: 589ms
+	BeginReloadAssembly (87ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (20ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (25ms)
+	LoadAllAssembliesAndSetupDomain (214ms)
+		LoadAssemblies (156ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (98ms)
+			TypeCache.Refresh (96ms)
+				TypeCache.ScanAssembly (71ms)
+			ScanForSourceGeneratedMonoScriptInfo (1ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (231ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (149ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (15ms)
+			SetLoadedEditorAssemblies (2ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (44ms)
+			ProcessInitializeOnLoadAttributes (77ms)
+			ProcessInitializeOnLoadMethodAttributes (11ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Launching external process: /Applications/Unity/Hub/Editor/2022.3.34f1-arm64/Unity.app/Contents/Tools/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.05 seconds
+Multiple plugins with the same name 'opus_egpv' (found at 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/opus_egpv.bundle' and 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/opus_egpv.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Multiple plugins with the same name 'audioin' (found at 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/AudioIn.bundle' and 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/AudioIn.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Multiple plugins with the same name 'webrtc-audio' (found at 'Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/webrtc-audio.bundle' and 'Assets/Assets/Photon/PhotonVoice/PhotonVoiceLibs/OSX/webrtc-audio.bundle'). That means one or more plugins are set to be compatible with Editor. Only one plugin at the time can be used by Editor.
+Refreshing native plugins compatible for Editor in 6.74 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3600 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 73 unused Assets / (60.2 KB). Loaded Objects now: 4061.
-Memory consumption went from 157.0 MB to 157.0 MB.
-Total: 2.592400 ms (FindLiveObjects: 0.302000 ms CreateObjectMapping: 0.115100 ms MarkObjects: 2.055100 ms  DeleteObjects: 0.119000 ms)
+Unloading 3867 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 122 unused Assets / (107.5 KB). Loaded Objects now: 4231.
+Memory consumption went from 143.1 MB to 143.0 MB.
+Total: 2.836750 ms (FindLiveObjects: 0.145917 ms CreateObjectMapping: 0.051875 ms MarkObjects: 2.481250 ms  DeleteObjects: 0.154958 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
   custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 69500.775131 seconds.
-  path: Assets/Prefabs/Trees/Tree_2.fbx
-  artifactKey: Guid(24a759921bedc2541881a0535a7bfcc8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Trees/Tree_2.fbx using Guid(24a759921bedc2541881a0535a7bfcc8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '373c85f06e5e36614c8d487dab36c1bd') in 0.140537 seconds 
+  Time since last request: 35372.050016 seconds.
+  path: Assets/TerrainData.asset
+  artifactKey: Guid(74ceb5d112d3fa84c812f9da1883280d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TerrainData.asset using Guid(74ceb5d112d3fa84c812f9da1883280d) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+The tree Plant_6 must use the Nature/Soft Occlusion shader. Otherwise billboarding/lighting will not work correctly.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '42904394e727d7a6fdd9200de5d89cc8') in 0.100197 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 46
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/Prefabs/Trees/Tree2.asset
-  artifactKey: Guid(03547930ea605d54cbbae48d936ca916) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Trees/Tree2.asset using Guid(03547930ea605d54cbbae48d936ca916) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f5ac447ddc9c6ea5c1513d959e15db54') in 0.010131 seconds 
+  Time since last request: 14.194667 seconds.
+  path: Assets/Scenes/Character Preview.renderTexture
+  artifactKey: Guid(92283d42ecc4541ba9b74a0c81ea1963) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Character Preview.renderTexture using Guid(92283d42ecc4541ba9b74a0c81ea1963) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'aa06a6239bcd1816870daf7385738fbb') in 0.037531 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Prefabs/Trees/Tree_1.fbx
-  artifactKey: Guid(c52a1ad28de5ec447a225e11be0fe132) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Trees/Tree_1.fbx using Guid(c52a1ad28de5ec447a225e11be0fe132) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b64bcb8b9efabbc37d0d5b65d5244c78') in 0.029724 seconds 
-=======
-Registered in 0.010261 seconds.
->>>>>>> main
+  Time since last request: 10.500180 seconds.
+  path: Assets/Scenes/Forest.unity
+  artifactKey: Guid(90701c455126f4fe2be288b198940a2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Forest.unity using Guid(90701c455126f4fe2be288b198940a2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'ed2088c5aa9ac4d0299169563d74c7f4') in 0.000503 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 19.211192 seconds.
+  path: Assets/Scenes/MenusBeforeGame.unity
+  artifactKey: Guid(86bd59916f66d4269ab4a69350bb9829) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MenusBeforeGame.unity using Guid(86bd59916f66d4269ab4a69350bb9829) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'f70896834743962a7d57d6a22b084e82') in 0.000428 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 6.014525 seconds.
+  path: Assets/Scenes/TemplatesUI
+  artifactKey: Guid(262342bf703d2bc418b21a32a3b1914f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/TemplatesUI using Guid(262342bf703d2bc418b21a32a3b1914f) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'dcf5ba6529bbfe51784e067a3eaf75a3') in 0.000676 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.126378 seconds.
+  path: Assets/Scenes/TemplatesUI/Send_button.png
+  artifactKey: Guid(2e73b0d67404fdc4eb0d2a30d4e74333) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/TemplatesUI/Send_button.png using Guid(2e73b0d67404fdc4eb0d2a30d4e74333) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '7d478f0d80a2c7e323f57361ec12d39f') in 0.081832 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 11.157007 seconds.
+  path: Assets/Scenes/TemplatesUI/CafeUI
+  artifactKey: Guid(41a1b4205dde81a4d9316691e1e434c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/TemplatesUI/CafeUI using Guid(41a1b4205dde81a4d9316691e1e434c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '1a37a3942de41b15bdc00d6b733b0b1f') in 0.000503 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.138868 seconds.
+  path: Assets/Scenes/TemplatesUI/CafeUI/bigCafeFrame.png
+  artifactKey: Guid(8d5e1f48bf33cec4cb20e96cb4a2292e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/TemplatesUI/CafeUI/bigCafeFrame.png using Guid(8d5e1f48bf33cec4cb20e96cb4a2292e) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'ce17146410a427eea7ae8d1e89c3a273') in 0.012850 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000097 seconds.
+  path: Assets/Scenes/TemplatesUI/CafeUI/smallCaffeFrame.png
+  artifactKey: Guid(a292580c0859bf148871ff7a49c5a107) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/TemplatesUI/CafeUI/smallCaffeFrame.png using Guid(a292580c0859bf148871ff7a49c5a107) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '2bd89e5f7b12e50e2c86905fa7c89621') in 0.008433 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 22.448342 seconds.
+  path: Assets/Assets/Scenes/93216.jpg
+  artifactKey: Guid(517562e0d0dc1438992cf4fc3d2779da) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/93216.jpg using Guid(517562e0d0dc1438992cf4fc3d2779da) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'f05cbb914fe44aed4540f4f5102c49f6') in 0.074613 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000157 seconds.
+  path: Assets/Assets/Scenes/Room.png
+  artifactKey: Guid(01a16da186d834b92af09555e3ada197) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/Room.png using Guid(01a16da186d834b92af09555e3ada197) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '36d693c4c107c9347f1d35adefdc3c4b') in 0.011054 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000240 seconds.
+  path: Assets/Assets/Scenes/Character Preview.renderTexture
+  artifactKey: Guid(aead89fdf41604146abe8f623b5011a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/Character Preview.renderTexture using Guid(aead89fdf41604146abe8f623b5011a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '580b3096eac888a36a7dea08743a46d8') in 0.007327 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000153 seconds.
+  path: Assets/Assets/Scenes/EyeMono.mat
+  artifactKey: Guid(aac405e9dc573467fb52dfa7b39bcb69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/EyeMono.mat using Guid(aac405e9dc573467fb52dfa7b39bcb69) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '1fcd5eaba4cd56246e00be97546e29a6') in 0.066461 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Assets/Scenes/body.001.png
+  artifactKey: Guid(56f4e884b661646cd9ba7026059abd38) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/body.001.png using Guid(56f4e884b661646cd9ba7026059abd38) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: '8e86ee89248e6071815e5512cba3de58') in 0.006192 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000135 seconds.
+  path: Assets/Assets/Scenes/Let’s find your room.png
+  artifactKey: Guid(2d4d4e87a097541c5b029c8e54720691) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/Let’s find your room.png using Guid(2d4d4e87a097541c5b029c8e54720691) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'e660105855726aeb4b61ab9aa46a581c') in 0.006089 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000216 seconds.
+  path: Assets/Assets/Scenes/mono7.fbx
+  artifactKey: Guid(5e76d9c6ecc42434784898688969fcb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/mono7.fbx using Guid(5e76d9c6ecc42434784898688969fcb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'f624c9107f409aebeb905d43cdee9fef') in 0.506222 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 34
+========================================================================
+Received Import Request.
+  Time since last request: 76.967455 seconds.
+  path: Assets/Assets/Scenes/MainMenu.unity
+  artifactKey: Guid(3714573c4fe354504b502100701db3b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/MainMenu.unity using Guid(3714573c4fe354504b502100701db3b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'd5a0d0717658272b661e4035ec664d85') in 0.002662 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 21.303223 seconds.
+  path: Assets/Assets/Scenes/TestRoom.unity
+  artifactKey: Guid(538d9ff28836c4ad0b0d0a25e79bec56) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Assets/Scenes/TestRoom.unity using Guid(538d9ff28836c4ad0b0d0a25e79bec56) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 8 workers.
+ -> (artifact id: 'f588948014043c4d3a961cd3201a5d4c') in 0.000768 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
