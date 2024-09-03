@@ -1,5 +1,4 @@
-using UnityEngine;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -16,16 +15,16 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
 
     public CharacterEditingMenu editingMenu;
 
-    void Start()
+    /*void Start()
     {
         SetDefaultProperties();
         ApplyCustomization();
-        /*if (photonView.IsMine)
-        {
-            SetDefaultProperties();
-            ApplyCustomization();
-        }*/
-    }
+        //if (photonView.IsMine)
+        //{
+        //    SetDefaultProperties();
+        //    ApplyCustomization();
+        //}
+    }*/
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -80,7 +79,7 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         }
     }
 
-    private void UpdateHatColor(int red, int green, int blue)
+    public void UpdateHatColor(int red, int green, int blue)
     {
         GameObject equipedHat = hats[0];
         for (int i = 0; i < hats.Length; i++)
@@ -107,7 +106,7 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         equipedHatRenderer.material = newMaterial;
     }
 
-    private void EquipItem(GameObject[] items, int index)
+    public void EquipItem(GameObject[] items, int index)
     {
         //falls in der Liste nichts enthalten ist
         if (items.Length == 0) return;
@@ -119,6 +118,7 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
 
         if (index >= 0 && index < items.Length)
         {
+            Debug.Log("Ich habe gesetzt: " + items[index].name);
             items[index].SetActive(true);
         }
     }

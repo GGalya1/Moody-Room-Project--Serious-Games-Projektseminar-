@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
 using Photon.Voice.Unity;
-using TMPro;
 
 public class RoomSettingManager : MonoBehaviourPunCallbacks
 {
@@ -15,6 +13,7 @@ public class RoomSettingManager : MonoBehaviourPunCallbacks
 
     public Recorder voiceRecorder;
     public bool voiceChatIsOn;
+    public bool whiteboardIsOn;
 
     MusikManager musikManager;
 

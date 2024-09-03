@@ -50,6 +50,17 @@ MonoBehaviour:
   - RPC_SetCustomTracks
   - RPC_ShareImage
   - ChangeSkyboxForAll
+  - DrawForEveryone
+  - SetBrushColorForAll
+  - ClearTextureForAll
+  - KickPlayerAndLoadScene
+  - KickPlayerRPC
+  - ReceiveTextureData
+  - RequestTextureData
+  - ShareCustomization
+  - FindAndSubscribeBillboard
+  - UnsubscribeBillboard
+  - RPC_SetWhiteboardAcces
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

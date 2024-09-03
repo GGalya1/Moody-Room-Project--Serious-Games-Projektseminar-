@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class DrawingUIManager : MonoBehaviour, IUpdateObserver
+public class DrawingUIManager : MonoBehaviour
 {
     public DrawingBoard drawingBoard;
     public Slider brushSizeSlider;
@@ -37,27 +37,7 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
     public float brushMaxSize = 40.0f;
     public float brushMinSize = 5.0f;
 
-    public static bool whiteboardOn = false;
     [SerializeField] private GameObject container;
-
-    #region UpdateManager connection
-    private void Awake()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    private void OnEnable()
-    {
-        UpdateManager.Instance.RegisterObserver(this);
-    }
-    private void OnDisable()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    private void OnDestroy()
-    {
-        UpdateManager.Instance.UnregisterObserver(this);
-    }
-    #endregion
 
     void Start()
     {
@@ -69,33 +49,9 @@ public class DrawingUIManager : MonoBehaviour, IUpdateObserver
         redColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.red));
         blueColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.blue));
         blackColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.black));
-        eraseButton.onClick.AddListener(drawingBoard.Erase);
+        eraseButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.white));
         clearButton.onClick.AddListener(drawingBoard.ClearTexture);
         loadImageButton.onClick.AddListener(ShareImage);
-    }
-
-    public void ObservedUpdate()
-    {
-        if (whiteboardCanBeOpened())
-        {
-            whiteboardOn = !whiteboardOn;
-        }
-        if (whiteboardOn)
-        {
-            container.SetActive(true);
-        }
-        else
-        {
-            container.SetActive(false);
-        }
-        //hier gibt es kein "else"-Block, weil das ganze Umgehen mit Cursor und "visible"/ "not visible" 
-        //in PhotonChatManager realisiert ist
-    }
-    private bool whiteboardCanBeOpened()
-    {
-        return !Pause.paused &&
-            !AdminPanelScript.adminPanelIsOn &&
-            Input.GetKeyDown(KeyCode.RightAlt);
     }
 
     void ChangeBrushSize(float newSize)
