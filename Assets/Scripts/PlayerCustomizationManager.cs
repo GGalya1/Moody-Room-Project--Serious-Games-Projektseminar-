@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 using UnityEngine;
-=======
-﻿using UnityEngine;
->>>>>>> main
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
