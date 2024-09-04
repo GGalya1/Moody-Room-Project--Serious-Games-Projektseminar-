@@ -165,6 +165,7 @@ public class Launch : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1f);
             countdown--;
         }
+        MenuManager.current.OpenMenu("loading");
         // Hier Starten wir die Szene namens "GameScene", weil sie Index 1 in BuildSettings hat
         PhotonNetwork.LoadLevel(indexOfScene);
     }

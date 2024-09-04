@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -73,6 +72,7 @@ public class RollDice : MonoBehaviour
         {
             sum += dices[i].GetComponent<Dice>().number;
         }
+        sum += modificator;
         sumOfDices.text = $"Sum: {sum}";
     }
 

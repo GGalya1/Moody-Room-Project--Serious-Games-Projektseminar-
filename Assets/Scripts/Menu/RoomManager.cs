@@ -36,7 +36,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         //muss erweitert werden, damit wir mehrere Szenen laden koennten
-        if (scene.buildIndex == 1 || scene.buildIndex == 2)
+        if (scene.buildIndex != 0)
         {
             StartCoroutine(WaitForConnectionAndInstantiate());
             //PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
