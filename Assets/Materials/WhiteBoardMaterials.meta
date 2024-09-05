@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Forest yang.unity.meta
+guid: 899c42b0b3798434aa8f6d73afa812c4
+========
 guid: 964085b19385cab47bca0016664a88b4
 folderAsset: yes
+>>>>>>>> main:Assets/Materials/WhiteBoardMaterials.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
