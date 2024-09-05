@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     [SerializeField] float smoothTime = 2f;
     bool grounded;
     [SerializeField] float distanceToTheGround = 1f;
-    
+
     //BAUARBEITEN
 
     private Rigidbody _rigidbody;
