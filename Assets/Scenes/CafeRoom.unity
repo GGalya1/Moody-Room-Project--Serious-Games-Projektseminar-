@@ -24067,7 +24067,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104658
+  m_Name: pb_Mesh27674
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -24479,7 +24479,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 529630627}
   m_LocalRotation: {x: 0.000000023757048, y: 3.775204e-17, z: 0.0000000015890881, w: 1}
-  m_LocalPosition: {x: 116.21, y: 12.3, z: -6.5}
+  m_LocalPosition: {x: -5.12, y: 12.3, z: -6.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25689,6 +25689,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 124567309}
   diceRollerPanel: {fileID: 1451813673}
+  characterSheetPanel: {fileID: 0}
+  createCharacterPanel: {fileID: 0}
+  characterDropdown: {fileID: 0}
+  rollScript: {fileID: 0}
 --- !u!114 &541361709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33013,7 +33017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101944897}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.67, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42875,7 +42879,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh94660
+  m_Name: pb_Mesh27440
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
