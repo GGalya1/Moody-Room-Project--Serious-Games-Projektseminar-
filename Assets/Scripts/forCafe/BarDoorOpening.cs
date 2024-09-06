@@ -1,28 +1,20 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BarDoorOpening : MonoBehaviour
 {
     public Animator doorAnimator;
 
-    private void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        doorAnimator.SetBool("isOpen", false);
+       
+        doorAnimator.SetBool("isOpen", true);
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))  
-        {
-            doorAnimator.SetBool("isOpen", true);  
-        }
-    }
-
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))  
-        {
-            doorAnimator.SetBool("isOpen", false);  
-        }
+        
+        doorAnimator.SetBool("isOpen", false);
+        
     }
 }
