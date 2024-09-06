@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 1d0a329e1eaa4e04eb43217a8541de57
+  - enabled: 1
+    path: Assets/Scenes/CafeRoom.unity
+    guid: a8b8efe55b047a741a02fa4eec89b21e
+  - enabled: 1
+    path: Assets/Scenes/ForestRoom.unity
+    guid: 8931f2fbcc7ed3f41905a2fe9b737e90
+  - enabled: 1
+    path: Assets/Scenes/WorkingSpaceRoom.unity
+    guid: 6fc05f5d1af5ae14b99a5f56016b7855
   m_configObjects: {}
