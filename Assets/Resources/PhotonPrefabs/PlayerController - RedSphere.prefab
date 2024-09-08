@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 1223574260208342682}
   - component: {fileID: 3350788455080886810}
   - component: {fileID: 5005408928612453342}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: PlayerController - RedSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
         }
 
         
-            if (transform.position.y < -10f)
+            if (transform.position.y < -120f)
             {
                 Respawn();
             }

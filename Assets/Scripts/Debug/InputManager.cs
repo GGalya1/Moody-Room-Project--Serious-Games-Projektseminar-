@@ -61,10 +61,10 @@ public class InputManager : MonoBehaviour, IUpdateObserver
             IngameMenuManager.OnMenuRequest?.Invoke(MenuType.ChatMenu);
         }
         //Interaction durchfuehren. Bzw das Stuhl beitreten
-        if (Input.GetKeyDown(KeyCode.E) && IngameMenuManager.GetCurrentMenu() == MenuType.None)
+        /*if (Input.GetKeyDown(KeyCode.E) && IngameMenuManager.GetCurrentMenu() == MenuType.None)
         {
             IngameMenuManager.OnMenuRequest?.Invoke(MenuType.ChairMenu);
-        }
+        }*/
         //Das Stuhl verlassen
         if (Input.GetKeyDown(KeyCode.LeftAlt) && IngameMenuManager.GetCurrentMenu() == MenuType.ChairMenu)
         {
