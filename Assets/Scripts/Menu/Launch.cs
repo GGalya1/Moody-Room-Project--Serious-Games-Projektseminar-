@@ -48,6 +48,9 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text _localErrorMessage;
     [SerializeField] private GameObject _privateRoomContainer;
 
+    //um Shadows zu steuern
+    [SerializeField] private AudioManager audioManager;
+
     public string playerModel;
     public void SelectAvatar(int avatarTypeIndex)
     {
@@ -184,6 +187,19 @@ public class Launch : MonoBehaviourPunCallbacks
             if (temp != null)
             {
                 temp.gameObject.SetActive(false);
+            }
+        }
+
+        Transform roomMenu = gameObject.transform.Find("RoomMenu");
+        roomMenu.Find("BGPanel").gameObject.SetActive(false);
+        roomMenu.Find("BGPanel (1)").gameObject.SetActive(false);
+        Transform[] allTransforms = roomMenu.GetComponentsInChildren<Transform>(true);
+
+        foreach (Transform t in allTransforms)
+        {
+            if (t.name == "ShadowImage")
+            {
+                t.gameObject.SetActive(false);
             }
         }
     }
@@ -397,6 +413,10 @@ public class Launch : MonoBehaviourPunCallbacks
         _voiceChatToggle.gameObject.SetActive(val);
         _sceneSelector.gameObject.SetActive(val);
         _roomCodeText.gameObject.SetActive(val);
+
+        Transform roomMenu = gameObject.transform.Find("RoomMenu");
+        roomMenu.Find("BGPanel").gameObject.SetActive(val);
+        roomMenu.Find("BGPanel (1)").gameObject.SetActive(val);
     }
 
 

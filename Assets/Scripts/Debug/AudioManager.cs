@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -23,21 +26,45 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private Sprite knobSprite;
     [SerializeField] private Sprite fillSprite;
 
+    [Header("Shadow settings")]
+    [SerializeField] private Sprite shadowImageSprite;
+    [SerializeField] private Sprite buttonUnpressedSprite;
+
+    private float widthScale = 921f / 750f;
+    private float heigthScale = 355f / 150f;
+    private bool needShadows;
+
+    //sammeln alle Komponenten in Listen, um das spaeteren Bearbeiten zu ermoeglichen
+    private List<Button> buttons = new List<Button>();
+    private List<InputField> inputFields = new List<InputField>();
+    private List<TMP_InputField> tmpInputFields = new List<TMP_InputField>();
+    private List<Text> texts = new List<Text>();
+    private List<TMP_Text> tmpTexts = new List<TMP_Text>();
+    private List<Slider> sliders = new List<Slider>();
+    private List<Dropdown> dropdowns = new List<Dropdown>();
+
+    //die Liste fuer Schatten, um diese besser zu managen
+    private List<GameObject> shadowObjects = new List<GameObject>();
+
+
     private void Start()
     {
-        AddSoundToButtons(canvas.transform);
+        needShadows = SceneManager.GetActiveScene().buildIndex == 0;
+        //finden alle Komponenten in Canvas
+        FindComponentsInCanvas();
+
+        //kustomisieren alle Komponenten
+        CustomizeAllComponents();
     }
 
     void OnEnable()
     {
-        // Abonniere das Event
         OnButtonHover += PlayHoverSound;
         OnButtonClick += PlayClickSound;
     }
 
     void OnDisable()
     {
-        // Trenne das Event
         OnButtonHover -= PlayHoverSound;
         OnButtonClick -= PlayClickSound;
     }
@@ -49,6 +76,7 @@ public class AudioManager : MonoBehaviour
             audioSource.PlayOneShot(hoverSound);
         }
     }
+
     private void PlayClickSound()
     {
         if (clickSound != null)
@@ -57,118 +85,136 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    //methode, die rekursiv alle Kinder durchgeht und findet GameObjects mit dem Komponent "Button"
-    //fuegt zu diesem Objekt neuen Komponent, der OnClick eine Anfrage an diesem Script senden wird
-    void AddSoundToButtons(Transform parent)
+    private void FindComponentsInCanvas()
     {
-        foreach (Transform child in parent)
+        //schreiben alle Komponenten in Listen
+        buttons.AddRange(canvas.GetComponentsInChildren<Button>(true));
+        inputFields.AddRange(canvas.GetComponentsInChildren<InputField>(true));
+        tmpInputFields.AddRange(canvas.GetComponentsInChildren<TMP_InputField>(true));
+        texts.AddRange(canvas.GetComponentsInChildren<Text>(true));
+        tmpTexts.AddRange(canvas.GetComponentsInChildren<TMP_Text>(true));
+        sliders.AddRange(canvas.GetComponentsInChildren<Slider>(true));
+        dropdowns.AddRange(canvas.GetComponentsInChildren<Dropdown>(true));
+    }
+
+    private void CustomizeAllComponents()
+    {
+        CustomizeButtons();
+        CustomizeInputFields();
+        CustomizeText();
+        CustomizeSliders();
+        CustomizeDropdowns();
+    }
+
+    #region CustomizationRegion
+    private void CustomizeButtons()
+    {
+        foreach (Button button in buttons)
         {
-            //ueberprüfe, ob das Kind eine Button-Komponente hat
-            Button button = child.GetComponent<Button>();
-            if (button != null)
+            if (button.gameObject.GetComponent<ButtonSound>() == null)
             {
-                //fuege das ButtonSound-Komponent hinzu, falls es nicht bereits vorhanden ist
-                if (child.GetComponent<ButtonSound>() == null)
-                {
-                    child.gameObject.AddComponent<ButtonSound>();
-                }
-
-                //wenn ein Button gefunden wurde, nicht weiter tiefer in diese Hierarchie gehen (da kein Sinn macht, falls Button in sich weitere Buttons enthaelt)
-                continue;
-            }
-
-            //erstetzen Font in allen Komponenten, wo es moeglich ist
-            //checken nach InputField-Komponent
-            InputField inputField = child.GetComponent<InputField>();
-            if (inputField != null)
-            {
-                inputField.textComponent.font = buttonFontLegacy;
-                continue;
-            }
-
-            //nach TMP_InputField
-            TMP_InputField tmpInputField = child.GetComponent<TMP_InputField>();
-            if (tmpInputField != null)
-            {
-                tmpInputField.textComponent.font = buttonFont;
-                continue;
-            }
-
-            //nach (Text)
-            Text text = child.GetComponent<Text>();
-            if (text != null)
-            {
-                text.font = buttonFontLegacy;
-                continue;
-            }
-
-            //nach TMP_Text
-            TMP_Text tmpText = child.GetComponent<TMP_Text>();
-            if (tmpText != null)
-            {
-                tmpText.font = buttonFont;
-                continue;
-            }
-
-            //Kustomizieren Sliders
-            Slider slide = child.GetComponent<Slider>();
-            if (slide != null)
-            {
-                //diese Zeile ersetzt "Background"-Image. Kann instabil sein
-                slide.GetComponentInChildren<Image>().sprite = fillSprite;
-
-                slide.handleRect.GetComponent<Image>().sprite = knobSprite;
-                slide.fillRect.GetComponent<Image>().sprite = fillSprite;
-                continue;
-            }
-
-            //Kustomizieren Dropdowns
-            Dropdown drop = child.GetComponent<Dropdown>();
-            if (drop != null)
-            {
-                SetNeumorphismOnDropdown(drop);
-            }
-            //rekursiven Aufruf der Methode, um auch die Kinder des aktuellen Kindes zu ueberpruefen
-            if (child.childCount > 0)
-            {
-                AddSoundToButtons(child);
+                button.gameObject.AddComponent<ButtonSound>();
             }
         }
     }
 
-    private void SetNeumorphismOnDropdown(Dropdown dropdown)
+    //Kustomisieren von InputField und TMP_InputField
+    private void CustomizeInputFields()
     {
-        RectTransform dropdownRectTransform = dropdown.GetComponent<RectTransform>();
+        foreach (InputField inputField in inputFields)
+        {
+            inputField.GetComponent<Image>().sprite = buttonUnpressedSprite;
 
-        //Sprites fuer das Dropdown und die Schatten
-        Sprite dropdownSprite = Resources.Load<Sprite>("UI/Menu/ButtonPressed");
-        Sprite shadowImageSprite = Resources.Load<Sprite>("UI/Menu/ButtonUnpressed");
+            inputField.textComponent.font = buttonFontLegacy;
+            AddShadow(inputField.GetComponent<RectTransform>());
+        }
 
-        //erstelle das Schattenbild
+        foreach (TMP_InputField tmpInputField in tmpInputFields)
+        {
+            tmpInputField.GetComponent<Image>().sprite = buttonUnpressedSprite;
+
+            tmpInputField.textComponent.font = buttonFont;
+            AddShadow(tmpInputField.GetComponent<RectTransform>());
+        }
+    }
+
+    private void CustomizeText()
+    {
+        foreach (Text text in texts)
+        {
+            text.font = buttonFontLegacy;
+        }
+
+        foreach (TMP_Text tmpText in tmpTexts)
+        {
+            tmpText.font = buttonFont;
+        }
+    }
+
+    private void CustomizeSliders()
+    {
+        foreach (Slider slider in sliders)
+        {
+            //finden das erste Bild in Hierarchy von Slider
+            slider.GetComponentInChildren<Image>().sprite = fillSprite;
+
+            if (slider.handleRect != null)
+            {
+                slider.handleRect.GetComponent<Image>().sprite = knobSprite;
+            }
+
+            if (slider.fillRect != null)
+            {
+                slider.fillRect.GetComponent<Image>().sprite = fillSprite;
+            }
+        }
+    }
+
+    private void CustomizeDropdowns()
+    {
+        foreach (Dropdown dropdown in dropdowns)
+        {
+            dropdown.GetComponent<Image>().sprite = buttonUnpressedSprite;
+            AddShadow(dropdown.GetComponent<RectTransform>());
+        }
+    }
+    #endregion
+
+    private void AddShadow(RectTransform targetRectTransform)
+    {
+        if (!needShadows) return;
+
+        //Erstellen ein Objekt namens ShadowImage
         GameObject shadowImageObj = new GameObject("ShadowImage");
-        shadowImageObj.transform.SetParent(dropdown.transform.parent, false);
-        shadowImageObj.transform.SetAsFirstSibling();
-
-        //fuege das Bild-Component hinzu und setze das Schatten-Sprite
+        
+        //Fuegen Sprite und setzen auf "nicht interaktiv"
         Image shadowImage = shadowImageObj.AddComponent<Image>();
         shadowImage.sprite = shadowImageSprite;
         shadowImage.raycastTarget = false;
 
-        // Setze die Größe des Schattens basierend auf der Dropdown-Größe
+        shadowImageObj.transform.SetParent(targetRectTransform.transform.parent, false);
+
+        //Groesse und Position anpassen
         RectTransform shadowRectTransform = shadowImageObj.GetComponent<RectTransform>();
         shadowRectTransform.sizeDelta = new Vector2(
-            dropdownRectTransform.sizeDelta.x * (921f / 750f),
-            dropdownRectTransform.sizeDelta.y * (355f / 150f)
+                targetRectTransform.sizeDelta.x * widthScale,
+                targetRectTransform.sizeDelta.y * heigthScale
         );
 
-        // Setze die Position des Schattens
-        shadowRectTransform.localPosition = dropdownRectTransform.localPosition;
+        shadowRectTransform.localPosition = targetRectTransform.localPosition;
+        shadowRectTransform.transform.SetAsFirstSibling();
 
-        // Der Schatten muss hinter dem Dropdown sein
-        shadowRectTransform.SetAsFirstSibling();
-
-        // Ersetze das Dropdown-Sprite
-        Image dropdownImage = dropdown.GetComponent<Image>();
-        dropdownImage.sprite = dropdownSprite;
+        //Shadow kommt in die gemeinsame Liste
+        shadowObjects.Add(shadowImageObj);
+        
     }
+
+    public void DisableShadows()
+    {
+        for (int i = 0; i < shadowObjects.Count; i++)
+        {
+            shadowObjects[i].SetActive(false);
+        }
+    }
+
 }
