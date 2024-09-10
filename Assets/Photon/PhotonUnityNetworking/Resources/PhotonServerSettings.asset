@@ -39,6 +39,28 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - HeresWhy
+  - RPC_PlayMusik
+  - RPC_PlayNextTrackInPlaylist
+  - RPC_StopMusik
+  - RPC_SetClip
+  - RPC_OnLoopToggleValueChanged
+  - RPC_OnVolumeValueChanged
+  - RPC_OnTrackTimeValueChanged
+  - RPC_SendNewSong
+  - RPC_SetCustomTracks
+  - RPC_ShareImage
+  - ChangeSkyboxForAll
+  - DrawForEveryone
+  - SetBrushColorForAll
+  - ClearTextureForAll
+  - KickPlayerAndLoadScene
+  - KickPlayerRPC
+  - ReceiveTextureData
+  - RequestTextureData
+  - ShareCustomization
+  - FindAndSubscribeBillboard
+  - UnsubscribeBillboard
+  - RPC_SetWhiteboardAcces
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

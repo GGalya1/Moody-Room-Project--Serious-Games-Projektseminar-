@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Assets/Scenes/5294338.jpg.meta
-guid: 3eb3d098dbdd1453fb33d8004dd20e9a
-========
 guid: e751d0572efbeef479f6be34daab0901
->>>>>>>> main:Assets/Resources/template370.jpg.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -24,7 +20,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -105,11 +101,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-<<<<<<<< HEAD:Assets/Assets/Scenes/5294338.jpg.meta
-    buildTarget: iPhone
-========
     buildTarget: Windows Store Apps
->>>>>>>> main:Assets/Resources/template370.jpg.meta
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
