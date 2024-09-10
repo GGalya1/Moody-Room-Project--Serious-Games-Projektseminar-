@@ -29,6 +29,7 @@ public class PortalTeleporter : MonoBehaviour, IUpdateObserver
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Name von Teleporter Object: " + other.gameObject.name);
         playerIsOverlapping = true;
     }
     private void OnTriggerExit(Collider other)

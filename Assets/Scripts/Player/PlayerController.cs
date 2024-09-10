@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
     //BAUARBEITEN
 
     private Rigidbody _rigidbody;
+    private Collider _collider;
     //um zu erfahren, ob Character dem Spieler gehoert oder nicht
     private PhotonView _photonView;
     [SerializeField] private Transform _camera;
@@ -31,6 +32,17 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
 
         _rigidbody = GetComponent<Rigidbody>();
         _photonView = GetComponent<PhotonView>();
+        
+        //da das Model von Mono falsch erstellt war (wider ((( ), befindet sich transform.position irgendwo unter der Erde, was Raycasting schwer macht.
+        //darum finden wir _collider und erstellen Ray aus dem gefundenen Collider
+        if (GetComponent<SphereCollider>() == null)
+        {
+            _collider = GetComponent<CapsuleCollider>();
+        }
+        else
+        {
+            _collider = GetComponent<SphereCollider>();
+        }
 
         //um Spieler zu respawnen (falls, bsp, er ausserhalb von Spielfeld ist)
         playerManager = PhotonView.Find((int) _photonView.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -93,8 +105,11 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
             RotatePlayerLeftRight();
             RotateCameraUpDown();
 
-            grounded = Physics.Raycast(transform.position, Vector3.down, distanceToTheGround + 0.1f);
-            if(Input.GetButtonDown("Jump") && grounded)
+            //da Mono kein guten Pivot hat, orientieren wir uns auf Collider von Modellen, wenn wir Ray erstellen
+            grounded = Physics.Raycast(_collider.bounds.center, Vector3.down, distanceToTheGround + 0.1f);
+            Debug.DrawRay(_collider.bounds.center, Vector3.down * distanceToTheGround, grounded ? Color.green : Color.red);
+
+            if (Input.GetButtonDown("Jump") && grounded)
             {
                 _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             }
@@ -107,7 +122,7 @@ public class PlayerController : MonoBehaviour, IUpdateObserver
         }
 
         
-            if (transform.position.y < -10f)
+            if (transform.position.y < -120f)
             {
                 Respawn();
             }
