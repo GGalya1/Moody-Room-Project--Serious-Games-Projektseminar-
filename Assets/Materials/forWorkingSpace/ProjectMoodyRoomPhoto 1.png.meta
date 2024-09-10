@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Assets/Scenes/Create your room.png.meta
+guid: 68aa1e1dbc1ac4a5ea9b6c9aedd71f06
+========
 guid: af9957eb890a6c84da85a1cfa2bcce98
+>>>>>>>> main:Assets/Materials/forWorkingSpace/ProjectMoodyRoomPhoto 1.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -100,6 +104,21 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+<<<<<<<< HEAD:Assets/Assets/Scenes/Create your room.png.meta
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+========
+>>>>>>>> main:Assets/Materials/forWorkingSpace/ProjectMoodyRoomPhoto 1.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites: []

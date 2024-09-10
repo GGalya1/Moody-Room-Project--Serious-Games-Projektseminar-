@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
+  m_Name: PhotonServerSettings
+  m_EditorClassIdentifier: 
+  AppSettings:
+    AppIdRealtime: f948b8d0-4337-4510-92e6-f56376d362db
+    AppIdFusion: 
+    AppIdChat: 4dfad5fe-f14f-418c-ae70-51880bc9af66
+    AppIdVoice: e2ce558d-1e36-4aca-83f3-8f548c636dc8
+    AppVersion: 
+    UseNameServer: 1
+    FixedRegion: eu
+    Server: 
+    Port: 0
+    ProxyServer: 
+    Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  DevRegion: eu
+  PunLogging: 0
+  EnableSupportLogger: 0
+  RunInBackground: 1
+  StartInOfflineMode: 0
+  RpcList:
+  - CantHearYou
+  - ChangeColour
+  - ClickRpc
+  - DestroyRpc
+  - HeresWhy
+  - RPC_PlayMusik
+  - RPC_PlayNextTrackInPlaylist
+  - RPC_StopMusik
+  - RPC_SetClip
+  - RPC_OnLoopToggleValueChanged
+  - RPC_OnVolumeValueChanged
+  - RPC_OnTrackTimeValueChanged
+  - RPC_SendNewSong
+  - RPC_SetCustomTracks
+  DisableAutoOpenWizard: 1
+  ShowSettings: 1
+  DevRegionSetOnce: 0
