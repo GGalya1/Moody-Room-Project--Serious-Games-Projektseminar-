@@ -733,6 +733,7 @@ GameObject:
   - component: {fileID: 1223574260208342682}
   - component: {fileID: 3350788455080886810}
   - component: {fileID: 5005408928612453342}
+  - component: {fileID: 6031316679638630183}
   m_Layer: 15
   m_Name: PlayerController - RedSphere
   m_TagString: Untagged
@@ -908,6 +909,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6031316679638630183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7031637539050586620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1819fc3326d8b9c4b8c08ac162dad070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 6162015618009045513}
+  _cameraTransform: {fileID: 8421979582710103124}
+  _pickupableLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  _heldObjectLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  _wallLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  NUMBER_OF_GRID_ROWS: 10
+  NUMBER_OF_GRID_COLUMNS: 10
 --- !u!1 &7179138527936076818
 GameObject:
   m_ObjectHideFlags: 0

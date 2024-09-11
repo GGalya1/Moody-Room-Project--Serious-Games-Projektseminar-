@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Photon.Pun;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
@@ -26,6 +25,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private Sprite knobSprite;
     [SerializeField] private Sprite fillSprite;
 
+    [Header("Toggle customize")]
+    [SerializeField] private Sprite toggleSprite;
+
     [Header("Shadow settings")]
     [SerializeField] private Sprite shadowImageSprite;
     [SerializeField] private Sprite buttonUnpressedSprite;
@@ -42,6 +44,7 @@ public class AudioManager : MonoBehaviour
     private List<TMP_Text> tmpTexts = new List<TMP_Text>();
     private List<Slider> sliders = new List<Slider>();
     private List<Dropdown> dropdowns = new List<Dropdown>();
+    private List<Toggle> toggles = new List<Toggle>();
 
     //die Liste fuer Schatten, um diese besser zu managen
     private List<GameObject> shadowObjects = new List<GameObject>();
@@ -95,6 +98,7 @@ public class AudioManager : MonoBehaviour
         tmpTexts.AddRange(canvas.GetComponentsInChildren<TMP_Text>(true));
         sliders.AddRange(canvas.GetComponentsInChildren<Slider>(true));
         dropdowns.AddRange(canvas.GetComponentsInChildren<Dropdown>(true));
+        toggles.AddRange(canvas.GetComponentsInChildren<Toggle>(true));
     }
 
     private void CustomizeAllComponents()
@@ -104,6 +108,7 @@ public class AudioManager : MonoBehaviour
         CustomizeText();
         CustomizeSliders();
         CustomizeDropdowns();
+        CustomizeToggles();
     }
 
     #region CustomizationRegion
@@ -176,6 +181,14 @@ public class AudioManager : MonoBehaviour
         {
             dropdown.GetComponent<Image>().sprite = buttonUnpressedSprite;
             AddShadow(dropdown.GetComponent<RectTransform>());
+        }
+    }
+    private void CustomizeToggles()
+    {
+        foreach (Toggle toggle in toggles)
+        {
+            toggle.GetComponentInChildren<Image>().sprite = toggleSprite;
+            //AddShadow(toggle.GetComponent<RectTransform>());
         }
     }
     #endregion

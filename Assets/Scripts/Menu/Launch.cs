@@ -13,31 +13,44 @@ public class Launch : MonoBehaviourPunCallbacks
     //wieder singelton, damit die Funktion "JoinRoom" von aussen erreichbar ist
     public static Launch instance;    
 
-
     //hier speichern wir Name von Room, das in InputField eingegeben war
+    [Header("CreateRoom Menu")]
     [SerializeField] private TMP_InputField _roomInputField;
 
     //fuer korrekte Wiedergabe von Name des Zimmers
-    [SerializeField] private TMP_Text _errorText;
+    [Header("RoomMenu")]
     [SerializeField] private TMP_Text _roomNameText;
-
-    //fuer korrekte Wiedergabe von bereits an der Server erstellten Zimmern
-    [SerializeField] private Transform _roomList;
-    [SerializeField] private GameObject _roomButtonPrefab;
+    [SerializeField] private GameObject _startGameButton;
+    [SerializeField] private Slider _chairsSlider;
+    [SerializeField] private TMP_Text _chairsSliderText;
+    [SerializeField] private Toggle _chatToggle;
+    [SerializeField] private Toggle _voiceChatToggle;
+    [SerializeField] private TMP_Text _countdownText;
+    private float _toWaitBeforeStart = 3.0f;
+    [SerializeField] private Button _leaveRoomButton;
+    [SerializeField] private Dropdown _sceneSelector;
+    private int indexOfScene = 1;
 
     //fuer korrekte Wiedergabe von bereits in einem Room beigetretenen Leuten
+    [Header("Playerlist in RoomMenu")]
     [SerializeField] private Transform _playerList;
     [SerializeField] private GameObject _playerNamePrefab;
     [SerializeField] private GameObject _playerNameForAdminPrefab;
 
-    [SerializeField] private Dropdown _sceneSelector;
-    private int indexOfScene = 1;
+    [Header("ErrorMenu")]
+    [SerializeField] private TMP_Text _errorText;
 
+    //fuer korrekte Wiedergabe von bereits an der Server erstellten Zimmern
+    [Header("Roomlist in FindroomMenu")]
+    [SerializeField] private Transform _roomList;
+    [SerializeField] private GameObject _roomButtonPrefab;
+
+    [Header("Avatars models for preview")]
     [SerializeField] public GameObject defaultAvatar;
     [SerializeField] public GameObject smallAvatar;
     [SerializeField] public GameObject customizedAvatar;
 
-    //Funktionalitaten fuer private-Room Funktionalitaeten
+    [Header("UI-Elements for private-room feature")]
     [SerializeField] public Toggle _privateRoomToggle;
     [SerializeField] private TMP_Text _roomCodeText;
     private string _roomCode;
@@ -48,10 +61,12 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text _localErrorMessage;
     [SerializeField] private GameObject _privateRoomContainer;
 
-    //um Shadows zu steuern
+    [Header("UI Customization Manager")]
     [SerializeField] private AudioManager audioManager;
 
+    [Header("Name for by user selected Model")]
     public string playerModel;
+
     public void SelectAvatar(int avatarTypeIndex)
     {
         AvatarType avatarType = (AvatarType)avatarTypeIndex;
@@ -77,17 +92,6 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinLobby();
     }
-
-
-    [SerializeField] private GameObject _startGameButton;
-    [SerializeField] private Slider _chairsSlider;
-    [SerializeField] private TMP_Text _chairsSliderText;
-    [SerializeField] private Toggle _chatToggle;
-    [SerializeField] private Toggle _voiceChatToggle;
-    [SerializeField] private TMP_Text _countdownText;
-    private float _toWaitBeforeStart = 3.0f;
-    [SerializeField] private Button _leaveRoomButton;
-
 
     private void Start()
     {
@@ -148,6 +152,7 @@ public class Launch : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(props);
 
+
         // Warten, um sicherzustellen, dass die Eigenschaft gesetzt ist
         StartCoroutine(WaitAndStartGame());
 
@@ -157,6 +162,8 @@ public class Launch : MonoBehaviourPunCallbacks
 
         _countdownText.gameObject.SetActive(true);
     }
+
+
     //sonst koennen die Daten nicht hochgeladen werden, da die naechste schneller Scene geladen wird
     private IEnumerator WaitAndStartGame()
     {
@@ -412,11 +419,15 @@ public class Launch : MonoBehaviourPunCallbacks
         _chatToggle.gameObject.SetActive(val);
         _voiceChatToggle.gameObject.SetActive(val);
         _sceneSelector.gameObject.SetActive(val);
-        _roomCodeText.gameObject.SetActive(val);
 
         Transform roomMenu = gameObject.transform.Find("RoomMenu");
         roomMenu.Find("BGPanel").gameObject.SetActive(val);
-        roomMenu.Find("BGPanel (1)").gameObject.SetActive(val);
+
+        //wir muessen SchadowImage von Dropdown loeschen, falls Spieler kein Admin ist (da Dropdown selbst nicht sichtbar ist)
+        roomMenu.Find("ShadowImage").gameObject.SetActive(val);
+
+        //falls Zimmer private ist, muessen alle Spieler im Room den Code sehen
+        //_roomCodeText.gameObject.SetActive(true);
     }
 
 
