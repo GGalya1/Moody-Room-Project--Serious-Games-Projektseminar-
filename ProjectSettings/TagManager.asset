@@ -18,7 +18,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - HeldObject
   - DraggableObject
   - Avatar
   - DepthBox

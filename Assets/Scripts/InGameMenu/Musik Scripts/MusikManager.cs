@@ -87,10 +87,7 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     public void RPC_PlayMusik()
     {
         iWillThatMusicPlay = true;
-        //AudioClip clip = currentPlaylist.Find(c => c.name.Equals(clipName));
-        //musikAudioSource.clip = clip;
         musikAudioSource.Play();
-        //musikName.text = clip.name;
     }
     [PunRPC]
     public void RPC_SetClip(string nameOfClip)
@@ -101,9 +98,12 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
 
     public void StopMusik()
     {
-        iWillThatMusicPlay = false;
-        musikAudioSource.Pause();
-        photonView.RPC("RPC_StopMusik", RpcTarget.Others);
+        if (musikAudioSource.isPlaying)
+        {
+            iWillThatMusicPlay = false;
+            musikAudioSource.Pause();
+            photonView.RPC("RPC_StopMusik", RpcTarget.Others);
+        }
     }
     [PunRPC]
     public void RPC_StopMusik()

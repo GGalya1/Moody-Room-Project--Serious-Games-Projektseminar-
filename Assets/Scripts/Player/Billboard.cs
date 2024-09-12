@@ -7,6 +7,26 @@ public class Billboard : MonoBehaviourPunCallbacks, IUpdateObserver
     //dient dazu, username in die richtige Richtung zu rotieren
     Camera cam;
     PhotonView _photonView;
+    private Camera _cameraA;
+    private Camera _cameraB;
+
+    void Start()
+    {
+        Camera[] allCameras = FindObjectsOfType<Camera>();
+
+        foreach (var camera in allCameras)
+        {
+            if (camera.gameObject.name == "Camera_a")
+            {
+                _cameraA = camera;
+            }
+            if (camera.gameObject.name == "Camera_b")
+            {
+                _cameraB = camera;
+            }
+            if (_cameraB != null && _cameraA != null) break;
+        }
+    }
 
     #region UpdateManager connection
     private void Awake()
@@ -37,10 +57,50 @@ public class Billboard : MonoBehaviourPunCallbacks, IUpdateObserver
     {
         //falls Camera nicht gefunden wird, dann versuchen wir eine zu finden
         if (cam == null)
-            cam = FindObjectOfType<Camera>();
+        {
+            //suchen nach der Kamera von Spieler (und nicht nach iwelcher)
+            Camera[] allCameras = FindObjectsOfType<Camera>();
+
+            foreach (var camera in allCameras)
+            {
+                PhotonView photonView = camera.GetComponentInParent<PhotonView>();
+                if (photonView != null && photonView.IsMine)
+                {
+                    cam = camera;
+                    break;
+                }
+            }
+        }
+ 
         if (cam == null)
             return;
-        transform.LookAt(cam.transform);
+
+        //berechnen die Distanz zwischen den Spieler (lokal) und Billboard
+        float distance = Vector3.Distance(transform.position, cam.transform.position);
+
+        if (distance > 90 && _cameraA != null && _cameraB != null)
+        {
+            //falls Portal exisiert, dann nach dem teleportieren orientieren sich auf CameraA/B
+            //Portal a befindet sich oben, Portal b unten (in der Welt relativ einander)
+            //Billboard orientiert sich auf Camera_b, falls Spieler hoeher ist
+            if (transform.position.y < cam.transform.position.y)
+            {
+                transform.LookAt(_cameraB.transform);
+            }
+            //Billboard orientiert sich auf Camera_a, falls Spieler sich niedriger in der Welt befindet
+            else
+            {
+                transform.LookAt(_cameraA.transform);
+            }
+            
+            
+        }
+        else
+        {
+            //rotiert sich normal
+            transform.LookAt(cam.transform);
+        }
+        
         transform.Rotate(Vector3.up * 180); //da sonst username gespiegelt war
     }
     [PunRPC]

@@ -5,10 +5,6 @@ using TMPro;
 
 public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
 {
-    /*[SerializeField] private Sprite buttonSprite;
-    [SerializeField] private TMP_FontAsset buttonFont;
-    private Font buttonFontLegacy;*/
-
     //===================================================BAUARBEITEn
     private const float widthRatio = 921f / 750f;
     private const float heightRatio = 355f / 150f;
@@ -56,6 +52,11 @@ public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 0)
         {
             SetGlassmorphismOnButton();
+        }
+        else
+        {
+            //auskomentieren, wenn es fertig wird
+            GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/InGameMenuSRC/button_white");
         }
     }
 
