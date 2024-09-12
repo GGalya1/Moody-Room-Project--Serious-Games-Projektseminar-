@@ -7,6 +7,7 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
     public GameObject[] characters;
     public GameObject[] charactersInEditingMenu;
     public Slider angleSlider;
+    public Slider secondAngleSlider; //befindet sich in Customization Menu
     public int currCharIndex = 0;
     public int tempCharIndex = 0;
 
@@ -25,6 +26,7 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
 
         //Ab dem Punkt werden alle Veraenderungen von Slider ubernohmen
         angleSlider.onValueChanged.AddListener(OnSliderValueChanged);
+        secondAngleSlider.onValueChanged.AddListener(OnCustomizationSliderValueChanged);
     }
 
     //damit wenn wir die Szene verlassen und danach zurueck kommen, wird unsere Rotation auf default resetet
@@ -41,6 +43,10 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
     void OnSliderValueChanged(float value)
     {
         characters[currCharIndex].transform.rotation = Quaternion.Euler(0, value, 0);
+    }
+    void OnCustomizationSliderValueChanged(float value)
+    {
+        charactersInEditingMenu[tempCharIndex].transform.rotation = Quaternion.Euler(0, value, 0);
     }
 
     void OnDestroy()
@@ -81,6 +87,7 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
 
         //alten Character verbergen
         angleSlider.value = 190;
+        secondAngleSlider.value = 190;
         charactersInEditingMenu[tempCharIndex].SetActive(false);
 
         //neu gewaehlten zeigen
@@ -89,6 +96,7 @@ public class CharacterMainMenuPreviewSelection : MonoBehaviour
 
 
         //set Angle von Slider to default (bei uns ist das 190)
+        secondAngleSlider.value = 190;
         angleSlider.value = 190;
 
         //falls wir Customizable Avatar waehlen

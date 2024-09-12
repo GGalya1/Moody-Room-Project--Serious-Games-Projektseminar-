@@ -27,6 +27,7 @@ public class UpdateManager : MonoBehaviour
 
     private static List<IUpdateObserver> _observers = new List<IUpdateObserver>();
     private static List<string> _observersNames = new List<string>();
+
     public void RegisterObserverName(string name)
     {
         _observersNames.Add(name);

@@ -196,7 +196,6 @@ GameObject:
   - component: {fileID: 4208688849312059378}
   - component: {fileID: 1268711648988151235}
   - component: {fileID: 2370867099265467361}
-  - component: {fileID: 3083841950485274276}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -277,7 +276,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906501076083088217}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13f37975501a0d247af25624ecc7f6c3, type: 3}
   m_Name: 
@@ -285,25 +284,6 @@ MonoBehaviour:
   InteractionSource: {fileID: 7375138940441355664}
   avatarTransform: {fileID: 7881655164679182100}
   InteractRange: 2.5
---- !u!114 &3083841950485274276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906501076083088217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de8a768bfddb84c42a9148e87ac6b1e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 16384
-  ignoreTargetMask:
-    serializedVersion: 2
-    m_Bits: 65655
-  offsetFactor: 1
 --- !u!1 &3479428682682047651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,6 +1420,7 @@ GameObject:
   - component: {fileID: 4711944512816304532}
   - component: {fileID: 6507010146119483525}
   - component: {fileID: 5297311238806224744}
+  - component: {fileID: 2241778840935728456}
   m_Layer: 15
   m_Name: MonoController
   m_TagString: Untagged
@@ -1613,6 +1594,31 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2241778840935728456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7361858382076251566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1819fc3326d8b9c4b8c08ac162dad070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 4208688849312059378}
+  _cameraTransform: {fileID: 7375138940441355664}
+  _pickupableLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  _heldObjectLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  _wallLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  NUMBER_OF_GRID_ROWS: 10
+  NUMBER_OF_GRID_COLUMNS: 10
 --- !u!1 &7903435935603756621
 GameObject:
   m_ObjectHideFlags: 0
