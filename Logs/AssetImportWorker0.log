@@ -875,3 +875,7 @@ Received Import Request.
   path: Assets/Resources/SFX/multi-pop-1-188165.mp3
   artifactKey: Guid(1872945be8bb89645a1c8247cd3a5ca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
 Start importing Assets/Resources/SFX/multi-pop-1-188165.mp3 using Guid(1872945be8bb89645a1c8247cd3a5ca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f782031354d9dc847e233c6af880cbfc') in 0.022234 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.008301 seconds.

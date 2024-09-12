@@ -593,3 +593,7 @@ Received Import Request.
   path: Assets/Resources/SFX/click_button1.mp3
   artifactKey: Guid(2ab78eefcf314034f9755e59278a6c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
 Start importing Assets/Resources/SFX/click_button1.mp3 using Guid(2ab78eefcf314034f9755e59278a6c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5e1d515d3029f587b964a563d7c18a40') in 0.370879 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.007198 seconds.
