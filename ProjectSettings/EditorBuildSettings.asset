@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/CafeRoom.unity
     guid: a8b8efe55b047a741a02fa4eec89b21e
   - enabled: 1
-    path: Assets/Scenes/Forest2.unity
+    path: Assets/Scenes/CurrentForest.unity
     guid: 164fc101ab8f1584d9f3f9772734e457
   - enabled: 1
     path: Assets/Scenes/WorkingSpaceRoom.unity
