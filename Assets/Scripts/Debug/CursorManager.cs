@@ -2,22 +2,20 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 
-//diese Classe steuert die Sichtbarkeit von Cursor
+
+// this class controls the visibility of the cursor
 public class CursorManager : MonoBehaviour
 {
     public static Action<bool> OnCursorVisibilityChange;
 
-    //damit wir am Anfang der Scene Cursor sehen/nicht sehen
-    private void Start()
+    private void Start() // Start is called before the first frame update
     {
-        //falls wir in MainMenu sind
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 0) // if we are in the Main Menu Scene
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
-        //falls wir in GameScene sind
-        else
+        else // if we are in the Game Scene
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -25,14 +23,12 @@ public class CursorManager : MonoBehaviour
     }
 
     void OnEnable()
-    {
-        // Abonniere das Event
+    { // subscribe to the event
         OnCursorVisibilityChange += SetCursorVisibility;
     }
 
     void OnDisable()
-    {
-        // Trenne das Event
+    { // unsubscribe from the event
         OnCursorVisibilityChange -= SetCursorVisibility;
     }
 
@@ -41,11 +37,11 @@ public class CursorManager : MonoBehaviour
         Cursor.visible = isVisible;
         if (isVisible)
         {
-            Cursor.lockState = CursorLockMode.None; // Entsperrt den Cursor
+            Cursor.lockState = CursorLockMode.None; // unlocking the cursor
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked; // Sperrt den Cursor
+            Cursor.lockState = CursorLockMode.Locked; // locking the cursor
         }
     }
 }

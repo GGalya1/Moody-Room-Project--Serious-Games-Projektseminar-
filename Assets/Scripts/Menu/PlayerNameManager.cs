@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
+/// <summary>
+/// This class is responsible for managing and storing persistent the player's username in a multiplayer and between sessions.
+/// </summary>
 public class PlayerNameManager : MonoBehaviour
 {
     [SerializeField] TMP_InputField usernameInputFromField;

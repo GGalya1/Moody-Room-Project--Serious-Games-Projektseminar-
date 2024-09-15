@@ -4,11 +4,16 @@ using Photon.Pun;
 using System.IO;
 using System.Collections;
 
+/// <summary>
+/// The RoomManager class handles scene management and ensures that key multiplayer components like the PlayerManager 
+/// are instantiated properly after the player connects to a room in the Photon network. This class also follows the singleton pattern to 
+/// make sure one instance exists throughout all the scenes.
+/// </summary>
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager instance;
 
-    //da es bereits ein Singelton gibt, benutze ich diesen, um die Information auf dem Server zu uebergeben
+    //the singleton pattern is used to pass the information to the server
     public int chairsNumber;
     public bool chatIsOn;
     public bool voicechatIsOn;
@@ -16,18 +21,19 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        //schaut, ob ein anderen RoomManger existiert
+        //check if the instance already exists
         if (instance)
         {
             Destroy(gameObject);
             return;
         }
-        //damit wenn wir Scene wechseln, RoomManager das gleiche bleibt
+        //if not, create the instance and make it persistent between scenes
         DontDestroyOnLoad(gameObject);
         instance = this;
     }
-
-    public override void OnEnable()
+    
+ 
+    public override void OnEnable() 
     {
         base.OnEnable();
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -35,7 +41,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        //muss erweitert werden, damit wir mehrere Szenen laden koennten
+        //can be extented to be able to handle more scenes
         if (scene.buildIndex == 1 || scene.buildIndex == 2)
         {
             StartCoroutine(WaitForConnectionAndInstantiate());
@@ -44,17 +50,20 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     private IEnumerator WaitForConnectionAndInstantiate()
     {
-        // Warte, bis der Spieler vollständig mit dem Raum verbunden ist. Sonst wird kein PlayerManager erstellt, da die Verbindung noch nicht vollstandig sei
+        // waits until the player is fully connected to the room,
+        // otherwise the PlayerManager is not created,
+        // because the connection is not fully established yet
         while (!PhotonNetwork.InRoom)
         {
-            yield return null; // wartet einen Frame und überprüft dann erneut
+            yield return null; // wait for the next frame to check again
         }
 
-        // Sobald der Spieler im Raum ist, instanziere den PlayerManager
+        // Once the player is in the room, instantiate the PlayerManager
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
     }
 
-    public override void OnDisable()
+    
+    public override void OnDisable()//unregister the event
     {
         base.OnDisable();
         SceneManager.sceneLoaded -= OnSceneLoaded;

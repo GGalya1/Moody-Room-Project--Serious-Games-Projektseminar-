@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class UpdateManager : MonoBehaviour
 {
-    //Da diesen Objekt fuer den ganzen Projekt funktioniert, ist er Singleton.
-    //Dazu ist hier Observer-Pattern realisiert, um die Geschwindigkeit des Codes zu leisten,
-    //indem alle Update() in diesem einzelnem Objekt realisiert sind.
+    // This object functions as a Singleton for the entire project.
+    // Additionally, the Observer pattern is implemented here to enhance code performance
+    // by centralizing all Update() calls within this single object.
+
     #region Singleton declaration
     public static UpdateManager Instance { get; private set; }
 

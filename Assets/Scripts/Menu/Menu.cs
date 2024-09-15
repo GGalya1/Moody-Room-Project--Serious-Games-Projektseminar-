@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Menu : MonoBehaviour
-{
-    //speichert Menu, das jetzt ein-/ ausgeschaltet wird
-    public string menuName;
+{ // this class is used to control the activity/visibility of the Menu
+    public string menuName; 
 
-    //Menu wird visible
-    public void Open()
+    public void Open() // activation of Menu, making it visible
     {
         gameObject.SetActive(true);
     }
 
-    //dekativierung von Menu (Alt + Shift + A, falls man das per Hand macht)
+    // deactivation of Menu (Alt + Shift + A, if done manually)
     public void Close()
     {
         gameObject.SetActive(false);

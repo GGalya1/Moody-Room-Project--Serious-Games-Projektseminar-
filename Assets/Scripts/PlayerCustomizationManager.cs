@@ -3,15 +3,20 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
+/// <summary>
+/// Manages player customization, including the selection and application of hats, eyes, bodies, clothes, and hat colors.
+/// This script handles both local player customization and synchronizing these choices.
+/// </summary>
 public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
-    //um alle Objekte in Prefab zu speichern
+    // Arrays to hold references to customization items like hats, eyes, bodies, and clothes.
     public GameObject[] hats;
     public GameObject[] eyes;
     public GameObject[] bodies;
     public GameObject[] clothes;
 
-    private int[] lastCustomization = { 0, 0, 0, 0, 100, 37, 30}; //hat, eyes, body, clothes, redHat, greenHat, blueHat
+    // Array to store last customization state: [hat, eyes, body, clothes, redHat, greenHat, blueHat]
+    private int[] lastCustomization = { 0, 0, 0, 0, 100, 37, 30}; 
 
     public CharacterEditingMenu editingMenu;
 
@@ -26,6 +31,11 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         //}
     }*/
 
+    /// <summary>
+    /// Called when the local player object is instantiated.
+    /// Applies the customization settings stored in the instantiation data to the player object.
+    /// </summary>
+    /// <param name="info">Photon message info containing instantiation data.</param>
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         int hatIndex = (int)info.photonView.InstantiationData[1];
@@ -33,34 +43,45 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         int bodyIndex = (int)info.photonView.InstantiationData[3];
         int clothesIndex = (int)info.photonView.InstantiationData[4];
 
+        // Set the player's customization settings based on the instantiation data
         EquipItem(hats, hatIndex);
         EquipItem(eyes, eyeIndex);
         EquipItem(bodies, bodyIndex);
         EquipItem(clothes, clothesIndex);
     }
 
+    /// <summary>
+    /// Called whenever a player's custom properties are updated.
+    /// This method checks if the customization properties have changed and applies the new customization if necessary.
+    /// </summary>
+    /// <param name="targetPlayer">The player whose properties were updated.</param>
+    /// <param name="changedProps">The properties that were changed.</param>
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if (targetPlayer == photonView.Owner)
+        if (targetPlayer == photonView.Owner) // only update 
         {
             if (changedProps.ContainsKey("HatIndex") || changedProps.ContainsKey("EyeIndex") ||
                 changedProps.ContainsKey("BodyIndex") || changedProps.ContainsKey("ClothesIndex"))
             {
                 ApplyCustomization();
-                //??? Braucht man das hier
+                // Update the editing menu with the new customization values
                 editingMenu.ApplyCustomHatFromHash(changedProps);
             }
         }
     }
 
+    /// <summary>
+    /// Applies the current customization settings stored in the local player's properties to their character.
+    /// </summary>
     public void ApplyCustomization()
     {
         Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
-        //falls eine Liste leer ist
+        // Equip the items if the properties exist and there are items to choose from
         if (playerProperties.ContainsKey("HatIndex") && hats.Length > 0)
         {
             EquipItem(hats, (int)playerProperties["HatIndex"]);
         }
+
         UpdateHatColor((int)playerProperties["HatColorR"], (int)playerProperties["HatColorG"], (int)playerProperties["HatColorB"]);
 
         if (playerProperties.ContainsKey("EyeIndex") && eyes.Length > 0)
@@ -79,6 +100,12 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         }
     }
 
+    /// <summary>
+    /// Updates the color of the player's hat based on the provided RGB values.
+    /// </summary>
+    /// <param name="red">Red component of the color (0-255).</param>
+    /// <param name="green">Green component of the color (0-255).</param>
+    /// <param name="blue">Blue component of the color (0-255).</param>
     public void UpdateHatColor(int red, int green, int blue)
     {
         GameObject equipedHat = hats[0];
@@ -98,18 +125,22 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
 
         Color newColor = new Color((red / 255f), (green / 255f), (blue / 255f));
 
-        //erstellt eine neue Material-Instanz, um das Originalmaterial nicht zu aendern
+        // Create a new material instance to not change the original material
         Material newMaterial = new Material(equipedHatRenderer.material);
         newMaterial.color = newColor;
 
-        //setzt das neue Material auf den Renderer
+        // Apply the new material to the renderer
         equipedHatRenderer.material = newMaterial;
     }
 
+    /// <summary>
+    /// Activates the item at the specified index in the array of items, deactivating all other items.
+    /// </summary>
+    /// <param name="items"> Array of items to choose from. </param>
+    /// <param name="index"> Index of the item to activate. </param>
     public void EquipItem(GameObject[] items, int index)
     {
-        //falls in der Liste nichts enthalten ist
-        if (items.Length == 0) return;
+        if (items.Length == 0) return; // no items to equip
 
         foreach (var item in items)
         {
@@ -176,6 +207,9 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         }
     }
 
+    /// <summary>
+    /// Saves the current customization settings to the local <see cref="lastCustomization"/> array.
+    /// </summary>
     public void SaveLastCustomization()
     {
         Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
@@ -187,6 +221,10 @@ public class PlayerCustomizationManager : MonoBehaviourPunCallbacks, IPunInstant
         lastCustomization[5] = playerProperties.ContainsKey("HatColorG") ? (int)playerProperties["HatColorG"] : 37;
         lastCustomization[6] = playerProperties.ContainsKey("HatColorB") ? (int)playerProperties["HatColorB"] : 30;
     }
+
+    /// <summary>
+    /// Resets the player's customization to the last saved state.
+    /// </summary>
     public void ResetCustomizationToLast()
     {
         Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;

@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    //benutzte Pattern - singelton. Kein Fan davon, aber folge aktuell tutorial
+    // singelton pattern - access to the MenuManager from any script
     public static MenuManager current;
 
-    //die Liste mit allen Menus, die wir haben
+    // list of all menus
     [SerializeField] private List<Menu> _menus;
 
     public void OpenMenu(string nameOfMenu)
     {
-        //god, vorgive me for this 
         foreach (Menu menu in _menus)
         {
             if (menu.menuName == nameOfMenu)
@@ -30,13 +29,12 @@ public class MenuManager : MonoBehaviour
         {
             if (menu.gameObject.activeSelf) return menu;
         }
-        //wenn keine Menu aktiv ist
-        return null;
+        return null; // if no menu is active
     }
 
 
-    //damit MenuManager von aussen fuer jeden Script erreichbar ist
-    private void Awake()
+    // singleton pattern allows to access the MenuManager from any script
+    private void Awake() // Awake is called when the script instance is being loaded
     {
         current = this;
     }

@@ -5,27 +5,30 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using UnityEngine.UI;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
+using Unity.VisualScripting;
 
-//Benutzen MonoBehaviourPunCallbacks - damit wir sogenannte "callbacks" benutzen koennten. Also, Benachrichtigungen bekommen, 
-//wenn Player Lobby beitritt oder erstellt
+/// <summary>
+/// The Launch class handles the creation, joining, and management of rooms in a multiplayer game using Photon.
+/// It provides functions to set up rooms, manage players, and sync room properties.
+/// 
+/// MonoBehaviourPunCallbacks - to use Photon callback methods. Notifications appears when a player joins or creates a lobby.
+/// </summary>
 public class Launch : MonoBehaviourPunCallbacks
 {
-    //wieder singelton, damit die Funktion "JoinRoom" von aussen erreichbar ist
-    public static Launch instance;    
+    // Singleton instance of Launch to allow access from other scripts (e.g., RoomListItem)
+    public static Launch instance;
 
-
-    //hier speichern wir Name von Room, das in InputField eingegeben war
+    // Room input field (room name) and UI elements for error and room name display
     [SerializeField] private TMP_InputField _roomInputField;
-
-    //fuer korrekte Wiedergabe von Name des Zimmers
     [SerializeField] private TMP_Text _errorText;
     [SerializeField] private TMP_Text _roomNameText;
 
-    //fuer korrekte Wiedergabe von bereits an der Server erstellten Zimmern
-    [SerializeField] private Transform _roomList;
-    [SerializeField] private GameObject _roomButtonPrefab;
+    // Used to display the list of rooms available on the server. 
+    [SerializeField] private Transform _roomList; //A Transform for the list of rooms available on the server. (Buttons)
+    [SerializeField] private GameObject _roomButtonPrefab; //Prefab for buttons representing available rooms.
 
-    //fuer korrekte Wiedergabe von bereits in einem Room beigetretenen Leuten
+    // Used to display the list of players in the room.
     [SerializeField] private Transform _playerList;
     [SerializeField] private GameObject _playerNamePrefab;
     [SerializeField] private GameObject _playerNameForAdminPrefab;
@@ -36,8 +39,9 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] public GameObject defaultAvatar;
     [SerializeField] public GameObject smallAvatar;
     [SerializeField] public GameObject customizedAvatar;
+    public string playerModel; // the name of the selected player model
 
-    //Funktionalitaten fuer private-Room Funktionalitaeten
+    // Private room settings
     [SerializeField] public Toggle _privateRoomToggle;
     [SerializeField] private TMP_Text _roomCodeText;
     private string _roomCode;
@@ -48,34 +52,8 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text _localErrorMessage;
     [SerializeField] private GameObject _privateRoomContainer;
 
-    public string playerModel;
-    public void SelectAvatar(int avatarTypeIndex)
-    {
-        AvatarType avatarType = (AvatarType)avatarTypeIndex;
-        switch (avatarType)
-        {
-            case AvatarType.Default:
-                playerModel = defaultAvatar.name;
-                break;
-            case AvatarType.Small:
-                playerModel = smallAvatar.name;
-                break;
-            case AvatarType.Customizable:
-                playerModel = customizedAvatar.name;
-                break;
-            default:
-                Debug.LogError("Unknown avatar type selected");
-                break;
-        }
-    }
 
-    //Es gibt ein Bug: wenn man das Raum selbst erstellt und danach verlaesst. Kann man bereits existierte Raume nicht meehr sehen. Das losen wir durch "refresh"
-    public void RefreshRoomlist()
-    {
-        PhotonNetwork.JoinLobby();
-    }
-
-
+    // Room settings 
     [SerializeField] private GameObject _startGameButton;
     [SerializeField] private Slider _chairsSlider;
     [SerializeField] private TMP_Text _chairsSliderText;
@@ -86,36 +64,43 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] private Button _leaveRoomButton;
 
 
+    /// <summary>
+    /// Initializes the instance, connects to the Photon server, and sets up UI listeners.
+    /// </summary>
     private void Start()
     {
         instance = this;
-        //damit man Spielern aus dem Server "kicken" kann
-        PhotonNetwork.EnableCloseConnection = true;
+        PhotonNetwork.EnableCloseConnection = true; // Allows master client to kick players from the server
         Debug.Log("Connected to the server");
-        //wird zu eu-Region eine Konnektion erstellen (weil so Photon-Objekt konfiguriert ist. Kann man aendern)
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectUsingSettings(); // Connect to Photon server in the eu region (can be changed in the Photon object configuration)
         MenuManager.current.OpenMenu("loading");
 
-        playerModel = defaultAvatar.name;
+        playerModel = defaultAvatar.name; // Set the default avatar
 
         _chairsSlider.onValueChanged.AddListener(OnSliderValueChanged);
         OnSliderValueChanged(_chairsSlider.value);
-
         _chatToggle.onValueChanged.AddListener(OnChatToggleValueChanged);
         _voiceChatToggle.onValueChanged.AddListener(OnVoiceChatToggleValueChanged);
 
+        // When the player selects an option from the scene dropdown, the DropdownItemSelected method is called.
         _sceneSelector.onValueChanged.AddListener(delegate { DropdownItemSelected(_sceneSelector); });
     }
 
-    //"OnConnectedToMaster" fuhrt Aktionen, sobald eine Konnektion erstellt wurde
+    /// <summary>
+    /// Called when connected to the Photon master server.
+    /// Joins the default lobby.
+    /// </summary>
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to master");
         PhotonNetwork.JoinLobby();
-        //damit bei allen Spieler das gleiche Scene geladen wird
-        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.AutomaticallySyncScene = true; // Automatically synchronize the scene between players
     }
 
+    /// <summary>
+    /// Called when joining the Photon lobby.
+    /// Sets up the lobby UI.
+    /// </summary>
     public override void OnJoinedLobby()
     {
         Debug.Log("Connected to Lobby");
@@ -131,76 +116,33 @@ public class Launch : MonoBehaviourPunCallbacks
         //PhotonNetwork.NickName = "Player " + Random.Range(0, 2000).ToString("0000");
     }
 
-    public void StartGame()
+
+    // there is a bug: if you create the room yourself and then leave it.
+    // You can no longer see the rooms that already exist.
+    // Solved by "refresh"
+    public void RefreshRoomlist()
     {
-        //den Code, um Anzahl an Stuhle im Room zu uebergeben
-        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
-        props["ChairCount"] = RoomManager.instance.chairsNumber;
-        props["IsChatOn"] = RoomManager.instance.chatIsOn;
-        props["IsVoiceChatOn"] = RoomManager.instance.voicechatIsOn;
-        props["RoomCode"] = _roomCode;
-
-        //hier Starten wir Scene namens "GameScene", weil sie Index 1 in BuildSetting hat
-        //PhotonNetwork.LoadLevel(1);
-
-        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
-
-        // Warten, um sicherzustellen, dass die Eigenschaft gesetzt ist
-        StartCoroutine(WaitAndStartGame());
-
-        //da man alle Einstellungen fuer Zimmer OnClick() uebernimmt, sollen wir die Moeglichkeit ausschalten,
-        //diese Einstellungen nach dem Klick zu aendern (um die Frustrationserfahrung zu vermeiden)
-        DisableAllInteractableObjects();
-
-        _countdownText.gameObject.SetActive(true);
-    }
-    //sonst koennen die Daten nicht hochgeladen werden, da die naechste schneller Scene geladen wird
-    private IEnumerator WaitAndStartGame()
-    {
-        //yield return new WaitForSeconds(Mathf.RoundToInt(_toWaitBeforeStart)); // Warte 3 Sekunden
-        float countdown = _toWaitBeforeStart;
-        while (countdown >= 0)
-        {
-            _countdownText.text = $"we will start in {Mathf.RoundToInt(countdown)}";
-            yield return new WaitForSeconds(1f);
-            countdown--;
-        }
-        // Hier Starten wir die Szene namens "GameScene", weil sie Index 1 in BuildSettings hat
-        PhotonNetwork.LoadLevel(indexOfScene);
-    }
-    private void DisableAllInteractableObjects()
-    {
-        _startGameButton.gameObject.SetActive(false);
-        _chairsSlider.gameObject.SetActive(false);
-        _chairsSliderText.gameObject.SetActive(false);
-        _chatToggle.gameObject.SetActive(false);
-        _voiceChatToggle.gameObject.SetActive(false);
-        _sceneSelector.gameObject.SetActive(false);
-        _leaveRoomButton.gameObject.SetActive(false);
-        foreach (Transform item in _playerList)
-        {
-            Button temp = item.gameObject.GetComponentInChildren<Button>();
-            if (temp != null)
-            {
-                temp.gameObject.SetActive(false);
-            }
-        }
+        PhotonNetwork.JoinLobby();
     }
 
+    /// <summary>
+    ///  Creates a new room based on user input and toggles.
+    ///  If a private room is created, generates a room code.
+    /// </summary>
     public void CreateRoom()
     {
         if (!string.IsNullOrEmpty(_roomInputField.text))
         {
             RoomOptions options = new RoomOptions();
 
-            //falls das eingeschaltet ist, dann erzeuge ich einen Code, damit Leute das Raum beitreten koennten
+            // If the private room toggle is on, generate a private code
             if (_privateRoomToggle.isOn)
             {
                 _roomCode = Random.Range(1000, 15000).ToString();
                 options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "RoomCode", _roomCode } };
                 options.CustomRoomPropertiesForLobby = new string[] { "RoomCode" };
 
-                // Zeige den Code für den Admin an
+                // Show the code to the admin
                 _roomCodeText.text = $"Room Code:\n{_roomCode}";
                 RoomManager.instance.roomCode = _roomCode;
             }
@@ -208,26 +150,42 @@ public class Launch : MonoBehaviourPunCallbacks
             {
                 RoomManager.instance.roomCode = "public";
             }
-            PhotonNetwork.CreateRoom(_roomInputField.text, options);
+            PhotonNetwork.CreateRoom(_roomInputField.text, options); // Create a room with the name entered
             MenuManager.current.OpenMenu("loading");
         }
     }
 
+    /// <summary>
+    /// Called when creating a room fails. Displays an error message.
+    /// </summary>
+    /// <param name="returnCode"></param>
+    /// <param name="message"></param>
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        _errorText.text = "Error: " + message;
+        MenuManager.current.OpenMenu("error");
+    }
+
+    /// <summary>
+    /// Called when a room is successfully joined.
+    /// Updates the room and player UI for hosts and regular players.
+    /// </summary>
     public override void OnJoinedRoom()
     {
         _roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         MenuManager.current.OpenMenu("room");
 
         Player[] players = PhotonNetwork.PlayerList;
-        //fixen von Bug: wenn man Room verlaesst und ein anderes Startet, werden alle 
-        //Spieler aus dem letzten Room in den aktuellen übertragen
-        //darum loeschen wir alle Spieler am Anfang
+
+        // Bug: when you leave the room and start another one, all players from the last room are transferred to the current one
+        // Solution: delete all players
         for (int i = 0; i < _playerList.childCount; i++)
         {
             Destroy(_playerList.GetChild(i).gameObject);
         }
 
-        //hier muessen wir die Fallunterscheidung treffen. Wenn IsMasterClient - muss Prefab mit dem Knopf zum kicken erstellt werden.
+        // It differentiates the UI elements used for the master client (host) and regular players.
+        // If host, the button to kick players will be created. If not - no button.
         if (PhotonNetwork.IsMasterClient)
         {
             for (int i = 0; i < players.Length; i++)
@@ -248,22 +206,183 @@ public class Launch : MonoBehaviourPunCallbacks
             }
         }
 
-
-        //falls Speieler "host" ist, wird Knopf zum Start des Spieles visible. Wenn nicht - invisible
+        // If the player is the host, the button to start the game (and other properties) will be visible. If not - invisible
         SetVisibilityOfRoomSettings(PhotonNetwork.IsMasterClient);
     }
 
-    //wenn host das Raum verlaest, wird host aktuelisiert
+    /// <summary>
+    /// Called when the master client leaves. Updates the new master client UI.
+    /// </summary>
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         SetVisibilityOfRoomSettings(PhotonNetwork.IsMasterClient);
     }
 
-    public override void OnCreateRoomFailed(short returnCode, string message)
+
+    /// <summary>
+    /// Attempts to join a selected room (public or private), passing the info about the room to Photon.
+    /// </summary>
+    /// <param name="info"> Room details </param>
+    public void JoinRoom(RoomInfo info)
     {
-        _errorText.text = "Error: " + message;
-        MenuManager.current.OpenMenu("error");
+        // joining private rooms
+        if (info.CustomProperties.ContainsKey("RoomCode"))
+        {
+            _privateRoomPanel.SetActive(true);
+            _selectedRoomInfo = info;
+            // from here we expect the functionalities of InputField and Submit Button
+        }
+        // joining public rooms
+        else
+        {
+            PhotonNetwork.JoinRoom(info.Name);
+            MenuManager.current.OpenMenu("loading");
+        }
     }
+
+
+    /// <summary>
+    ///  Submits the room code for private rooms, by entering the code in the input field and clicking submit button.
+    ///  If correct, the player joins the room.
+    /// </summary>
+    public void OnSubmitRoomCode()
+    {
+        if (_roomCodeInputField.text == _selectedRoomInfo.CustomProperties["RoomCode"].ToString())
+        { // if the code is correct, the player joins the room
+            PhotonNetwork.JoinRoom(_selectedRoomInfo.Name);
+            MenuManager.current.OpenMenu("loading");
+        }
+        else
+        { // if the code is incorrect, the error message is displayed
+            StartCoroutine(ShowErrorAndHidePanel());
+        }
+    }
+
+    /// <summary>
+    /// Shows an error message and hides the private room panel if the room code is incorrect.
+    /// </summary>
+    private IEnumerator ShowErrorAndHidePanel()
+    {
+        // Show the error message and hide other components
+        _localErrorMessage.gameObject.SetActive(true);
+        _privateRoomContainer.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+
+        // Hide the error message and show the components
+        _localErrorMessage.gameObject.SetActive(false);
+        _privateRoomContainer.SetActive(true);
+
+        // hide the whole private room panel
+        _privateRoomPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Updates the room list UI with the available rooms.
+    /// </summary>
+    /// <param name="roomList"></param>
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        // Before updating the information on the buttons, we need to delete all the buttons (room list items)
+        for (int i = 0; i < _roomList.childCount; i++)
+        {
+            Destroy(_roomList.GetChild(i).gameObject);
+        }
+
+        // error-prone !!!
+        // iterates through all rooms and creates a new button for each
+        foreach (RoomInfo r in roomList)
+        {
+            if (r.RemovedFromList) // If the room is full or hidden, it will not be displayed
+            {
+                continue;
+            }
+            Instantiate(_roomButtonPrefab, _roomList).GetComponent<RoomListItem>().SetUp(r);
+        }
+    }
+
+    /// <summary>
+    /// Handles the avatar selection process based on user input.
+    /// </summary>
+    /// <param name="avatarTypeIndex"></param>
+    public void SelectAvatar(int avatarTypeIndex)
+    {
+        AvatarType avatarType = (AvatarType)avatarTypeIndex;
+        switch (avatarType)
+        {
+            case AvatarType.Default:
+                playerModel = defaultAvatar.name;
+                break;
+            case AvatarType.Small:
+                playerModel = smallAvatar.name;
+                break;
+            case AvatarType.Customizable:
+                playerModel = customizedAvatar.name;
+                break;
+            default:
+                Debug.LogError("Unknown avatar type selected");
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Initializes the game when the host starts it.
+    /// </summary>
+    public void StartGame()
+    {
+        // Pass the number of chairs in the room
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+        props["ChairCount"] = RoomManager.instance.chairsNumber;
+        props["IsChatOn"] = RoomManager.instance.chatIsOn;
+        props["IsVoiceChatOn"] = RoomManager.instance.voicechatIsOn;
+        props["RoomCode"] = _roomCode;
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+
+        // Wait to make sure the property is set and then start the game scene (index = 1)
+        StartCoroutine(WaitAndStartGame());
+
+        // Disable all interactable objects in the room to prevent changing settings after clicking OnCLick()
+        DisableAllInteractableObjects();
+
+        // Show the countdown text
+        _countdownText.gameObject.SetActive(true);
+    }
+
+    private IEnumerator WaitAndStartGame()//otherwise the data cannot be uploaded because the next scene is loaded faster
+    {
+        float countdown = _toWaitBeforeStart;
+        while (countdown >= 0)
+        {
+            _countdownText.text = $"we will start in {Mathf.RoundToInt(countdown)}";
+            yield return new WaitForSeconds(1f);
+            countdown--;
+        }
+        // Start the scene "GameScene", under the index 1 in BuildSettings
+        PhotonNetwork.LoadLevel(indexOfScene);
+    }
+    /// <summary>
+    /// Disables all interactable objects in the room to prevent changing settings after clicking the Start Game button.
+    /// </summary>
+    private void DisableAllInteractableObjects()
+    {
+        _startGameButton.gameObject.SetActive(false);
+        _chairsSlider.gameObject.SetActive(false);
+        _chairsSliderText.gameObject.SetActive(false);
+        _chatToggle.gameObject.SetActive(false);
+        _voiceChatToggle.gameObject.SetActive(false);
+        _sceneSelector.gameObject.SetActive(false);
+        _leaveRoomButton.gameObject.SetActive(false);
+        foreach (Transform item in _playerList) // Disable all buttons in the player list
+        {
+            Button temp = item.gameObject.GetComponentInChildren<Button>();
+            if (temp != null)
+            {
+                temp.gameObject.SetActive(false);
+            }
+        }
+    }
+
 
     public void LeaveRoom()
     {
@@ -276,75 +395,6 @@ public class Launch : MonoBehaviourPunCallbacks
         MenuManager.current.OpenMenu("title");
     }
 
-    //fuehrt Information uber den gewuenschten Room fuer Photon
-    public void JoinRoom(RoomInfo info)
-    {
-        //beitreten von private-Raumen
-        if (info.CustomProperties.ContainsKey("RoomCode"))
-        {
-            _privateRoomPanel.SetActive(true);
-            _selectedRoomInfo = info;
-            //ab hier erwarten wir die Funktionalitaeten von InputField und Submit Button
-        }
-        //beitreten von public-Raumen
-        else
-        {
-            PhotonNetwork.JoinRoom(info.Name);
-            MenuManager.current.OpenMenu("loading");
-        }
-    }
-    // Methode, die aufgerufen wird, wenn der Spieler den Code eingibt und bestätigen möchte
-    public void OnSubmitRoomCode()
-    {
-        if (_roomCodeInputField.text == _selectedRoomInfo.CustomProperties["RoomCode"].ToString())
-        {
-            PhotonNetwork.JoinRoom(_selectedRoomInfo.Name);
-            MenuManager.current.OpenMenu("loading");
-        }
-        else
-        {
-            //falls mit dem Code nicht geklappt ist, geben wir die Rueckmeldung
-            StartCoroutine(ShowErrorAndHidePanel());
-        }
-    }
-    //um die Reuckmeldung zu geben
-    private IEnumerator ShowErrorAndHidePanel()
-    {
-        // Blende die Fehlermeldung ein und andren Komponenten aus
-        _localErrorMessage.gameObject.SetActive(true);
-        _privateRoomContainer.SetActive(false);
-
-        // Warte 1 Sekunde
-        yield return new WaitForSeconds(1f);
-
-        // Blende die Fehlermeldung aus
-        _localErrorMessage.gameObject.SetActive(false);
-        _privateRoomContainer.SetActive(true);
-
-        // Schließe das Panel
-        _privateRoomPanel.SetActive(false);
-    }
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        //bevor die Information an Knopfen aktualisiert wird, sollen wir die alle loeschen
-        for (int i = 0; i < _roomList.childCount; i++)
-        {
-            Destroy(_roomList.GetChild(i).gameObject);
-        }
-
-        //fehleranfaelig !!!
-        //iterriere alle rooms uns erstelle fuer jede neuen Knopf
-        foreach (RoomInfo r in roomList)
-        {
-            //RemovedFromList sichert, dass falls Room voll/ hidden ist, wird es nicht angezeigt
-            if (r.RemovedFromList)
-            {
-                continue;
-            }
-            Instantiate(_roomButtonPrefab, _roomList).GetComponent<RoomListItem>().SetUp(r);
-        }
-    }
 
 
     public override void OnPlayerEnteredRoom(Player player)
@@ -358,7 +408,7 @@ public class Launch : MonoBehaviourPunCallbacks
             Instantiate(_playerNamePrefab, _playerList).GetComponent<PlayerListItem>().SetUp(player);
         }
     }
-        
+
 
     public void ExitGame()
     {
@@ -366,7 +416,9 @@ public class Launch : MonoBehaviourPunCallbacks
     }
 
 
-    //Funktionalitaten, um das Raum zu gestalten.
+    /// <summary>
+    /// Updates the room settings based on the slider value.
+    /// </summary>
     private void OnSliderValueChanged(float value)
     {
         int chairNumber = Mathf.RoundToInt(value);
@@ -387,6 +439,10 @@ public class Launch : MonoBehaviourPunCallbacks
         indexOfScene = dropdown.value + 1;
     }
 
+    /// <summary>
+    /// Shows or hides UI elements depending on whether the player is
+    /// </summary>
+    /// <param name="val"></param>
     private void SetVisibilityOfRoomSettings(bool val)
     {
         _startGameButton.SetActive(val);
@@ -397,13 +453,11 @@ public class Launch : MonoBehaviourPunCallbacks
         _sceneSelector.gameObject.SetActive(val);
         _roomCodeText.gameObject.SetActive(val);
     }
-
-
 }
 
-public enum AvatarType
-{
-    Default,
-    Small,
-    Customizable
-}
+    public enum AvatarType
+    {
+        Default,
+        Small,
+        Customizable
+    }
