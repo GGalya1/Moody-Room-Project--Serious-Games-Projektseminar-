@@ -55,8 +55,13 @@ public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
         }
         else
         {
-            //auskomentieren, wenn es fertig wird
-            GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/InGameMenuSRC/button_white");
+            //falls ein Bild per Hand gesetzt ist, dann wollen wir nichts aendern
+            Image check = GetComponent<Image>();
+            if (check != null && check.sprite.name == "UISprite")
+            {
+                check.sprite = Resources.Load<Sprite>("UI/InGameMenuSRC/button_white");
+            }
+            
         }
     }
 

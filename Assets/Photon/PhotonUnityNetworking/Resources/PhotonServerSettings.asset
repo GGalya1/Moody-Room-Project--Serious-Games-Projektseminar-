@@ -61,6 +61,7 @@ MonoBehaviour:
   - FindAndSubscribeBillboard
   - UnsubscribeBillboard
   - RPC_SetWhiteboardAcces
+  - RPC_ReceiveImagePacket
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
