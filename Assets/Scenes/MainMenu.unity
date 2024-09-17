@@ -3836,7 +3836,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: return to main menu
+  m_Text: Return to main menu
 --- !u!222 &306813026
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15155,7 +15155,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create !
+  m_Text: Create
 --- !u!222 &1340439905
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17676,7 +17676,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: return to main menu
+  m_Text: Return to main menu
 --- !u!222 &1612820760
 CanvasRenderer:
   m_ObjectHideFlags: 0

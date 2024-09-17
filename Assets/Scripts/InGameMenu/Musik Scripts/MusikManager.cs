@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using System.Linq;
+using System;
+
 
 public class MusikManager : MonoBehaviour, IUpdateObserver
 {
@@ -24,6 +27,8 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     public List<AudioClip> customTracks;
     [SerializeField] private GameObject songPrefab;
 
+    private Color pressedButtonColor;
+
     public List<AudioClip> currentPlaylist;
     public int currentTrackIndex;
     public bool iWillThatMusicPlay = false;
@@ -32,6 +37,78 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
 
     //um das ganze zu synchronisieren
     private PhotonView photonView;
+
+    //BAUARBEITEN: wir senden Musik per Photon
+    private const int PacketSize = 300 * 1024; //jedes Packet wird 300KB gross
+    private List<byte[]> audioPackets = new List<byte[]>(); //um alle Paketen zwischenzuspeichern
+
+    public void SendAudioClip(AudioClip clip)
+    {
+        byte[] audioData = ConvertAudioClipToBytes(clip); // Конвертируем AudioClip в байты
+
+        int totalPackets = Mathf.CeilToInt((float)audioData.Length / PacketSize); // Количество пакетов
+        for (int i = 0; i < totalPackets; i++)
+        {
+            int start = i * PacketSize;
+            int length = Mathf.Min(PacketSize, audioData.Length - start); // Определяем размер текущего пакета
+
+            byte[] packet = new byte[length];
+            System.Array.Copy(audioData, start, packet, 0, length); // Копируем часть аудиоданных в пакет
+
+            photonView.RPC("RPC_ReceiveAudioPacket", RpcTarget.All, packet, i, totalPackets, clip.frequency); // Отправляем пакет
+        }
+    }
+    public byte[] ConvertAudioClipToBytes(AudioClip clip)
+    {
+        float[] samples = new float[clip.samples];
+        clip.GetData(samples, 0);
+
+        byte[] bytes = new byte[samples.Length * sizeof(float)];
+        Buffer.BlockCopy(samples, 0, bytes, 0, bytes.Length);
+
+        return bytes;
+    }
+
+    [PunRPC]
+    public void RPC_ReceiveAudioPacket(byte[] packet, int packetIndex, int totalPackets, int freq)
+    {
+        if (audioPackets.Count == 0)
+        {
+            audioPackets = new List<byte[]>(new byte[totalPackets][]); // Инициализируем список для пакетов
+        }
+
+        audioPackets[packetIndex] = packet; // Сохраняем пакет на его место
+
+        // Проверяем, все ли пакеты получены
+        if (audioPackets.All(p => p != null))
+        {
+            // Все пакеты получены, собираем аудиоданные
+            byte[] fullAudioData = audioPackets.SelectMany(p => p).ToArray();
+            AudioClip clip = ConvertBytesToAudioClip(fullAudioData, freq); // Преобразуем байты обратно в AudioClip
+
+            // Воспроизводим аудио
+            musikAudioSource.clip = clip;
+            PlayMusik();
+            allTracks.Add(clip);
+
+            // Очищаем список пакетов
+            audioPackets.Clear();
+        }
+    }
+    public AudioClip ConvertBytesToAudioClip(byte[] audioData, int sampleRate)
+    {
+        int sampleCount = audioData.Length / sizeof(float);
+        float[] samples = new float[sampleCount];
+        Buffer.BlockCopy(audioData, 0, samples, 0, audioData.Length);
+
+        AudioClip clip = AudioClip.Create("ReceivedAudio", sampleCount, 1, sampleRate, false);
+        clip.SetData(samples, 0);
+        return clip;
+    }
+
+
+
+    //BAUARBEITEN: wir senden Musik per Photon
 
     #region UpdateManager connection
     private void Awake()
@@ -60,6 +137,8 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
         allTracks.AddRange(battleTracks);
 
         currentPlaylist = new List<AudioClip>();
+
+        pressedButtonColor = HexToColor("#9A92B980");
     }
     public void ObservedUpdate()
     {
@@ -149,7 +228,7 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     public void OpenAllSongs()
     {
         DisableAllPlaylistUI();
-        allTracksButton.image.color = Color.yellow;
+        allTracksButton.image.color = pressedButtonColor;
         for (int i = 0; i < customTracks.Count; i++)
         {
             SongButtonScript temp = Instantiate(songPrefab, playlistContent.transform).GetComponent<SongButtonScript>();
@@ -170,7 +249,7 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     public void OpenChillPlaylist()
     {
         DisableAllPlaylistUI();
-        chillPlaylistButton.image.color = Color.yellow;
+        chillPlaylistButton.image.color = pressedButtonColor;
         for (int i = 0; i < chillTracks.Count; i++)
         {
             SongButtonScript temp = Instantiate(songPrefab, playlistContent.transform).GetComponent<SongButtonScript>();
@@ -180,7 +259,7 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     public void OpenBattlePlaylist()
     {
         DisableAllPlaylistUI();
-        battlePlaylistButton.image.color = Color.yellow;
+        battlePlaylistButton.image.color = pressedButtonColor;
         for (int i = 0; i < battleTracks.Count; i++)
         {
             SongButtonScript temp = Instantiate(songPrefab, playlistContent.transform).GetComponent<SongButtonScript>();
@@ -295,5 +374,19 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
             SongButtonScript temp = Instantiate(songPrefab, playlistContent.transform).GetComponent<SongButtonScript>();
             temp.Inizialise(currentPlaylist[i], musikAudioSource, musikName, this);
         }
+    }
+
+    Color HexToColor(string hex)
+    {
+        // Entferne das `#` am Anfang des Strings, falls vorhanden
+        hex = hex.TrimStart('#');
+
+        // Extrahiere die RGBA-Werte aus dem Hex-String
+        float r = Convert.ToInt32(hex.Substring(0, 2), 16) / 255f;
+        float g = Convert.ToInt32(hex.Substring(2, 2), 16) / 255f;
+        float b = Convert.ToInt32(hex.Substring(4, 2), 16) / 255f;
+        float a = Convert.ToInt32(hex.Substring(6, 2), 16) / 255f;
+
+        return new Color(r, g, b, a);
     }
 }

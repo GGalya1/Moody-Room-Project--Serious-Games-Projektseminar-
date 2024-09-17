@@ -56,11 +56,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: {fileID: 5891820149740754781}
   mutePlayerButton: {fileID: 9010150401536243006}
-  unmuteImage: {fileID: 21300000, guid: eb1f927eaa6bd3c4bb9ecdeb180ee6f8, type: 3}
-  muteImage: {fileID: 21300000, guid: 3febadc638e54224a93818d4ff54687a, type: 3}
+  unmuteImage: {fileID: 21300000, guid: 696dfa6a79ef04a46b039e9faa09ae4e, type: 3}
+  muteImage: {fileID: 21300000, guid: c5ef021af05513746b5f3b038382c592, type: 3}
   whiteboardButton: {fileID: 8908442690673227398}
-  boardOnImage: {fileID: 21300000, guid: 2d72622458bb76c49b911987c3f9536b, type: 3}
-  boardOffImage: {fileID: 21300000, guid: d8bc1302f637a5841965e4c5555c8338, type: 3}
+  boardOnImage: {fileID: 21300000, guid: 3f0f26525d36f54489f32c61446787c4, type: 3}
+  boardOffImage: {fileID: 21300000, guid: b1610636e39c0644eb80ff97ff4dfa99, type: 3}
   kickPlayerButton: {fileID: 2552867362649073970}
 --- !u!1 &3516258519481545991
 GameObject:
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2d72622458bb76c49b911987c3f9536b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b1610636e39c0644eb80ff97ff4dfa99, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9a676c30fbcc0eb4bb34f28a355c205e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 07aacb4bfc84bb7418e4ffc4ee9f2e1e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1014,7 +1014,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb1f927eaa6bd3c4bb9ecdeb180ee6f8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 696dfa6a79ef04a46b039e9faa09ae4e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

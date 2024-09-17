@@ -14,14 +14,21 @@ public class DrawingUIManager : MonoBehaviour
     public Button eraseButton;
     public Button clearButton;
 
+    public float brushMaxSize = 40.0f;
+    public float brushMinSize = 5.0f;
+
+    [SerializeField] private GameObject container;
+
     //BAUARBEITEN wegen Synchronisieren zwischen allen Spielern
     public Button loadImageButton;
     public PhotonView photonView;
     internal byte[] imageData;
     public Texture2D image;
     public RawImage loadedImage;
+    [SerializeField] private RectTransform rectTransform;
 
     //BAUARBEITEN wegen Zerlegen von Image in mehreren Dateien
+    [SerializeField] private FileManager fileManager;
     private const int PacketSize = 300 * 1024; // 300 KB для каждого пакета
     private List<byte[]> imagePackets = new List<byte[]>();
     public void ShareImage()
@@ -65,36 +72,41 @@ public class DrawingUIManager : MonoBehaviour
             }
 
             // Преобразуем обратно в текстуру
-            Texture2D texture = new Texture2D(10, 10);
+            Texture2D texture = new Texture2D((int)rectTransform.rect.width, (int)rectTransform.rect.height, TextureFormat.RGBA32, false);
             texture.LoadImage(fullImageData.ToArray());
-            loadedImage.texture = texture;
+            
+            //скалируем текстуру
+            texture = ResizeTexture(texture, rectTransform.rect.width, rectTransform.rect.height);
 
             // Очистка
             imagePackets.Clear();
+
+            //проверяем, загрузилась ли текстура в скрипт для рисования
+            drawingBoard.SetImage(texture);
+
+            //синхронизируем с большим бордом
+            drawingBoard.SyncLargeBoardWithLittleBoard();
         }
     }
 
-    //BAUARBEITEN 
-
-    /*public void ShareImage()
+    public Texture2D ResizeTexture(Texture2D sourceTexture, float targetWidth, float targetHeight)
     {
-        imageData = image.EncodeToPNG();
-        photonView.RPC("RPC_ShareImage", RpcTarget.All, imageData);
+        Texture2D resizedTexture = new Texture2D((int)targetWidth, (int)targetHeight, sourceTexture.format, false);
+
+        // Масштабируем изображение с билинейной интерполяцией
+        for (int x = 0; x < targetWidth; x++)
+        {
+            for (int y = 0; y < targetHeight; y++)
+            {
+                float u = (float)x / targetWidth;
+                float v = (float)y / targetHeight;
+                Color color = sourceTexture.GetPixelBilinear(u, v);
+                resizedTexture.SetPixel(x, y, color);
+            }
+        }
+        resizedTexture.Apply();
+        return resizedTexture;
     }
-
-    [PunRPC]
-    private void RPC_ShareImage(byte[] imageData)
-    {
-        Texture2D texture = new Texture2D(10, 10);
-        texture.LoadImage(imageData);
-        loadedImage.texture = texture;
-    }*/
-    //BAUARBEITEN
-
-    public float brushMaxSize = 40.0f;
-    public float brushMinSize = 5.0f;
-
-    [SerializeField] private GameObject container;
 
     void Start()
     {
@@ -108,12 +120,17 @@ public class DrawingUIManager : MonoBehaviour
         blackColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.black));
         eraseButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.white));
         clearButton.onClick.AddListener(drawingBoard.ClearTexture);
-        loadImageButton.onClick.AddListener(ShareImage);
+        loadImageButton.onClick.AddListener(fileManager.OpenFileBrowserForImagesSearch);
     }
 
     void ChangeBrushSize(float newSize)
     {
         drawingBoard.brushSize = newSize;
+    }
+
+    public RectTransform GetRectTransform()
+    {
+        return rectTransform;
     }
 }
 
