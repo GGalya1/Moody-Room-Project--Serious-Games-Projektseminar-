@@ -15,8 +15,6 @@ public class RoomSettingManager : MonoBehaviourPunCallbacks
     public bool voiceChatIsOn;
     public bool whiteboardIsOn;
 
-    MusikManager musikManager;
-
     public void Awake()
     {
         int _chairsCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["ChairCount"];

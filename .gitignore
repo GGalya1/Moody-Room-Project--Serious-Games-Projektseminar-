@@ -18,6 +18,7 @@ sysinfo.txt
 ###
 [Ee]xportedObj/
 *.booproj
+*.vs
 *.csproj
 *.sln
 *.suo
@@ -27,7 +28,7 @@ sysinfo.txt
 *.userprefs
 *.pidb
 .DS_Store
-
+.vs/
 ###
 # OS generated
 ###

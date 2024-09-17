@@ -49,6 +49,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
                     renderer.enabled = false;
                 }
             }
+
+            //setzen von Kameras, damit Portals korrekt funktioniert
+            SetCamerasForPortals();
         }
         else
         {
@@ -62,7 +65,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         string whichPlayer = Launch.instance.playerModel;
         //Debug.LogError(whichPlayer);
-        if (whichPlayer == "PlayerController - RedSphere" || whichPlayer == "PlayerController")
+        if (whichPlayer == "PlayerController - RedSphere" || whichPlayer == "PlayerController" || whichPlayer == "MonoController")
         {
             controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", Launch.instance.playerModel), spawnpoint.position, spawnpoint.rotation, 0, new object[] { _photonView.ViewID });
         }
@@ -165,6 +168,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Destroy(controller);
         CreateController();
+        SetCamerasForPortals();
     }
 
     // Diese Methode wird aufgerufen, wenn ein anderer Spieler den Raum verlässt
@@ -184,5 +188,14 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     private void RPC_SetWhiteboardAcces(bool isOn)
     {
         InputManager.whiteboardIsOn = isOn;
+    }
+
+    private void SetCamerasForPortals()
+    {
+        PortalCamera[] allCams = FindObjectsOfType<PortalCamera>();
+        foreach (PortalCamera cam in allCams)
+        {
+            cam.SetCamera(controller.GetComponentInChildren<Camera>().transform);
+        }
     }
 }
