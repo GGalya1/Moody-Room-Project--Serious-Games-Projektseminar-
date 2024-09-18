@@ -53,9 +53,9 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
             int length = Mathf.Min(PacketSize, audioData.Length - start); // Определяем размер текущего пакета
 
             byte[] packet = new byte[length];
-            System.Array.Copy(audioData, start, packet, 0, length); // Копируем часть аудиоданных в пакет
+            Array.Copy(audioData, start, packet, 0, length); // Копируем часть аудиоданных в пакет
 
-            photonView.RPC("RPC_ReceiveAudioPacket", RpcTarget.All, packet, i, totalPackets, clip.frequency); // Отправляем пакет
+            photonView.RPC("RPC_ReceiveAudioPacket", RpcTarget.All, packet, i, totalPackets, clip.channels, clip.frequency, clip.name); // Отправляем пакет
         }
     }
     public byte[] ConvertAudioClipToBytes(AudioClip clip)
@@ -70,7 +70,7 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
     }
 
     [PunRPC]
-    public void RPC_ReceiveAudioPacket(byte[] packet, int packetIndex, int totalPackets, int freq)
+    public void RPC_ReceiveAudioPacket(byte[] packet, int packetIndex, int totalPackets, int channels, int freq, string name)
     {
         if (audioPackets.Count == 0)
         {
@@ -84,24 +84,30 @@ public class MusikManager : MonoBehaviour, IUpdateObserver
         {
             // Все пакеты получены, собираем аудиоданные
             byte[] fullAudioData = audioPackets.SelectMany(p => p).ToArray();
-            AudioClip clip = ConvertBytesToAudioClip(fullAudioData, freq); // Преобразуем байты обратно в AudioClip
+            AudioClip clip = ConvertBytesToAudioClip(fullAudioData, freq, channels); // Преобразуем байты обратно в AudioClip
+            clip.name = name;
 
             // Воспроизводим аудио
             musikAudioSource.clip = clip;
+            trackTimeSlider.value = 0;
             PlayMusik();
-            allTracks.Add(clip);
+
+            //fuegen in die gesamte Liste
+            customTracks.Add(clip);
+
+            OpenAllSongs();
 
             // Очищаем список пакетов
             audioPackets.Clear();
         }
     }
-    public AudioClip ConvertBytesToAudioClip(byte[] audioData, int sampleRate)
+    public AudioClip ConvertBytesToAudioClip(byte[] audioData, int sampleRate, int channels)
     {
         int sampleCount = audioData.Length / sizeof(float);
         float[] samples = new float[sampleCount];
         Buffer.BlockCopy(audioData, 0, samples, 0, audioData.Length);
 
-        AudioClip clip = AudioClip.Create("ReceivedAudio", sampleCount, 1, sampleRate, false);
+        AudioClip clip = AudioClip.Create("ReceivedAudio", sampleCount / channels, channels, sampleRate, false);
         clip.SetData(samples, 0);
         return clip;
     }

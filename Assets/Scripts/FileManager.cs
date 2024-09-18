@@ -56,7 +56,6 @@ public class FileManager : MonoBehaviour
                 if (clip != null)
                 {
                     clip.name = Path.GetFileNameWithoutExtension(path);
-                    //customTracks.Add(clip);
                     musikManager.SendAudioClip(clip);
                     Debug.Log("Music was loaded");
                 }
