@@ -21626,6 +21626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musikManager: {fileID: 1821336801}
+  whiteBoardManager: {fileID: 0}
   customTracks: []
 --- !u!4 &596896456
 Transform:
@@ -29080,13 +29081,19 @@ MonoBehaviour:
   blackColorButton: {fileID: 1706952825}
   eraseButton: {fileID: 1455696977}
   clearButton: {fileID: 1285203563}
+  redSlider: {fileID: 0}
+  greenSlider: {fileID: 0}
+  blueSlider: {fileID: 0}
+  setCustomColor: {fileID: 0}
+  brushMaxSize: 40
+  brushMinSize: 5
+  container: {fileID: 1422131789}
   loadImageButton: {fileID: 1657306712}
   photonView: {fileID: 1093424408}
   image: {fileID: 2800000, guid: 47a5454d614b11d439b44191040dcbe6, type: 3}
   loadedImage: {fileID: 618437772}
-  brushMaxSize: 40
-  brushMinSize: 5
-  container: {fileID: 1422131789}
+  rectTransform: {fileID: 0}
+  fileManager: {fileID: 0}
 --- !u!114 &1093424408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38491,7 +38498,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh163090
+  m_Name: pb_Mesh116150
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

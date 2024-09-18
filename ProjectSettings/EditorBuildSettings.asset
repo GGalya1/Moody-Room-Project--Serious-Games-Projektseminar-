@@ -12,12 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/TestRoom.unity
     guid: 1d0a329e1eaa4e04eb43217a8541de57
   - enabled: 1
-    path: Assets/Scenes/CafeRoom.unity
-    guid: a8b8efe55b047a741a02fa4eec89b21e
+    path: Assets/Scenes/Cafe.unity
+    guid: a4e202faff893b2458c9b32d7722e1f4
   - enabled: 1
     path: Assets/Scenes/CurrentForest.unity
     guid: 164fc101ab8f1584d9f3f9772734e457
   - enabled: 1
-    path: Assets/Scenes/WorkingSpaceRoom.unity
-    guid: 6fc05f5d1af5ae14b99a5f56016b7855
+    path: Assets/Scenes/WorkingSpace.unity
+    guid: 4613e221a11967a418d13d870a31d1e7
   m_configObjects: {}
