@@ -187,8 +187,15 @@ public class AudioManager : MonoBehaviour
     {
         foreach (Toggle toggle in toggles)
         {
-            toggle.GetComponentInChildren<Image>().sprite = toggleSprite;
-            //AddShadow(toggle.GetComponent<RectTransform>());
+            if (toggle.GetComponentInChildren<Image>().sprite != null)
+            {
+                Sprite temp = toggle.GetComponentInChildren<Image>().sprite;
+                if (temp.name != "ButtonPressed")
+                {
+                    toggle.GetComponentInChildren<Image>().sprite = toggleSprite;
+                }
+            }
+            
         }
     }
     #endregion

@@ -283,6 +283,7 @@ public class PhotonChatManager : MonoBehaviour, IChatClientListener, IUpdateObse
     }
     public void HideListOfRecievers()
     {
+        isPlayerlistOn = !isPlayerlistOn;
         _playerList.gameObject.SetActive(false);
     }
 }

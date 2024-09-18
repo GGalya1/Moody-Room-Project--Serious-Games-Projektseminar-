@@ -9,6 +9,7 @@ using Photon.Pun;
 public class FileManager : MonoBehaviour
 {
     [SerializeField] private MusikManager musikManager;
+    [SerializeField] private DrawingUIManager whiteBoardManager;
     public List<AudioClip> customTracks;
 
     public void Start()
@@ -16,6 +17,7 @@ public class FileManager : MonoBehaviour
         customTracks = musikManager.customTracks;
     }
 
+    #region musicLoading
     public void OpenFileBrowserForMusikSearch()
     {
         // Filter: nur MP3 und WAV Dateien
@@ -23,9 +25,9 @@ public class FileManager : MonoBehaviour
         FileBrowser.SetDefaultFilter(".mp3");
 
         // Show file browser
-        StartCoroutine(ShowLoadDialogCoroutine());
+        StartCoroutine(ShowLoadMusicDialogCoroutine());
     }
-    private IEnumerator ShowLoadDialogCoroutine()
+    private IEnumerator ShowLoadMusicDialogCoroutine()
     {
         yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Load Audio File", "Load");
 
@@ -54,19 +56,8 @@ public class FileManager : MonoBehaviour
                 if (clip != null)
                 {
                     clip.name = Path.GetFileNameWithoutExtension(path);
-                    customTracks.Add(clip);
-                    Debug.Log("Loaded audio clip: " + clip.name);
-
-                    /*object[] temp = customTracks.ToArray();
-                    PhotonView photonView = musikManager.GetComponent<PhotonView>();
-                    photonView.RPC("RPC_SetCustomTracks", RpcTarget.Others, temp);*/
-
-                    // Konvertiere AudioClip in Byte-Array
-                    /*byte[] audioData = WavUtility.FromAudioClip(clip);
-
-                    PhotonView photonView = musikManager.GetComponent<PhotonView>();
-                    // Senden des neuen Liedes an andere Spieler
-                    photonView.RPC("RPC_SendNewSong", RpcTarget.Others, audioData, clip.name);*/
+                    musikManager.SendAudioClip(clip);
+                    Debug.Log("Music was loaded");
                 }
             }
         }
@@ -95,4 +86,56 @@ public class FileManager : MonoBehaviour
             
         }
     }
+    #endregion
+
+    #region imageLoading
+    public void OpenFileBrowserForImagesSearch()
+    {
+        // Filter: nur PNG und JPEG
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("Images", ".png", ".jpg"));
+        FileBrowser.SetDefaultFilter(".png");
+
+        // Show file browser
+        StartCoroutine(ShowLoadImageDialogCoroutine());
+    }
+    private IEnumerator ShowLoadImageDialogCoroutine()
+    {
+        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Load Image", "Load");
+
+        if (FileBrowser.Success)
+        {
+            // Pfad der ausgewaehlten Datei
+            string path = FileBrowser.Result[0];
+
+            // Audio-Datei laden
+            StartCoroutine(LoadImage(path));
+        }
+    }
+    private IEnumerator LoadImage(string path)
+    {
+        using (UnityWebRequest www = UnityWebRequestTexture.GetTexture("file:///" + path))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError(www.error);
+            }
+            else
+            {
+                // Texture laden
+                Texture2D texture = DownloadHandlerTexture.GetContent(www);
+
+                if (texture != null)
+                {
+                    texture = whiteBoardManager.ResizeTexture(texture, whiteBoardManager.GetRectTransform().rect.width, whiteBoardManager.GetRectTransform().rect.height);
+                    whiteBoardManager.image = texture;
+                    whiteBoardManager.ShareImage();
+                    //whiteBoardManager.drawingBoard.SetImage(texture);
+                    Debug.Log("Image was loaded");
+                }
+            }
+        }
+    }
+    #endregion
 }

@@ -48,15 +48,20 @@ public class ButtonSound : MonoBehaviour, IPointerEnterHandler, IPointerClickHan
 
     void Start()
     {
-        //nur in MainMenu kustomisieren wir Buttons als Glassmorphism
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 0)
+        //falls ein Bild per Hand gesetzt ist, dann wollen wir nichts aendern
+        Image check = GetComponent<Image>();
+
+        if (check != null && check.sprite.name == "UISprite")
         {
-            SetGlassmorphismOnButton();
-        }
-        else
-        {
-            //auskomentieren, wenn es fertig wird
-            GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/InGameMenuSRC/button_white");
+            //nur in MainMenu kustomisieren wir Buttons als Glassmorphism
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 0)
+            {
+                SetGlassmorphismOnButton();
+            }
+            else
+            {
+                check.sprite = Resources.Load<Sprite>("UI/InGameMenuSRC/button_white");
+            }
         }
     }
 

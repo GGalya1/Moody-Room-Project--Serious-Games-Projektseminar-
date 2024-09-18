@@ -95,7 +95,13 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         //"Erase" wird realisiert, indem Color.white gesetzt wird
         brushColor = color;
+    }
 
+
+    public void SetImage(Texture2D newTexture)
+    {
+        texture = newTexture;
+        rawImage.texture = texture;
     }
 
     #region PunRPC section
@@ -141,6 +147,18 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         Graphics.Blit(tempTexture, largeWhitebaord);
 
         // Deaktiviere die RenderTexture
+        RenderTexture.active = null;
+    }
+    public void SyncLargeBoardWithLittleBoard()
+    {
+        _photonView.RPC("RPC_SyncLargeBoardWithLittleBoard", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void RPC_SyncLargeBoardWithLittleBoard()
+    {
+        RenderTexture.active = largeWhitebaord;
+        Graphics.Blit(texture, largeWhitebaord);
         RenderTexture.active = null;
     }
 
