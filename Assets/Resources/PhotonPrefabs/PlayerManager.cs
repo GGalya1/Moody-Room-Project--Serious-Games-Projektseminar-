@@ -187,6 +187,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_SetWhiteboardAcces(bool isOn)
     {
+        //wenn das Spieler sich bereits in Whiteboard befindet und wir Acces schliessen, wollen wir Spieler aus dem Whiteboard rausschmeissen
+        //also, falls Whiteboard aktuell geoffnet ist und wir Whiteboard schleissen wollen
+        if (IngameMenuManager.GetCurrentMenu() == MenuType.WhiteBoardMenu && !isOn)
+        {
+            IngameMenuManager.OnMenuRequest?.Invoke(MenuType.WhiteBoardMenu);
+        }
         InputManager.whiteboardIsOn = isOn;
     }
 

@@ -14,6 +14,14 @@ public class DrawingUIManager : MonoBehaviour
     public Button eraseButton;
     public Button clearButton;
 
+    //BAUARBEITEN wegen custom Farbe
+    [SerializeField] private Slider redSlider;
+    [SerializeField] private Slider greenSlider;
+    [SerializeField] private Slider blueSlider;
+
+    [SerializeField] private Button setCustomColor;
+    //BAUARBEITEN wegen custom Farbe
+
     public float brushMaxSize = 40.0f;
     public float brushMinSize = 5.0f;
 
@@ -112,9 +120,21 @@ public class DrawingUIManager : MonoBehaviour
     {
         brushSizeSlider.minValue = brushMinSize;
         brushSizeSlider.maxValue = brushMaxSize;
-        brushSizeSlider.value = brushMinSize;
+        brushSizeSlider.value = drawingBoard.brushSize;
+
+        redSlider.maxValue = 255;
+        redSlider.minValue = 0;
+        redSlider.value = 64;
+        greenSlider.maxValue = 255;
+        greenSlider.minValue = 0;
+        greenSlider.value = 224;
+        blueSlider.maxValue = 255;
+        blueSlider.minValue = 0;
+        blueSlider.value = 208;
 
         brushSizeSlider.onValueChanged.AddListener(ChangeBrushSize);
+        setCustomColor.onClick.AddListener(SetCustomColor);
+
         redColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.red));
         blueColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.blue));
         blackColorButton.onClick.AddListener(() => drawingBoard.SetBrushColor(Color.black));
@@ -126,6 +146,17 @@ public class DrawingUIManager : MonoBehaviour
     void ChangeBrushSize(float newSize)
     {
         drawingBoard.brushSize = newSize;
+    }
+
+    //passiert, wenn wir auf dem Knopf drucken
+    public void SetCustomColor()
+    {
+        // Werte der Schieberegler holen und in einen Bereich von 0 bis 1 umrechnen
+        float red = redSlider.value / 255f;
+        float green = greenSlider.value / 255f;
+        float blue = blueSlider.value / 255f;
+
+        drawingBoard.brushColor = new Color(red, green, blue);
     }
 
     public RectTransform GetRectTransform()

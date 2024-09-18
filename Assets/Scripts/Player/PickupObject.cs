@@ -89,7 +89,7 @@ public class PickupObject : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && IngameMenuManager.GetCurrentMenu() == MenuType.None)
         {
             OnPickup();
         }

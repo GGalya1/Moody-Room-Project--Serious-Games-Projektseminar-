@@ -95,8 +95,8 @@ public class DrawingBoard : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         //"Erase" wird realisiert, indem Color.white gesetzt wird
         brushColor = color;
-
     }
+
 
     public void SetImage(Texture2D newTexture)
     {
